@@ -12,10 +12,7 @@ castellatedMesh true;
 snap            //_DO_SNAP_//;
 addLayers       //_DO_ADD_LAYERS_//;
 
-geometry
-{
-    //_GEOMETRY_//
-}
+//_GEOMETRY_//
 
 castellatedMeshControls
 {
@@ -27,14 +24,14 @@ castellatedMeshControls
     locationInMesh  ( 0 0 0 );
     allowFreeStandingZoneFaces true;
     resolveFeatureAngle 30;
-    //_FEATURES_//
+//_FEATURES_//
     refinementSurfaces
     {
-        //_REFINEMENTSURFACES_//
+//_REFINEMENTSURFACES_//
     }
     refinementRegions
     {
-        //_REFINEMENTREGIONS_//
+//_REFINEMENTREGIONS_//
     }
 }
 
@@ -70,7 +67,7 @@ addLayersControls
     nLayerIter      50;
     layers
     {
-        //_LAYERS_//
+//_LAYERS_//
     }
 }
 

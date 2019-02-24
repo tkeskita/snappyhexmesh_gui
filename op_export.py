@@ -144,4 +144,18 @@ def export_replacements(data):
     data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
     data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
 
+    data = subst_value("GEOMETRY", export_geometries(), data)
+    
     return data
+
+def export_geometries():
+    """Creates geometry entries for snappyHexMeshDict"""
+
+    d = "geometry\n{\n"
+    for i in bpy.data.objects:
+        if i.shmg_include_in_export:
+            d += "    %s\n" % i.name \
+                 + "    {\n        type triSurfaceMesh;\n" \
+                 + "        file \"%s.stl\";\n    }\n" % i.name
+    d += "}"
+    return d

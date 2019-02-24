@@ -41,7 +41,8 @@ else:
         )
     
 import os.path
-    
+
+# Common settings as property group
 class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     template_path: bpy.props.StringProperty(
         name="Template Path",
@@ -68,6 +69,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default=False,
     )
 
+# Object specific parameters
+bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
+    name="Include in export",
+    description="Include mesh in export (SnappyHexMesh GUI)",
+    default=True,
+)
     
 class SnappyHexMeshGUI_ToolBar:
     bl_label = "SnappyHexMeshGUI"
