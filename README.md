@@ -19,6 +19,6 @@ missing. The add-on is developed for Blender 2.8 (master branch).
 
 ## Links
 
-[blender.org](https://www.blender.org/)
-[openfoam.org](https://openfoam.org/)
-[openfoam.com](https://www.openfoam.com/)
+* [blender.org](https://www.blender.org/)
+* [openfoam.org](https://openfoam.org/)
+* [openfoam.com](https://www.openfoam.com/)

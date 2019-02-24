@@ -25,8 +25,8 @@ bl_info = {
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
     "warning": "Experimental, work in progress",
-#    "wiki_url": "https://localhost/",
-#    "tracker_url": "https://localhost/",
+    "wiki_url": "https://github.com/tkeskita/snappyhexmesh_gui",
+    "tracker_url": "https://github.com/tkeskita/snappyhexmesh_gui/issues",
     "support": 'COMMUNITY',
     "category": "Object",
     }
