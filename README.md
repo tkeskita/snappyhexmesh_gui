@@ -10,12 +10,13 @@ the export of 3D surface meshes into a SnappyHexMesh case folder, and
 to allow definition of most common SnappyHexMesh settings in Blender,
 to reduce need for manual writing of OpenFOAM dictionary definitions
 for SnappyHexMesh.
+The add-on is developed for Blender 2.8 (master branch).
 
 ## Current Status
 
-The add-on is currently in early development phase. It is not
-recommended even to be tested yet, since most of the functionality is
-missing. The add-on is developed for Blender 2.8 (master branch).
+The add-on is currently in early development phase.
+Currently it exports all meshes from Blender and generates
+snappyHexMeshDict with only geometry entries.
 
 ## Links
 

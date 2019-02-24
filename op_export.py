@@ -69,7 +69,7 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             return{'FINISHED'}
         
         # Carry out replacements to template
-        data = export_replacements(data)
+        n, data = export_replacements(data)
 
         # Write result to snappyHexMeshDict
         outfilename = bpy.path.abspath(export_path) \
@@ -78,7 +78,8 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         outfile.write(''.join(data))
         outfile.close()
         
-        self.report({'INFO'}, "Export done to: %r" % export_path)
+        self.report({'INFO'}, "Exported %d meshes " % n \
+                    + "to: %r" % export_path)
         return {'FINISHED'}
 
 def export_initialize(self, template_path, export_path):
@@ -144,18 +145,46 @@ def export_replacements(data):
     data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
     data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
 
-    data = subst_value("GEOMETRY", export_geometries(), data)
+    n, geo = export_geometries()
+    data = subst_value("GEOMETRY", geo, data)
     
-    return data
+    return n, data
 
 def export_geometries():
-    """Creates geometry entries for snappyHexMeshDict"""
+    """Creates geometry entries for snappyHexMeshDict and
+    exports meshes in STL format to case/constant/triSurface folder.
+    Returns number of exported meshes and the dictionary text string.
+    """
 
+    n = 0 # Number of exported geometries
+    # Collect dictionary string to d
     d = "geometry\n{\n"
+
+    # First deselect every object, since STL export is done by selection
     for i in bpy.data.objects:
+        i.select_set(False)
+
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+
         if i.shmg_include_in_export:
             d += "    %s\n" % i.name \
                  + "    {\n        type triSurfaceMesh;\n" \
                  + "        file \"%s.stl\";\n    }\n" % i.name
+
+            # Export mesh to constant/triSurface/name.stl
+            export_path = bpy.context.scene.snappyhexmeshgui.export_path
+            abspath = bpy.path.abspath(export_path)
+            outpath = abspath + "/constant/triSurface/%s.stl" % i.name
+            i.select_set(True)
+            bpy.ops.export_mesh.stl(
+                filepath=outpath, check_existing=False, \
+                axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
+                use_selection=True, global_scale=1.0, use_scene_unit=True, \
+                ascii=False, use_mesh_modifiers=True)
+            i.select_set(False)
+            n += 1
     d += "}"
-    return d
+
+    return n, d
