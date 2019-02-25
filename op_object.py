@@ -24,3 +24,10 @@ from .op_gen import *
 
 # ----------------------------------------------------------------------------
 
+def get_object_bbox_coords(obj):
+    """Returns two vectors which contain the minimum and maximum coordinates
+    for bounding box for object obj
+    """
+
+    bbox = [obj.matrix_world @ mathutils.Vector(corner) for corner in obj.bound_box]
+    return min(bbox), max(bbox)

@@ -133,6 +133,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.prop(gui, "export_path", text="")
 
         row = layout.row()
+        row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
+        row = layout.row()
         row.operator("object.snappyhexmeshgui_export", text="Export")
 
         
@@ -155,7 +157,16 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
 
         col = layout.column()
         rowsub = col.row(align=True)
-        rowsub.label(text="Object: " + obj.name)
+        rowsub.label(text="Object: %r" % obj.name)
+
+        # Bounding box info
+        bb_min, bb_max = op_object.get_object_bbox_coords(obj)
+        bb_min_str = "[%7.3f %7.3f %7.3f]" % bb_min[:]
+        bb_max_str = "[%7.3f %7.3f %7.3f]" % bb_max[:]
+        rowsub = col.row()
+        rowsub.label(text="min: " + bb_min_str)
+        rowsub = col.row()
+        rowsub.label(text="max: " + bb_max_str)
 
         rowsub = col.row()
         rowsub.prop(obj, "shmg_include_in_export", text="Inlcude in Export")
@@ -167,6 +178,7 @@ classes = (
     VIEW3D_PT_SnappyHexMeshGUI_Edit,
     VIEW3D_PT_SnappyHexMeshGUI_Object_Object,
     op_export.OBJECT_OT_snappyhexmeshgui_export,
+    op_export.OBJECT_OT_snappyhexmeshgui_apply_locrotscale,
     
     SnappyHexMeshGUI_Settings,
 )

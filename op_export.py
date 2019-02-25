@@ -165,3 +165,34 @@ def export_geometries():
     d += "}"
 
     return n, d
+
+class OBJECT_OT_snappyhexmeshgui_apply_locrotscale(bpy.types.Operator):
+    """Apply LocRotScale (SnappyHexMeshGUI)"""
+    bl_idname = "object.snappyhexmeshgui_apply_locrotscale"
+    bl_label = "SnappyHexMeshGUI Apply LocRotScale"
+
+    @classmethod
+    def poll(cls, context):
+        ob = context.active_object
+        return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
+
+    def execute(self, context):
+        n = apply_locrotscale()
+        self.report({'INFO'}, "LocRotScale applied to %d meshes" % n)
+        return {'FINISHED'}
+
+def apply_locrotscale():
+    """Applies location, rotation and scale for all mesh objects"""
+
+    for i in bpy.data.objects:
+        i.select_set(False)
+
+    n = 0
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        i.select_set(True)
+        bpy.ops.object.transform_apply(location = True, scale = True, rotation = True)
+        i.select_set(False)
+        n += 1
+    return n

@@ -29,10 +29,10 @@ import bpy
 import os
 #import re
 #import bmesh
-#import mathutils
+import mathutils
 #import array
 #import numpy
-#import math
+import math
 #from sys import float_info
 
 # Set up logging of messages using logging
