@@ -20,30 +20,7 @@
 
 # ----------------------------------------------------------------------------
 # Export functions
-
-# ----------------------------------------------------------------------------
-# Initialization
-
-import importlib
-import bpy
-import os
-import re
-#import bmesh
-#import mathutils
-#import array
-#import numpy
-#import math
-#from sys import float_info
-
-# Set up logging of messages using logging
-# Logging is nicely explained in:
-# https://code.blender.org/2016/05/logging-from-python-code-in-blender/
-# Note to self: To see debug messages, configure logging in file
-# $HOME/.config/blender/{version}/scripts/startup/setup_logging.py
-# Add there something like:
-# import logging
-# logging.basicConfig(format='%(funcName)s: %(message)s', level=logging.DEBUG)
-import logging as l
+from .op_gen import *
 
 # ----------------------------------------------------------------------------
 

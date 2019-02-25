@@ -34,10 +34,12 @@ bl_info = {
 if "bpy" in locals():
     import importlib
     importlib.reload(op_export)
+    importlib.reload(op_object)
 else:
     import bpy
     from . import (
         op_export,
+        op_object,
         )
     
 import os.path
@@ -77,13 +79,15 @@ bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
 )
     
 class SnappyHexMeshGUI_ToolBar:
-    bl_label = "SnappyHexMeshGUI"
+    """Base Class for Add-on Tool Bar"""
+    bl_label = "SnappyHexMesh GUI"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "SnappyHexMesh GUI"
 
     
 class VIEW3D_PT_SnappyHexMeshGUI_Edit(bpy.types.Panel, SnappyHexMeshGUI_ToolBar):
+    """Main Tool Bar in Edit Mode"""
     bl_idname = "VIEW3D_PT_snappyhexmeshgui_edit_mode"
     bl_context = "mesh_edit"
     
@@ -97,10 +101,11 @@ class VIEW3D_PT_SnappyHexMeshGUI_Edit(bpy.types.Panel, SnappyHexMeshGUI_ToolBar)
         box = layout.box()
         col = box.column(align=True)
         col.label(text="Not available", icon='ERROR')
-        col.label(text="in edit mode")
+        col.label(text="in Edit Mode")
 
     
 class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBar):
+    """Main Tool Bar in Object Mode"""
     bl_idname = "VIEW3D_PT_snappyhexmeshgui_object_mode"
     bl_context = "objectmode"
     
@@ -131,11 +136,36 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         row.operator("object.snappyhexmeshgui_export", text="Export")
 
         
+class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBar):
+    """Object Setting Panel in Object Mode"""
+    bl_idname = "VIEW3D_PT_snappyhexmeshgui_object_object"
+    bl_context = "objectmode"
+    bl_label = "Object Settings"
+    
+    @classmethod
+    def poll(cls, context):
+        obj = context.active_object
+        return obj and obj.type == 'MESH' and context.mode == 'OBJECT'
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        gui = scene.snappyhexmeshgui
+        obj = context.object
+
+        col = layout.column()
+        rowsub = col.row(align=True)
+        rowsub.label(text="Object: " + obj.name)
+
+        rowsub = col.row()
+        rowsub.prop(obj, "shmg_include_in_export", text="Inlcude in Export")
+        
 # Registration
 
 classes = (
     VIEW3D_PT_SnappyHexMeshGUI_Object,
     VIEW3D_PT_SnappyHexMeshGUI_Edit,
+    VIEW3D_PT_SnappyHexMeshGUI_Object_Object,
     op_export.OBJECT_OT_snappyhexmeshgui_export,
     
     SnappyHexMeshGUI_Settings,
