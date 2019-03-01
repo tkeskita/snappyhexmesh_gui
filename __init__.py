@@ -161,12 +161,14 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
 
         # Bounding box info
         bb_min, bb_max = op_object.get_object_bbox_coords(obj)
-        bb_min_str = "[%7.3f %7.3f %7.3f]" % bb_min[:]
-        bb_max_str = "[%7.3f %7.3f %7.3f]" % bb_max[:]
+        bb_min_str = "[%7.3f %7.3f %7.3f]" % (bb_min[0], bb_min[1], bb_min[2])
+        bb_max_str = "[%7.3f %7.3f %7.3f]" % (bb_max[0], bb_max[1], bb_max[2])
         rowsub = col.row()
-        rowsub.label(text="min: " + bb_min_str)
+        rowsub.label(text="Bounding Box [min] [max]:")
         rowsub = col.row()
-        rowsub.label(text="max: " + bb_max_str)
+        rowsub.label(text=bb_min_str)
+        rowsub = col.row()
+        rowsub.label(text=bb_max_str)
 
         rowsub = col.row()
         rowsub.prop(obj, "shmg_include_in_export", text="Inlcude in Export")

@@ -29,5 +29,14 @@ def get_object_bbox_coords(obj):
     for bounding box for object obj
     """
 
-    bbox = [obj.matrix_world @ mathutils.Vector(corner) for corner in obj.bound_box]
-    return min(bbox), max(bbox)
+    # Acknowledgement: Here is nice explanation of obj.bound_box and example
+    # for using Blender's bounding box data in python by zeffii:
+    # https://blender.stackexchange.com/questions/32283/what-are-all-values-in-bound-box
+
+    worldify = lambda p: obj.matrix_world @ mathutils.Vector(p[:])
+    coords = [worldify(p).to_tuple() for p in obj.bound_box[:]]
+    rotated = list(zip(*coords[::]))
+    min_bbox = [min(c) for c in rotated]
+    max_bbox = [max(c) for c in rotated]
+
+    return min_bbox, max_bbox
