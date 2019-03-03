@@ -33,7 +33,7 @@ import mathutils
 #import array
 #import numpy
 import math
-#from sys import float_info
+from sys import float_info
 
 # Set up logging of messages using logging
 # Logging is nicely explained in:

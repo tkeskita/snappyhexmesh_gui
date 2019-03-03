@@ -37,38 +37,59 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
 
     def execute(self, context):
         l.debug("Starting export")
-        template_path = bpy.context.scene.snappyhexmeshgui.template_path
-        export_path = bpy.context.scene.snappyhexmeshgui.export_path
+        gui = bpy.context.scene.snappyhexmeshgui
+        snappy_template_path = gui.snappy_template_path
+        block_mesh_template_path = gui.block_mesh_template_path
+        export_path = gui.export_path
 
-        # Get template file
-        data = export_initialize(self, template_path, export_path)
-        if data is None:
+        # Get snappyHexMeshTemplate file
+        blockData, snappyData = \
+            export_initialize(self, block_mesh_template_path, \
+                              snappy_template_path, export_path)
+        if blockData is None or snappyData is None:
             return{'FINISHED'}
-        
-        # Carry out replacements to template
-        n, data = export_replacements(data)
+
+        # Carry out replacements to templates
+        blockData = export_block_mesh_replacements(blockData)
+        n, snappyData = export_snappy_replacements(snappyData)
+
+        # Write blockMeshDict
+        outfilename = bpy.path.abspath(export_path) \
+                      + "/system/blockMeshDict"
+        outfile = open(outfilename, 'w')
+        outfile.write(''.join(blockData))
+        outfile.close()
 
         # Write result to snappyHexMeshDict
         outfilename = bpy.path.abspath(export_path) \
                       + "/system/snappyHexMeshDict"
         outfile = open(outfilename, 'w')
-        outfile.write(''.join(data))
+        outfile.write(''.join(snappyData))
         outfile.close()
-        
+
         self.report({'INFO'}, "Exported %d meshes " % n \
                     + "to: %r" % export_path)
         return {'FINISHED'}
 
-def export_initialize(self, template_path, export_path):
-    """Returns content of template dictionary file as text string
-    and creates directory structure to export path.
+
+def export_initialize(self, block_mesh_template_path, \
+                      snappy_template_path, export_path):
+    """Returns content of template dictionary files as text strings
+    and creates directory structure undex export path.
     """
 
-    l.debug("Template path: %r" % template_path)
-    if not (os.path.isfile(template_path)):
-        self.report({'ERROR'}, "Template not found: %r" % template_path)
+    l.debug("snappyHexMeshTemplate path: %r" % snappy_template_path)
+    if not (os.path.isfile(snappy_template_path)):
+        self.report({'ERROR'}, "Template not found: %r" \
+                    % snappy_template_path)
         return None
     
+    l.debug("blockMeshTemplate path: %r" % block_mesh_template_path)
+    if not (os.path.isfile(block_mesh_template_path)):
+        self.report({'ERROR'}, "Template not found: %r" \
+                    % block_mesh_template_path)
+        return None
+
     abspath = bpy.path.abspath(export_path)
     l.debug("Export path: %r" % abspath)
     if not abspath:
@@ -88,9 +109,13 @@ def export_initialize(self, template_path, export_path):
         self.report({'ERROR'}, "Couldn't create folders under %r" % abspath)
         return None
     
-    with open(template_path, 'r') as infile:
-        data = infile.readlines()
-        return data
+    with open(snappy_template_path, 'r') as infile:
+        snappyData = infile.readlines()
+
+    with open(block_mesh_template_path, 'r') as infile:
+        blockData = infile.readlines()
+
+    return blockData, snappyData
 
     
 def subst_value(keystr, val, data):
@@ -106,8 +131,35 @@ def subst_value(keystr, val, data):
     return newdata
 
 
-def export_replacements(data):
-    """Carry out replacements for key words in template with 
+def export_block_mesh_replacements(data):
+    """Carry out replacements for key words in blockMeshDictTemplate with
+    settings from GUI.
+    """
+
+    import datetime
+    gui = bpy.context.scene.snappyhexmeshgui
+
+    header_text = "// Exported by SnappyHexMesh GUI add-on for Blender v0.1" \
+                  + "\n// Source file: " + bpy.context.blend_data.filepath \
+                  + "\n// Export date: " + str(datetime.datetime.now())
+    data = subst_value("HEADER", header_text, data)
+
+    data = subst_value("DX", str(gui.block_mesh_delta[0]), data)
+    data = subst_value("DY", str(gui.block_mesh_delta[1]), data)
+    data = subst_value("DZ", str(gui.block_mesh_delta[2]), data)
+
+    data = subst_value("XMIN", "%.6g" % gui.block_mesh_min[0], data)
+    data = subst_value("YMIN", "%.6g" % gui.block_mesh_min[1], data)
+    data = subst_value("ZMIN", "%.6g" % gui.block_mesh_min[2], data)
+
+    data = subst_value("XMAX", "%.6g" % gui.block_mesh_max[0], data)
+    data = subst_value("YMAX", "%.6g" % gui.block_mesh_max[1], data)
+    data = subst_value("ZMAX", "%.6g" % gui.block_mesh_max[2], data)
+
+    return data
+
+def export_snappy_replacements(data):
+    """Carry out replacements for key words in snappyHexMeshTemplate with
     settings from GUI.
     """
     
@@ -124,6 +176,8 @@ def export_replacements(data):
 
     n, geo = export_geometries()
     data = subst_value("GEOMETRY", geo, data)
+
+    data = subst_value("FEATURES", "    features ();", data)
     
     return n, data
 

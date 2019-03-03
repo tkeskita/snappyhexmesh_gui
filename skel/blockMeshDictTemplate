@@ -1,0 +1,49 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+
+//_HEADER_//
+
+convertToMeters 1;
+
+vertices
+(
+    ( //_XMIN_// //_YMIN_// //_ZMIN_// )
+    ( //_XMAX_// //_YMIN_// //_ZMIN_// )
+    ( //_XMAX_// //_YMAX_// //_ZMIN_// )
+    ( //_XMIN_// //_YMAX_// //_ZMIN_// )
+    ( //_XMIN_// //_YMIN_// //_ZMAX_// )
+    ( //_XMAX_// //_YMIN_// //_ZMAX_// ) 
+    ( //_XMAX_// //_YMAX_// //_ZMAX_// ) 
+    ( //_XMIN_// //_YMAX_// //_ZMAX_// ) 
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (//_DX_// //_DY_// //_DZ_//) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    world
+    {
+        type patch;
+        faces
+        (
+            (3 7 6 2)
+            (0 4 7 3)
+            (2 6 5 1)
+            (1 5 4 0)
+            (0 3 2 1)
+            (4 5 6 7)
+        );
+    }
+);
