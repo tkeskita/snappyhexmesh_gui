@@ -14,9 +14,14 @@ The add-on is developed for Blender 2.8 (master branch).
 
 ## Current Status
 
-The add-on is currently in early development phase.
-Currently it exports all meshes from Blender and generates
-snappyHexMeshDict with only geometry entries.
+The add-on is currently in development phase.
+Currently implemented features include:
+* Creation of basic OpenFOAM case structure, including meshes as STL files and
+  dictionary files (most importantly snappyHexMeshDict)
+* Creation of definition file for hexahedral base mesh with a defined cell size
+  (blockMeshDict)
+* Calculation of cell count for base mesh
+* Definition of surface refinement levels for meshes
 
 ## Links
 

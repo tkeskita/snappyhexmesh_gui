@@ -108,6 +108,9 @@ def export_initialize(self, block_mesh_template_path, \
     if not (os.path.isdir(abspath + '/system')):
         self.report({'ERROR'}, "Couldn't create folders under %r" % abspath)
         return None
+
+    # Copy skeleton files if needed
+    copy_skeleton_files()
     
     with open(snappy_template_path, 'r') as infile:
         snappyData = infile.readlines()
@@ -178,6 +181,9 @@ def export_snappy_replacements(data):
     data = subst_value("GEOMETRY", geo, data)
 
     data = subst_value("FEATURES", "    features ();", data)
+    data = subst_value("REFINEMENTSURFACES", export_refinement_surfaces(), data)
+    data = subst_value("REFINEMENTREGIONS", "        ", data)
+    data = subst_value("LAYERS", "        ", data)
     
     return n, data
 
@@ -219,6 +225,43 @@ def export_geometries():
     d += "}"
 
     return n, d
+
+def export_refinement_surfaces():
+    """Creates refinement surface entries for snappyHexMeshDict"""
+
+    # Collect dictionary string to d
+    d = ""
+
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+
+        if not i.shmg_include_in_export:
+            continue
+
+        d += "        %s\n" % i.name \
+             + "        {\n            level" \
+             + " (%d " % i.shmg_surface_min_level \
+             + "%d);\n" % i.shmg_surface_max_level \
+             + "        }\n"
+    return d
+
+def copy_skeleton_files():
+    """Copies OpenFOAM skeleton files to case directory
+    unless they already exist there
+    """
+
+    from shutil import copyfile
+    export_path = bpy.context.scene.snappyhexmeshgui.export_path
+    abspath = bpy.path.abspath(export_path)
+
+    for i in ["controlDict", "fvSchemes", "fvSolution"]:
+        filepath = abspath + "system/" + i
+        if not (os.path.isfile(filepath)):
+            sourcepath = os.path.dirname(__file__) + "/skel/" + i
+            copyfile(sourcepath, filepath)
+            l.debug("Copied skeleton file from: %s" % filepath)
+    return None
 
 class OBJECT_OT_snappyhexmeshgui_apply_locrotscale(bpy.types.Operator):
     """Apply LocRotScale (SnappyHexMeshGUI)"""

@@ -109,6 +109,16 @@ bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
     description="Include mesh in export (SnappyHexMesh GUI)",
     default=True,
 )
+bpy.types.Object.shmg_surface_min_level = bpy.props.IntProperty(
+    name="Minimum Surface Refinement Level",
+    description="Minimum Cell Refinement Level for Surface",
+    default=0, min=0, max=10,
+)
+bpy.types.Object.shmg_surface_max_level = bpy.props.IntProperty(
+    name="Maximum Surface Refinement Level",
+    description="Maximum Cell Refinement Level for Surface",
+    default=0, min=0, max=10,
+)
     
 class SnappyHexMeshGUI_ToolBar:
     """Base Class for Add-on Tool Bar"""
@@ -244,7 +254,7 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         bb_min_str = "[%7.3f %7.3f %7.3f]" % (bb_min[0], bb_min[1], bb_min[2])
         bb_max_str = "[%7.3f %7.3f %7.3f]" % (bb_max[0], bb_max[1], bb_max[2])
         rowsub = col.row()
-        rowsub.label(text="Bounding Box [min] [max]:")
+        rowsub.label(text="Object Bounds [min] [max]:")
         rowsub = col.row()
         rowsub.label(text=bb_min_str)
         rowsub = col.row()
@@ -252,14 +262,20 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
 
         rowsub = col.row()
         rowsub.prop(obj, "shmg_include_in_export", text="Inlcude in Export")
+
+        rowsub = col.row()
+        rowsub.label(text="Surface Refinement Levels:")
+        rowsub = col.row()
+        rowsub.prop(obj, "shmg_surface_min_level", text="Min")
+        rowsub.prop(obj, "shmg_surface_max_level", text="Max")
         
 # Registration
 
 classes = (
     VIEW3D_PT_SnappyHexMeshGUI_Object,
     VIEW3D_PT_SnappyHexMeshGUI_Edit,
-    VIEW3D_PT_SnappyHexMeshGUI_Object_Summary,
     VIEW3D_PT_SnappyHexMeshGUI_Object_Object,
+    VIEW3D_PT_SnappyHexMeshGUI_Object_Summary,
     op_export.OBJECT_OT_snappyhexmeshgui_export,
     op_export.OBJECT_OT_snappyhexmeshgui_apply_locrotscale,
     
