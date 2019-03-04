@@ -1,0 +1,16 @@
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          surfaceFeaturesDict;
+}
+
+//_HEADER_//
+
+surfaces
+(
+//_FEATURESURFACES_//
+);
+
+includedAngle   150;

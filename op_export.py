@@ -38,20 +38,27 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
     def execute(self, context):
         l.debug("Starting export")
         gui = bpy.context.scene.snappyhexmeshgui
-        snappy_template_path = gui.snappy_template_path
-        block_mesh_template_path = gui.block_mesh_template_path
         export_path = gui.export_path
 
         # Get snappyHexMeshTemplate file
-        blockData, snappyData = \
-            export_initialize(self, block_mesh_template_path, \
-                              snappy_template_path, export_path)
-        if blockData is None or snappyData is None:
+        featuresData, blockData, snappyData = \
+            export_initialize(self, gui.surface_features_template_path, \
+                              gui.block_mesh_template_path, \
+                              gui.snappy_template_path, export_path)
+        if featuresData is None or blockData is None or snappyData is None:
             return{'FINISHED'}
 
         # Carry out replacements to templates
+        featuresData = export_surface_features_replacements(featuresData)
         blockData = export_block_mesh_replacements(blockData)
         n, snappyData = export_snappy_replacements(snappyData)
+
+        # Write surfaceFeaturesDict
+        outfilename = bpy.path.abspath(export_path) \
+                      + "/system/surfaceFeaturesDict"
+        outfile = open(outfilename, 'w')
+        outfile.write(''.join(featuresData))
+        outfile.close()
 
         # Write blockMeshDict
         outfilename = bpy.path.abspath(export_path) \
@@ -72,7 +79,8 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         return {'FINISHED'}
 
 
-def export_initialize(self, block_mesh_template_path, \
+def export_initialize(self, surface_features_template_path, \
+                      block_mesh_template_path, \
                       snappy_template_path, export_path):
     """Returns content of template dictionary files as text strings
     and creates directory structure undex export path.
@@ -88,6 +96,12 @@ def export_initialize(self, block_mesh_template_path, \
     if not (os.path.isfile(block_mesh_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % block_mesh_template_path)
+        return None
+
+    l.debug("surfaceFeaturesDictTemplate path: %r" % surface_features_template_path)
+    if not (os.path.isfile(surface_features_template_path)):
+        self.report({'ERROR'}, "Template not found: %r" \
+                    % surface_features_template_path)
         return None
 
     abspath = bpy.path.abspath(export_path)
@@ -118,7 +132,10 @@ def export_initialize(self, block_mesh_template_path, \
     with open(block_mesh_template_path, 'r') as infile:
         blockData = infile.readlines()
 
-    return blockData, snappyData
+    with open(surface_features_template_path, 'r') as infile:
+        featuresData = infile.readlines()
+
+    return featuresData, blockData, snappyData
 
     
 def subst_value(keystr, val, data):
@@ -134,18 +151,40 @@ def subst_value(keystr, val, data):
     return newdata
 
 
+def get_header_text():
+    """Returns dictionary header comment text"""
+    import datetime
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v0.1" \
+        + "\n// Source file: " + bpy.context.blend_data.filepath \
+        + "\n// Export date: " + str(datetime.datetime.now())
+
+def export_surface_features_replacements(data):
+    """Carry out replacements for key words in surfaceFeaturesDictTemplate with
+    settings from GUI.
+    """
+
+    data = subst_value("HEADER", get_header_text(), data)
+
+    # List all mesh object STL names included in export
+    d=''
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        d += "   \"%s.stl\"\n" % i.name
+
+    data = subst_value("FEATURESURFACES", d, data)
+    return data
+
 def export_block_mesh_replacements(data):
     """Carry out replacements for key words in blockMeshDictTemplate with
     settings from GUI.
     """
 
-    import datetime
     gui = bpy.context.scene.snappyhexmeshgui
 
-    header_text = "// Exported by SnappyHexMesh GUI add-on for Blender v0.1" \
-                  + "\n// Source file: " + bpy.context.blend_data.filepath \
-                  + "\n// Export date: " + str(datetime.datetime.now())
-    data = subst_value("HEADER", header_text, data)
+    data = subst_value("HEADER", get_header_text(), data)
 
     data = subst_value("DX", str(gui.block_mesh_delta[0]), data)
     data = subst_value("DY", str(gui.block_mesh_delta[1]), data)
@@ -166,13 +205,9 @@ def export_snappy_replacements(data):
     settings from GUI.
     """
     
-    import datetime
     gui = bpy.context.scene.snappyhexmeshgui
 
-    header_text = "// Exported by SnappyHexMesh GUI add-on for Blender v0.1" \
-                  + "\n// Source file: " + bpy.context.blend_data.filepath \
-                  + "\n// Export date: " + str(datetime.datetime.now())
-    data = subst_value("HEADER", header_text, data)
+    data = subst_value("HEADER", get_header_text(), data)
     
     data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
     data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
@@ -180,7 +215,7 @@ def export_snappy_replacements(data):
     n, geo = export_geometries()
     data = subst_value("GEOMETRY", geo, data)
 
-    data = subst_value("FEATURES", "    features ();", data)
+    data = subst_value("FEATURES", export_surface_features(), data)
     data = subst_value("REFINEMENTSURFACES", export_refinement_surfaces(), data)
     data = subst_value("REFINEMENTREGIONS", "        ", data)
     data = subst_value("LAYERS", "        ", data)
@@ -245,6 +280,23 @@ def export_refinement_surfaces():
              + "        {\n            level" \
              + " (%d " % i.shmg_surface_min_level \
              + "%d);\n" % i.shmg_surface_max_level \
+             + "        }\n"
+    return d
+
+def export_surface_features():
+    """Creates surface features entries for snappyHexMeshDict"""
+
+    # Collect dictionary string to d
+    d = ""
+
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        d += "        {\n            file \"" \
+             + str(i.name) + ".eMesh\";\n" \
+             + "            level %d;\n" % i.shmg_feature_edge_level \
              + "        }\n"
     return d
 

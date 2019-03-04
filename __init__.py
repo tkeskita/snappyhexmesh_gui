@@ -64,6 +64,13 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         maxlen=1024,
         subtype="FILE_PATH",
     )
+    surface_features_template_path: bpy.props.StringProperty(
+        name="Surface Features Template Path",
+        description="Path to surfaceFeaturesDict Template",
+        default=os.path.dirname(__file__) + "/skel/surfaceFeaturesDictTemplate",
+        maxlen=1024,
+        subtype="FILE_PATH",
+    )
     export_path: bpy.props.StringProperty(
         name="Export Path",
         description="Path to Export Case Files",
@@ -117,6 +124,11 @@ bpy.types.Object.shmg_surface_min_level = bpy.props.IntProperty(
 bpy.types.Object.shmg_surface_max_level = bpy.props.IntProperty(
     name="Maximum Surface Refinement Level",
     description="Maximum Cell Refinement Level for Surface",
+    default=0, min=0, max=10,
+)
+bpy.types.Object.shmg_feature_edge_level = bpy.props.IntProperty(
+    name="Feature Edge Refinement Level",
+    description="Feature Edge (Sharp Edge) Refinement Level for Surface",
     default=0, min=0, max=10,
 )
     
@@ -270,6 +282,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub = col.row()
         rowsub.prop(obj, "shmg_surface_min_level", text="Min")
         rowsub.prop(obj, "shmg_surface_max_level", text="Max")
+        rowsub = col.row()
+        rowsub.prop(obj, "shmg_feature_edge_level", text="Feature Edge Level")
         
 # Registration
 

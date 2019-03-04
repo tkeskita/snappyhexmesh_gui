@@ -22,6 +22,8 @@ Currently implemented features include:
   (blockMeshDict)
 * Calculation of cell count for base mesh
 * Definition of surface refinement levels for meshes
+* Creation of feature edges definition file (surfaceFeaturesDict)
+  with adjustable refinement level
 
 ## Links
 
