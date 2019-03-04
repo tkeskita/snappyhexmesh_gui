@@ -177,6 +177,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.prop(gui, "cell_side_length", text="")
 
         row = layout.row()
+        row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
+        row = layout.row()
         row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
         row = layout.row()
         row.operator("object.snappyhexmeshgui_export", text="Export")
@@ -278,6 +280,7 @@ classes = (
     VIEW3D_PT_SnappyHexMeshGUI_Object_Summary,
     op_export.OBJECT_OT_snappyhexmeshgui_export,
     op_export.OBJECT_OT_snappyhexmeshgui_apply_locrotscale,
+    op_export.OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object,
     
     SnappyHexMeshGUI_Settings,
 )

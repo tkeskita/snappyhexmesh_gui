@@ -21,7 +21,7 @@ castellatedMeshControls
     minRefinementCells 10;
     maxLoadUnbalance 0.1;
     nCellsBetweenLevels 3;
-    locationInMesh  ( 0 0 0 );
+    //_LOCATIONINMESH_//
     allowFreeStandingZoneFaces true;
     resolveFeatureAngle 30;
 //_FEATURES_//

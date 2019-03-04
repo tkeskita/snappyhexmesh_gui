@@ -185,6 +185,8 @@ def export_snappy_replacements(data):
     data = subst_value("REFINEMENTREGIONS", "        ", data)
     data = subst_value("LAYERS", "        ", data)
     
+    data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
+
     return n, data
 
 def export_geometries():
@@ -293,3 +295,35 @@ def apply_locrotscale():
         i.select_set(False)
         n += 1
     return n
+
+class OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object(bpy.types.Operator):
+    """Add Location in Mesh Object (SnappyHexMeshGUI)"""
+    bl_idname = "object.snappyhexmeshgui_add_location_in_mesh_object"
+    bl_label = "SnappyHexMeshGUI Add Location In Mesh Object"
+
+    @classmethod
+    def poll(cls, context):
+        ob = context.active_object
+        return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
+
+    def execute(self, context):
+        if not [i for i in bpy.data.objects if i.name == "Location In Mesh"]:
+            bpy.ops.object.empty_add(type='SPHERE', radius=0.2, view_align=False)
+            bpy.context.active_object.name = "Location In Mesh"
+            self.report({'INFO'}, "Added Location In Mesh Object")
+        else:
+            self.report({'INFO'}, "Error: Location In Mesh Object already exists!")
+        return {'FINISHED'}
+
+def get_location_in_mesh():
+    """Creates dictionary string for a user specified location in mesh.
+    Coordinates of object "Location In Mesh" is used, or if it does not
+    exist, zero coordinates.
+    """
+    d = "locationInMesh "
+    for i in bpy.data.objects:
+        if i.name == 'Location In Mesh':
+            d += "(" + str(i.location.x) + " " + str(i.location.y) + " " + \
+                 str(i.location.z) + ");"
+            return d
+    return d + "(0 0 0);"
