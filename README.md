@@ -10,7 +10,7 @@ the export of 3D surface meshes into a SnappyHexMesh case folder, and
 to allow definition of most common SnappyHexMesh settings in Blender,
 to reduce need for manual writing of OpenFOAM dictionary definitions
 for SnappyHexMesh.
-The add-on is developed for Blender 2.8 (master branch).
+The add-on is developed for Blender 2.8 (master branch) and OpenFOAM 6.
 
 ## Current Status
 
@@ -24,6 +24,11 @@ Currently implemented features include:
 * Definition of surface refinement levels for meshes
 * Creation of feature edges definition file (surfaceFeaturesDict)
   with adjustable refinement level
+
+After export from Blender, you should be able to run OpenFOAM commands in case folder in order:
+* blockMesh
+* surfaceFeatures
+* snappyHexMesh
 
 ## Links
 
