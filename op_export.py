@@ -219,7 +219,7 @@ def export_snappy_replacements(data):
     data = subst_value("FEATURES", export_surface_features(), data)
     data = subst_value("REFINEMENTSURFACES", export_refinement_surfaces(), data)
     data = subst_value("REFINEMENTREGIONS", "        ", data)
-    data = subst_value("LAYERS", "        ", data)
+    data = subst_value("LAYERS", export_surface_layers(), data)
     
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
@@ -298,6 +298,23 @@ def export_surface_features():
         d += "        {\n            file \"" \
              + str(i.name) + ".eMesh\";\n" \
              + "            level %d;\n" % i.shmg_feature_edge_level \
+             + "        }\n"
+    return d
+
+def export_surface_layers():
+    """Creates surface layer entries for snappyHexMeshDict"""
+
+    # Collect dictionary string to d
+    d = ""
+
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        d += "        " + str(i.name) + "\n" \
+             + "        {\n " \
+             + "            nSurfaceLayers %d;\n" % i.shmg_surface_layers \
              + "        }\n"
     return d
 
