@@ -82,34 +82,35 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
 def export_initialize(self, surface_features_template_path, \
                       block_mesh_template_path, \
                       snappy_template_path, export_path):
-    """Returns content of template dictionary files as text strings
-    and creates directory structure undex export path.
+    """Initialization routine. Reads contents of surfaceFeaturesDictTemplate,
+    blockMeshDictTemplate, and snappyHexMeshDictTempalte files as text strings
+    and creates directory structure undex export path if needed.
     """
+
+    abspath = bpy.path.abspath(export_path)
+    if not abspath:
+        self.report({'ERROR'}, "No path set! Please save Blender file to "
+                    "a case folder and try again")
+        return None, None, None
+    l.debug("Export path: %r" % abspath)
 
     l.debug("snappyHexMeshTemplate path: %r" % snappy_template_path)
     if not (os.path.isfile(snappy_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % snappy_template_path)
-        return None
+        return None, None, None
     
     l.debug("blockMeshTemplate path: %r" % block_mesh_template_path)
     if not (os.path.isfile(block_mesh_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % block_mesh_template_path)
-        return None
+        return None, None, None
 
     l.debug("surfaceFeaturesDictTemplate path: %r" % surface_features_template_path)
     if not (os.path.isfile(surface_features_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % surface_features_template_path)
-        return None
-
-    abspath = bpy.path.abspath(export_path)
-    l.debug("Export path: %r" % abspath)
-    if not abspath:
-        self.report({'ERROR'}, "No path set! Please save Blender file to "
-                    "a case folder and try again")
-        return None
+        return None, None, None
 
     # Create folder structure if needed
     if not (os.path.isdir(abspath)):
@@ -121,7 +122,7 @@ def export_initialize(self, surface_features_template_path, \
         
     if not (os.path.isdir(abspath + '/system')):
         self.report({'ERROR'}, "Couldn't create folders under %r" % abspath)
-        return None
+        return None, None, None
 
     # Copy skeleton files if needed
     copy_skeleton_files()
