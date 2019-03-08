@@ -87,3 +87,17 @@ def block_mesh_cell_count(bb_min, bb_max, gui):
                gui.block_mesh_delta[2]
 
     return bm_count
+
+def get_surface_area(obj):
+    """Returns surface area of mesh object obj"""
+
+    if obj.type != 'MESH':
+        return 0.0
+
+    bm = bmesh.new()
+    bm.from_mesh(obj.data)
+    bm.transform(obj.matrix_world) # Apply transformation
+    bmesh.ops.triangulate(bm, faces=bm.faces) # Triangulate
+    area = sum(f.calc_area() for f in bm.faces)
+    del bm
+    return area

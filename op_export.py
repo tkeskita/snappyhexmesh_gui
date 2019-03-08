@@ -231,6 +231,8 @@ def export_geometries():
     Returns number of exported meshes and the dictionary text string.
     """
 
+    from .op_object import get_object_bbox_coords, get_surface_area
+
     n = 0 # Number of exported geometries
     # Collect dictionary string to d
     d = "geometry\n{\n"
@@ -242,24 +244,34 @@ def export_geometries():
     for i in bpy.data.objects:
         if i.type != 'MESH':
             continue
+        if not i.shmg_include_in_export:
+            continue
 
-        if i.shmg_include_in_export:
-            d += "    %s\n" % i.name \
-                 + "    {\n        type triSurfaceMesh;\n" \
-                 + "        file \"%s.stl\";\n    }\n" % i.name
+        # Collect mesh min and max bounds and area to info string
+        bb_min, bb_max = get_object_bbox_coords(i)
+        bb_min_str = "        // Min Bounds = [%12.5e %12.5e %12.5e]\n" % (bb_min[0], bb_min[1], bb_min[2])
+        bb_max_str = "        // Max Bounds = [%12.5e %12.5e %12.5e]\n" % (bb_max[0], bb_max[1], bb_max[2])
+        area_str = "        // Area = %.5e\n" % get_surface_area(i)
+        info_str = bb_min_str + bb_max_str + area_str
 
-            # Export mesh to constant/triSurface/name.stl
-            export_path = bpy.context.scene.snappyhexmeshgui.export_path
-            abspath = bpy.path.abspath(export_path)
-            outpath = abspath + "/constant/triSurface/%s.stl" % i.name
-            i.select_set(True)
-            bpy.ops.export_mesh.stl(
-                filepath=outpath, check_existing=False, \
-                axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
-                use_selection=True, global_scale=1.0, use_scene_unit=True, \
-                ascii=False, use_mesh_modifiers=True)
-            i.select_set(False)
-            n += 1
+        # Add to dictionary string
+        d += "    %s\n" % i.name \
+             + "    {\n        type triSurfaceMesh;\n" \
+             + "        file \"%s.stl\";\n" % i.name \
+             + info_str + "    }\n"
+
+        # Export mesh to constant/triSurface/name.stl
+        export_path = bpy.context.scene.snappyhexmeshgui.export_path
+        abspath = bpy.path.abspath(export_path)
+        outpath = abspath + "/constant/triSurface/%s.stl" % i.name
+        i.select_set(True)
+        bpy.ops.export_mesh.stl(
+            filepath=outpath, check_existing=False, \
+            axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
+            use_selection=True, global_scale=1.0, use_scene_unit=True, \
+            ascii=False, use_mesh_modifiers=True)
+        i.select_set(False)
+        n += 1
     d += "}"
 
     return n, d

@@ -278,6 +278,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub.label(text=bb_min_str)
         rowsub = col.row()
         rowsub.label(text=bb_max_str)
+        rowsub = col.row()
+        rowsub.label(text="Area: %.4e" % op_object.get_surface_area(obj))
 
         rowsub = col.row()
         rowsub.prop(obj, "shmg_include_in_export", text="Inlcude in Export")

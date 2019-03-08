@@ -24,6 +24,9 @@ Currently implemented features include:
 * Definition of surface refinement levels for meshes
 * Creation of feature edges definition file (surfaceFeaturesDict)
   with adjustable refinement level
+* Definition of Surface Layers per surface
+* Calculation of minimum and maximum bounds and surface area for each mesh.
+  These information are also written to snappyHexMeshDict.
 
 After export from Blender, you should be able to run OpenFOAM commands in case folder in order:
 * blockMesh

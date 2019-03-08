@@ -28,7 +28,7 @@ import importlib
 import bpy
 import os
 #import re
-#import bmesh
+import bmesh
 import mathutils
 #import array
 #import numpy
