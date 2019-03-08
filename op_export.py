@@ -259,6 +259,8 @@ def export_geometries():
              + "    {\n        type triSurfaceMesh;\n" \
              + "        file \"%s.stl\";\n" % i.name \
              + info_str + "    }\n"
+        # Note to self: Tried to add export_geometry_regions inside d,
+        # but it seems that regions are not used for STLs, so left out.
 
         # Export mesh to constant/triSurface/name.stl
         export_path = bpy.context.scene.snappyhexmeshgui.export_path
@@ -275,6 +277,18 @@ def export_geometries():
     d += "}"
 
     return n, d
+
+def export_geometry_regions(obj):
+    """Creates regions for geometry entries in snappyHexMeshDict
+    for object obj
+    """
+
+    # Collect dictionary string to d
+    d = ""
+    d += "        regions { " + str(obj.name) + " { " \
+         + "name " + str(obj.name) + "; } }\n"
+    return d
+
 
 def export_refinement_surfaces():
     """Creates refinement surface entries for snappyHexMeshDict"""
