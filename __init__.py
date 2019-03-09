@@ -136,7 +136,36 @@ bpy.types.Object.shmg_surface_layers = bpy.props.IntProperty(
     description="Number of Surface Layers for Surface",
     default=0, min=0, max=10,
 )
-    
+bpy.types.Object.shmg_patch_info_type = bpy.props.EnumProperty(
+    name="Surface Type",
+    description="Patch Type for Surface",
+    items={
+        ('cyclic', 'cyclic', 'Conformal Cyclic Boundary', 0),
+        ('cyclicAMI', 'cyclicAMI', 'Non-conformal Cyclic Boundary', 1),
+        ('empty', 'empty', 'Empty (Ignored) Boundary', 2),
+        ('patch', 'patch', 'Patch (General) Boundary', 3),
+        ('symmetry', 'symmetry', 'Patch (Possibly Non-Planar) Boundary', 4),
+        ('symmetryPlane', 'symmetryPlane', 'Planar Patch Boundary', 5),
+        ('wall', 'wall', 'Wall Boundary', 6),
+        ('wedge', 'wedge', 'Wedge (2D Axisymmetric) Boundary', 7)},
+    default='patch')
+bpy.types.Object.shmg_face_zone_type = bpy.props.EnumProperty(
+    name="Face Zone Type",
+    description="Face Zone Type For Surface (Optional)",
+    items={
+        ('none', 'none', 'None', 0),
+        ('baffle', 'baffle', 'Baffle (Shared Internal Faces)', 1),
+        ('boundary', 'boundary', 'Boundary (Unshared Boundary Faces)', 2)},
+    default='none')
+bpy.types.Object.shmg_cell_zone_type = bpy.props.EnumProperty(
+    name="Cell Zone Type",
+    description="Cell Zone Type for Enclosed Volume (Optional)",
+    items={
+        ('none', 'none', 'None', 0),
+        ('inside', 'inside', 'Create Zone Inside of Enclosed Volume', 1),
+        ('outside', 'outside', 'Create Zone Outside of Enclosed Volume', 2)},
+    default='none')
+
 class SnappyHexMeshGUI_ToolBar:
     """Base Class for Add-on Tool Bar"""
     bl_label = "SnappyHexMesh GUI"
@@ -285,6 +314,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub.prop(obj, "shmg_include_in_export", text="Inlcude in Export")
 
         rowsub = col.row()
+        rowsub.alignment = 'RIGHT'
+        rowsub.prop(obj, "shmg_patch_info_type", text="Type")
+        rowsub = col.row()
         rowsub.label(text="Surface Refinement Levels:")
         rowsub = col.row()
         rowsub.prop(obj, "shmg_surface_min_level", text="Min")
@@ -293,6 +325,12 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub.prop(obj, "shmg_feature_edge_level", text="Feature Edge Level")
         rowsub = col.row()
         rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
+        rowsub = col.row()
+        rowsub.alignment = 'RIGHT'
+        rowsub.prop(obj, "shmg_face_zone_type", text="Face Zone Type")
+        rowsub = col.row()
+        rowsub.alignment = 'RIGHT'
+        rowsub.prop(obj, "shmg_cell_zone_type", text="Cell Zone Type")
         
 # Registration
 

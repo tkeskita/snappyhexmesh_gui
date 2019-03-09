@@ -307,8 +307,38 @@ def export_refinement_surfaces():
              + "        {\n            level" \
              + " (%d " % i.shmg_surface_min_level \
              + "%d);\n" % i.shmg_surface_max_level \
+             + "            patchInfo { type " + i.shmg_patch_info_type + "; }\n" \
+             + get_face_zone_definitions(i) \
+             + get_cell_zone_definitions(i) \
              + "        }\n"
     return d
+
+def get_face_zone_definitions(obj):
+    """Produces face zone dict entry addition for refinementSurfaces
+    for object obj
+    """
+
+    d=""
+    if (obj.shmg_face_zone_type == 'none'):
+        return d
+
+    d += 12*" " + "faceZone " + str(obj.name) + ";\n"
+    d += 12*" " + "faceType " + str(obj.shmg_face_zone_type) + ";\n"
+    return d
+
+def get_cell_zone_definitions(obj):
+    """Produces cell zone dict entry addition for refinementSurfaces
+    for object obj
+    """
+
+    d=""
+    if (obj.shmg_cell_zone_type == 'none'):
+        return d
+
+    d += 12*" " + "cellZone " + str(obj.name) + ";\n"
+    d += 12*" " + "cellZoneInside " + str(obj.shmg_cell_zone_type) + ";\n"
+    return d
+
 
 def export_surface_features():
     """Creates surface features entries for snappyHexMeshDict"""
