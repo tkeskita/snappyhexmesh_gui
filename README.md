@@ -18,15 +18,16 @@ The add-on is currently in development phase.
 Currently implemented features include:
 * Creation of basic OpenFOAM case structure, including meshes as STL files and
   dictionary files (most importantly snappyHexMeshDict)
-* Creation of definition file for hexahedral base mesh with a defined cell size
+* Creation of definition file for hexahedral base volume mesh with a defined cell size
   (blockMeshDict)
-* Calculation of cell count for base mesh
-* Definition of surface refinement levels for meshes
+* Calculation of cell count for base volume mesh
+* Definition of surface refinement levels for surface meshes
 * Creation of feature edges definition file (surfaceFeaturesDict)
   with adjustable refinement level
 * Definition of Surface Layers per surface
 * Calculation of minimum and maximum bounds and surface area for each mesh.
   These information are also written to snappyHexMeshDict.
+* Creation of Face Zones and Cell Zones from surface meshes
 
 After export from Blender, you should be able to run OpenFOAM commands in case folder in order:
 * blockMesh
