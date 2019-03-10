@@ -223,8 +223,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         col = layout.column()
         rowsub = col.row(align=True)
         rowsub.label(text="Options:")
-        rowsub.prop(gui, "do_snapping", text="", icon='OBJECT_DATA')
-        rowsub.prop(gui, "do_add_layers", text="", icon='OBJECT_DATA')
+        rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
+        rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
 
         rowsub = col.row()
         rowsub.label(text="Export Path:")
