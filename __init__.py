@@ -111,7 +111,9 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     )
     max_non_ortho: bpy.props.IntProperty(
         name="Max Non-Ortho",
-        description="Maximum Allowed Non-Orthogonality",
+        description="Maximum Allowed Non-Orthogonality. " \
+        + "Small value generates better mesh for numerical solution, and " \
+        + "large value better fit for surfaces and better layer addition",
         default=35,
         min=1, max=180,
     )
@@ -120,6 +122,11 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
     name="Include in export",
     description="Include mesh in export (SnappyHexMesh GUI)",
+    default=True,
+)
+bpy.types.Object.shmg_include_feature_extraction = bpy.props.BoolProperty(
+    name="Do Feature Extraction",
+    description="Include Extraction of Feature Edges from Surface",
     default=True,
 )
 bpy.types.Object.shmg_surface_min_level = bpy.props.IntProperty(
@@ -331,6 +338,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub = col.row()
         rowsub.prop(obj, "shmg_surface_min_level", text="Min")
         rowsub.prop(obj, "shmg_surface_max_level", text="Max")
+        rowsub = col.row()
+        rowsub.prop(obj, "shmg_include_feature_extraction", text="Extract Feature Edges")
         rowsub = col.row()
         rowsub.prop(obj, "shmg_feature_edge_level", text="Feature Edge Level")
         rowsub = col.row()

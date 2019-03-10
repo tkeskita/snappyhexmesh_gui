@@ -173,6 +173,8 @@ def export_surface_features_replacements(data):
             continue
         if not i.shmg_include_in_export:
             continue
+        if not i.shmg_include_feature_extraction:
+            continue
         d += "   \"%s.stl\"\n" % i.name
 
     data = subst_value("FEATURESURFACES", d, data)
@@ -352,6 +354,8 @@ def export_surface_features():
         if i.type != 'MESH':
             continue
         if not i.shmg_include_in_export:
+            continue
+        if not i.shmg_include_feature_extraction:
             continue
         d += "        {\n            file \"" \
              + str(i.name) + ".eMesh\";\n" \
