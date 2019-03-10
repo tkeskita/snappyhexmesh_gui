@@ -24,7 +24,10 @@ castellatedMeshControls
     //_LOCATIONINMESH_//
     allowFreeStandingZoneFaces true;
     resolveFeatureAngle 30;
+    features
+    (
 //_FEATURES_//
+    );
     refinementSurfaces
     {
 //_REFINEMENTSURFACES_//
@@ -39,8 +42,8 @@ snapControls
 {
     nSmoothPatch    3;
     tolerance       2;
-    nSolveIter      30;
-    nRelaxIter      5;
+    nSolveIter      300;
+    nRelaxIter      10;
     nFeatureSnapIter 10;
     implicitFeatureSnap false;
     explicitFeatureSnap true;
@@ -73,16 +76,16 @@ addLayersControls
 
 meshQualityControls
 {
-    maxNonOrtho     65;
+    maxNonOrtho     //_MAXNONORTHO_//;
     maxBoundarySkewness 20;
     maxInternalSkewness 4;
     maxConcave      80;
-    minVol          1e-13;
+    minVol          1e-15;
     minTetQuality   1e-15;
     minArea         -1;
     minTwist        0.02;
     minDeterminant  0.001;
-    minFaceWeight   0.02;
+    minFaceWeight   0.05;
     minVolRatio     0.01;
     minTriangleTwist -1;
     nSmoothScale    4;

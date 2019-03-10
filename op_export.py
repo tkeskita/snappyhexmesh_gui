@@ -223,6 +223,8 @@ def export_snappy_replacements(data):
     
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
+    data = subst_value("MAXNONORTHO", str(gui.max_non_ortho), data)
+
     return n, data
 
 def export_geometries():
@@ -453,3 +455,4 @@ def get_location_in_mesh():
                  str(i.location.z) + ");"
             return d
     return d + "(0 0 0);"
+

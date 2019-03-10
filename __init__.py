@@ -109,6 +109,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         name="Block Mesh Divisions",
         description="Block Mesh Division Counts in X, Y and Z directions",
     )
+    max_non_ortho: bpy.props.IntProperty(
+        name="Max Non-Ortho",
+        description="Maximum Allowed Non-Orthogonality",
+        default=35,
+        min=1, max=180,
+    )
 
 # Object specific parameters
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
@@ -221,6 +227,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub = col.row()
         rowsub.label(text="Cell Length")
         rowsub.prop(gui, "cell_side_length", text="")
+
+        rowsub = col.row()
+        rowsub.label(text="Max Non-Ortho")
+        rowsub.prop(gui, "max_non_ortho", text="")
 
         row = layout.row()
         row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
