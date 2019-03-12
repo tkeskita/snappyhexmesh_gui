@@ -220,7 +220,7 @@ def export_snappy_replacements(data):
 
     data = subst_value("FEATURES", export_surface_features(), data)
     data = subst_value("REFINEMENTSURFACES", export_refinement_surfaces(), data)
-    data = subst_value("REFINEMENTREGIONS", "        ", data)
+    data = subst_value("REFINEMENTREGIONS", export_refinement_volumes(), data)
     data = subst_value("LAYERS", export_surface_layers(), data)
     
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
@@ -315,6 +315,27 @@ def export_refinement_surfaces():
              + "            patchInfo { type " + i.shmg_patch_info_type + "; }\n" \
              + get_face_zone_definitions(i) \
              + get_cell_zone_definitions(i) \
+             + "        }\n"
+    return d
+
+def export_refinement_volumes():
+    """Creates refinement regions (volumes) entries for snappyHexMeshDict"""
+
+    # Collect dictionary string to d
+    d = ""
+
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        if i.shmg_volume_type == 'none':
+            continue
+
+        d += "        %s\n" % i.name + "        {\n" \
+             + "            mode " + str(i.shmg_volume_type) + ";\n" \
+             + "            levels ((" + str(i.shmg_volume_level) \
+             + " " + str(i.shmg_volume_level) + "));\n" \
              + "        }\n"
     return d
 

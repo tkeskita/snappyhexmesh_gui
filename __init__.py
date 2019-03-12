@@ -166,7 +166,8 @@ bpy.types.Object.shmg_patch_info_type = bpy.props.EnumProperty(
         ('symmetryPlane', 'symmetryPlane', 'Planar Patch Boundary', 5),
         ('wall', 'wall', 'Wall Boundary', 6),
         ('wedge', 'wedge', 'Wedge (2D Axisymmetric) Boundary', 7)},
-    default='patch')
+    default='patch'
+)
 bpy.types.Object.shmg_face_zone_type = bpy.props.EnumProperty(
     name="Face Zone Type",
     description="Face Zone Type For Surface (Optional)",
@@ -174,7 +175,8 @@ bpy.types.Object.shmg_face_zone_type = bpy.props.EnumProperty(
         ('none', 'none', 'None', 0),
         ('baffle', 'baffle', 'Baffle (Shared Internal Faces)', 1),
         ('boundary', 'boundary', 'Boundary (Unshared Boundary Faces)', 2)},
-    default='none')
+    default='none'
+)
 bpy.types.Object.shmg_cell_zone_type = bpy.props.EnumProperty(
     name="Cell Zone Type",
     description="Cell Zone Type for Enclosed Volume (Optional)",
@@ -182,7 +184,22 @@ bpy.types.Object.shmg_cell_zone_type = bpy.props.EnumProperty(
         ('none', 'none', 'None', 0),
         ('inside', 'inside', 'Create Zone Inside of Enclosed Volume', 1),
         ('outside', 'outside', 'Create Zone Outside of Enclosed Volume', 2)},
-    default='none')
+    default='none'
+)
+bpy.types.Object.shmg_volume_level = bpy.props.IntProperty(
+    name="Volume Refinement Level",
+    description="Cell Refinement Level for Volume",
+    default=0, min=0, max=10,
+)
+bpy.types.Object.shmg_volume_type = bpy.props.EnumProperty(
+    name="Volume Refinement Type",
+    description="Volume Refinement Type",
+    items={
+        ('none', 'none', 'None', 0),
+        ('inside', 'inside', 'Refine Cells Inside of Enclosed Volume', 1),
+        ('outside', 'outside', 'Refine Cells Outside of Enclosed Volume', 2)},
+    default='none'
+)
 
 class SnappyHexMeshGUI_ToolBar:
     """Base Class for Add-on Tool Bar"""
@@ -357,6 +374,11 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub = col.row()
         rowsub.alignment = 'RIGHT'
         rowsub.prop(obj, "shmg_cell_zone_type", text="Cell Zone Type")
+        rowsub = col.row()
+        rowsub.alignment = 'RIGHT'
+        rowsub.prop(obj, "shmg_volume_type", text="Volume Refinement")
+        rowsub = col.row()
+        rowsub.prop(obj, "shmg_volume_level", text="Volume Refinement Level")
         
 # Registration
 
