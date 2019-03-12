@@ -9,7 +9,9 @@ users to use Blender as a CFD pre-processing tool. The aim is to ease
 the export of 3D surface meshes into a SnappyHexMesh case folder, and
 to allow definition of most common SnappyHexMesh settings in Blender,
 to reduce need for manual writing of OpenFOAM dictionary definitions
-for SnappyHexMesh.
+for SnappyHexMesh. The creation of dictionary files is based on string
+replacements that are done to the template files located in the
+add-on's skel directory.
 The add-on is developed for Blender 2.8 (master branch) and OpenFOAM 6.
 
 ## Current Status
@@ -17,6 +19,7 @@ The add-on is developed for Blender 2.8 (master branch) and OpenFOAM 6.
 The add-on is currently in beta (testing) phase, so it should work.
 Please feel free to [submit issues](https://github.com/tkeskita/snappyhexmesh_gui/issues).
 Currently implemented features include:
+
 * Creation of basic OpenFOAM case structure, including meshes as STL files and
   dictionary files (most importantly snappyHexMeshDict)
 * Creation of definition file for hexahedral base volume mesh with a defined cell size
@@ -29,11 +32,14 @@ Currently implemented features include:
 * Calculation of minimum and maximum bounds and surface area for each mesh.
   These information are also written to snappyHexMeshDict.
 * Creation of Face Zones and Cell Zones from surface meshes
+* Creation of Refinement Regions (Volumes)
 
 After export from Blender, you should be able to run OpenFOAM commands in case folder in order:
 * blockMesh
 * surfaceFeatures
 * snappyHexMesh
+
+Documentation is available for viewing at http://tkeskita.kapsi.fi/blender/snappyhexmesh_gui/docs/snappy_gui.html
 
 ## Links
 
