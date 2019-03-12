@@ -24,7 +24,7 @@ bl_info = {
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
-    "warning": "Experimental, work in progress",
+    "warning": "This add-on is in beta testing phase",
     "wiki_url": "https://github.com/tkeskita/snappyhexmesh_gui",
     "tracker_url": "https://github.com/tkeskita/snappyhexmesh_gui/issues",
     "support": 'COMMUNITY',
@@ -107,7 +107,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     )
     block_mesh_delta: bpy.props.IntVectorProperty(
         name="Block Mesh Divisions",
-        description="Block Mesh Division Counts in X, Y and Z directions",
+        description="Block Mesh Division Counts in X, Y and Z Directions",
     )
     max_non_ortho: bpy.props.IntProperty(
         name="Max Non-Ortho",
@@ -122,6 +122,11 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
     name="Include in export",
     description="Include mesh in export (SnappyHexMesh GUI)",
+    default=True,
+)
+bpy.types.Object.shmg_include_snapping = bpy.props.BoolProperty(
+    name="Do Snap to Surface",
+    description="Include Snapping to Surface",
     default=True,
 )
 bpy.types.Object.shmg_include_feature_extraction = bpy.props.BoolProperty(
@@ -333,6 +338,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub = col.row()
         rowsub.alignment = 'RIGHT'
         rowsub.prop(obj, "shmg_patch_info_type", text="Type")
+        rowsub = col.row()
+        rowsub.prop(obj, "shmg_include_snapping", text="Enable Snapping")
         rowsub = col.row()
         rowsub.label(text="Surface Refinement Levels:")
         rowsub = col.row()

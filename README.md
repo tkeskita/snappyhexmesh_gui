@@ -14,8 +14,8 @@ The add-on is developed for Blender 2.8 (master branch) and OpenFOAM 6.
 
 ## Current Status
 
-The add-on is currently in beta phase.
-Please feel free to [submit issues](https://github.com/tkeskita/snappyhexmesh_gui/issues)
+The add-on is currently in beta (testing) phase, so it should work.
+Please feel free to [submit issues](https://github.com/tkeskita/snappyhexmesh_gui/issues).
 Currently implemented features include:
 * Creation of basic OpenFOAM case structure, including meshes as STL files and
   dictionary files (most importantly snappyHexMeshDict)

@@ -303,8 +303,9 @@ def export_refinement_surfaces():
     for i in bpy.data.objects:
         if i.type != 'MESH':
             continue
-
         if not i.shmg_include_in_export:
+            continue
+        if not i.shmg_include_snapping:
             continue
 
         d += "        %s\n" % i.name \
