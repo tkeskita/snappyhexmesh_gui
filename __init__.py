@@ -126,7 +126,7 @@ bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
 )
 bpy.types.Object.shmg_include_snapping = bpy.props.BoolProperty(
     name="Do Snap to Surface",
-    description="Include Snapping to Surface",
+    description="Include Snapping to Surface. Required for cell/face zones",
     default=True,
 )
 bpy.types.Object.shmg_include_feature_extraction = bpy.props.BoolProperty(

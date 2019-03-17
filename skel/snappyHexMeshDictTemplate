@@ -47,7 +47,7 @@ snapControls
     nFeatureSnapIter 10;
     implicitFeatureSnap false;
     explicitFeatureSnap true;
-    multiRegionFeatureSnap false;
+    multiRegionFeatureSnap true;
 }
 
 addLayersControls
