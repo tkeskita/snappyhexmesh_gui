@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SnappyHexMesh GUI Addon for Blender &mdash; SnappyHexMesh GUI Add-on for Blender 0.9 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="SnappyHexMesh GUI Addon for Blender" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> SnappyHexMesh GUI Add-on for Blender
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SnappyHexMesh GUI Addon for Blender</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#current-status-and-features">Current Status and Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-and-start-up">Installation and Start-up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#add-on-visibility">Add-on visibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#panels-and-settings">Panels and Settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#snappyhexmesh-gui-panel">SnappyHexMesh GUI Panel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#object-settings-panel">Object Settings Panel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#export-summary-panel">Export Summary Panel</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#feedback">Feedback</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faq">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openfoam-trade-mark-notice">OpenFOAM Trade Mark Notice</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SnappyHexMesh GUI Add-on for Blender</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>SnappyHexMesh GUI Addon for Blender</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/snappy_gui.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="snappyhexmesh-gui-addon-for-blender">
+<h1>SnappyHexMesh GUI Addon for Blender<a class="headerlink" href="#snappyhexmesh-gui-addon-for-blender" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>SnappyHexMesh is a volume mesh generation tool for OpenFOAM®, the open
+source CFD (computational fluid dynamics) toolbox. SnappyHexMesh GUI
+add-on for <a class="reference external" href="https://www.blender.org">Blender</a>
+(“the add-on” hereafter) is meant to aid OpenFOAM
+users to use Blender as a CFD pre-processing tool. The aim is to</p>
+<ul class="simple">
+<li>Ease the workflow for updating, modifying and exporting 3D surface
+meshes to OpenFOAM.</li>
+<li>Allow definition of most common SnappyHexMesh settings via Blender
+GUI, to reduce need for manual writing of OpenFOAM dictionary
+definitions.</li>
+<li>Require minimal Blender skills. Geometry can be modelled in any 3D
+modelling / CAD program which exports a surface mesh format that can
+be imported to Blender, such as STL or Wavefront OBJ. Add-on is
+operated via panels in Blender’s GUI.</li>
+</ul>
+<p>The creation of OpenFOAM dictionary files is based on string
+replacements using template files located in the
+add-on’s <em>skel</em> directory. The add-on is developed for
+<a class="reference external" href="https://www.blender.org/2-8/">Blender 2.8</a>
+(master branch) and
+<a class="reference external" href="https://openfoam.org/">OpenFOAM Foundation</a> version 6 of OpenFOAM.</p>
+</div>
+<div class="section" id="current-status-and-features">
+<h2>Current Status and Features<a class="headerlink" href="#current-status-and-features" title="Permalink to this headline">¶</a></h2>
+<p>The add-on is currently in beta (testing) phase, so it should work.
+Currently implemented features include:</p>
+<ul class="simple">
+<li>Creation of basic OpenFOAM case structure, including export of
+dictionary files (most importantly snappyHexMeshDict) and meshes as
+STL files</li>
+<li>Creation of definition file for hexahedral base volume mesh with
+a defined cell size (blockMeshDict)</li>
+<li>Calculation of cell count for block volume mesh</li>
+<li>Definition of Surface Refinement Levels for surface meshes</li>
+<li>Creation of Feature Edges definition file (surfaceFeaturesDict)</li>
+<li>Definition of Surface Layers per surface</li>
+<li>Calculation of minimum and maximum bounds and surface area for each mesh.
+These information are also written to snappyHexMeshDict as comments.</li>
+<li>Creation of Face Zones and Cell Zones from surface meshes</li>
+<li>Specification of Refinement Regions (Volumes)</li>
+</ul>
+</div>
+<div class="section" id="installation-and-start-up">
+<h2>Installation and Start-up<a class="headerlink" href="#installation-and-start-up" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>You need to use Blender 2.8, which is currently in beta phase. You can
+<a class="reference external" href="https://builder.blender.org/download/">download Blender 2.8 beta here</a>.</li>
+<li>Add-on code is available at <a class="reference external" href="https://github.com/tkeskita/snappyhexmesh_gui">https://github.com/tkeskita/snappyhexmesh_gui</a>.
+To download add-on from Github, Select “Clone or download”, then
+“Download ZIP”.</li>
+<li>Start Blender, go to “Edit” –&gt; “Preferences” –&gt; “Add-ons” –&gt; “Install”
+–&gt; open the add-on zip file.</li>
+<li>Activate the “SnappyHexMesh GUI” add-on in Preferences.
+Add-on is located in Object category of Blender add-ons.</li>
+<li>Click “Save Preferences” to autoload add-on every time Blender is started</li>
+</ul>
+</div>
+<div class="section" id="add-on-visibility">
+<h2>Add-on visibility<a class="headerlink" href="#add-on-visibility" title="Permalink to this headline">¶</a></h2>
+<p>Add-on is visible in Blender’s 3D Viewport in Sidebar as a separate
+tab in Object Mode. To view the add-on panels, you must</p>
+<blockquote>
+<div><ul class="simple">
+<li>Select a mesh object (in 3D Viewport or in Outliner)</li>
+<li>View Sidebar (“View” –&gt; “Toggle Sidebar” or press “N” key in 3D Viewport)</li>
+<li>Select “SnappyHexMesh GUI” tab in the Sidebar</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="quickstart">
+<h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Create surface meshes in any suitable 3D modelling tool and export
+in STL/OBJ format</li>
+<li>Import meshes to Blender (“File” –&gt; “Import”)
+or model geometry directly in Blender</li>
+<li>Adjust the add-on settings per object in Blender</li>
+<li>Save Blender file to an empty case folder</li>
+<li>Click “Export” button in the add-on to create OpenFOAM directories
+and files under case folder</li>
+</ul>
+<p>After export from Blender, you should be able to run following OpenFOAM
+commands in case folder in order:</p>
+<ul class="simple">
+<li>blockMesh</li>
+<li>surfaceFeatures</li>
+<li>snappyHexMesh</li>
+<li>checkMesh</li>
+</ul>
+</div>
+<div class="section" id="panels-and-settings">
+<h2>Panels and Settings<a class="headerlink" href="#panels-and-settings" title="Permalink to this headline">¶</a></h2>
+<p>SnappyHexMesh GUI consists of three main Panels: SnappyHexMesh GUI
+(top panel), Object Settings (middle panel) and Export Summary (bottom
+panel). By default all panels are expanded.</p>
+<img alt="_images/shmg_ui.png" src="_images/shmg_ui.png" />
+<div class="section" id="snappyhexmesh-gui-panel">
+<h3>SnappyHexMesh GUI Panel<a class="headerlink" href="#snappyhexmesh-gui-panel" title="Permalink to this headline">¶</a></h3>
+<p>This panel contains overall settings and tool buttons.
+You can hover mouse cursor over fields to see tool tips for more
+information.</p>
+<img alt="_images/shmg_panel_main.png" src="_images/shmg_panel_main.png" />
+<ul class="simple">
+<li><em>Options</em> with two toggle icons:<ul>
+<li>Do Snapping Phase</li>
+<li>Do Layer Addition Phase</li>
+</ul>
+</li>
+<li><em>Export path</em> defines path name where the add-on creates the OpenFOAM
+case files when the Export tool is run. The default value “//” means
+that the case folder is the same folder where Blender file is saved.</li>
+<li><em>Cell Length</em> is the target length for the block mesh cube side,
+which will be created after export by running the OpenFOAM command
+<em>blockMesh</em>.</li>
+<li><em>Max Non-Ortho</em> is the volume mesh quality measure for maximum
+non-orthogonality for SnappyHexMesh. <strong>Note:</strong> A small value
+produces mesh that is good for the numerical solution of flow
+equations, and a high value yields mesh that fits to surfaces better
+and allows better surface layer coverage (if layers are added).</li>
+</ul>
+<p>There are three tools provided by the addon, which are shown as buttons:</p>
+<ul class="simple">
+<li><em>Add Location In Mesh Object</em> will add an Empty object to Blender
+scene. The coordinates of this object is applied to specify the
+Location In Mesh for snappyHexMesh. If this object does not exist,
+zero coordinates are used for Location In Mesh.</li>
+<li><em>Apply LocRotScale For All</em> is a convenience tool for Blender
+modellers, which resets the Location, Rotation and Scale properties
+of all mesh objects to zero values. It is <strong>not necessary</strong> to run
+this tool to get correct location, rotation and scaling of the mesh
+in export. It is safe to ignore this tool, unless you use special
+Blender modelling features whose operation depends on object
+location, rotation and scale (e.g. Modifiers).</li>
+<li><em>Export</em> tool creates and saves the OpenFOAM case files under
+<em>Export path</em> using the overall settings in this panel and Object
+Settings for each mesh object included in the export.</li>
+</ul>
+</div>
+<div class="section" id="object-settings-panel">
+<h3>Object Settings Panel<a class="headerlink" href="#object-settings-panel" title="Permalink to this headline">¶</a></h3>
+<p>This panel shows settings for the active (selected) mesh object.</p>
+<img alt="_images/shmg_panel_object.png" src="_images/shmg_panel_object.png" />
+<p>The panel top part shows information about the object. These
+information are also added as comments in snappyHexMeshDict upon
+export:</p>
+<ul class="simple">
+<li><em>Object</em> row shows the name of the active object.</li>
+<li><em>Object Bounds [min] [max]</em> shows the minimum and maximum
+coordinates of two box corners which span the volume included
+by the mesh object (bounding box).</li>
+<li><em>Area</em> shows the summed surface area of all faces included in the
+object. <strong>Warning:</strong> Includes mesh errors, like overlapping faces, if
+there are any.</li>
+</ul>
+<p>Rest of the panel includes object settings:</p>
+<ul>
+<li><p class="first"><em>Include in Export</em> check box is used to mark which mesh objects are
+to be included in export.</p>
+</li>
+<li><p class="first"><em>Type</em> specifies the OpenFOAM patch type for this object.</p>
+</li>
+<li><p class="first"><em>Enable snapping</em> check box marks inclusion/exclusion of this object
+for SnappyHexMesh snapping phase.</p>
+</li>
+<li><p class="first"><em>Surface Refinement Levels</em>, <em>Min</em> and <em>Max</em> specify the minimum and
+maximum level of cell refinements made next to the surfaces of this
+object.</p>
+</li>
+<li><p class="first"><em>Extract Feature Edges</em> check box marks whether Feature Edges (sharp
+edges) are to be extracted into eMesh format from this object (done
+by running the <em>featureSurfaces</em> OpenFOAM utility). If Feature Edges
+are extracted, then they are also assumed to be included for Feature
+Edge Snapping in SnappyHexMesh.</p>
+</li>
+<li><p class="first"><em>Feature Edge Level</em> defines a separate cell refinement level for
+Feature Edges.</p>
+</li>
+<li><p class="first"><em>Surface Layers</em> specifies the number of surface layers that are to
+be added to surfaces of this object. Addition of surface layers also
+requires that the <em>Do Layer Addition Phase</em> option icon at top is
+activated.</p>
+</li>
+<li><p class="first"><em>Face Zone Type</em> decides the type of face zones that are to be
+created for surface:</p>
+<ul class="simple">
+<li>none: No face zone or cell zone are to be created.</li>
+<li>internal: Face zone is created with internal faces (each face
+is shared by two cells)</li>
+<li>baffle: Face zone is created as baffles (overlapping unshared
+boundary faces).</li>
+<li>boundary: Face zone is created as boundaries (unshared boundary
+faces).</li>
+</ul>
+<p>Note: Face zone name is same as object name.</p>
+</li>
+<li><p class="first"><em>Cell Zone Type</em> defines the type of cell zones in relation to
+surface mesh, which is assumed to define a manifold surface which
+closes a volume:</p>
+<ul class="simple">
+<li>none: No cell zone is to be created.</li>
+<li>inside: Inside of the closed volume is to be included in cell zone.</li>
+<li>outside: Outside of the closed volume is to be included in cell zone.</li>
+</ul>
+<p><strong>Note:</strong> Cell zone name is same as object name.</p>
+<p><strong>Note 2:</strong> Cell zones requires face zones to be created as well.</p>
+</li>
+<li><p class="first"><em>Volume Refinement</em> specifies that some cells are to be refined accordingly:</p>
+<ul class="simple">
+<li>none: No refinement.</li>
+<li>inside: Cells inside of the closed volume are to be refined.</li>
+<li>outside: Cells outside of the closed volume are to be refined.</li>
+</ul>
+</li>
+<li><p class="first"><em>Volume Refinement Level</em> shows the number of refinements for volume refinement.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="export-summary-panel">
+<h3>Export Summary Panel<a class="headerlink" href="#export-summary-panel" title="Permalink to this headline">¶</a></h3>
+<p>This panel summarizes the overall properties of export.</p>
+<img alt="_images/shmg_panel_summary.png" src="_images/shmg_panel_summary.png" />
+<ul class="simple">
+<li><em>Global Bounds [min] [max]</em> shows the minimum and maximum
+coordinates of the bounding box for all mesh objects included in the
+export.</li>
+<li><em>Block Mesh Count</em> is an estimate for the number of cubic cells in
+Block Mesh which covers the Global Bounds using cube side length
+specified in <em>Cell Length</em> parameter. Block Mesh will be created by
+running OpenFOAM command <em>blockMesh</em>.</li>
+<li><em>Objects included</em> lists all the mesh objects in Blender file, which
+will be exported when <em>Export</em> tool is run.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="feedback">
+<h2>Feedback<a class="headerlink" href="#feedback" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/tkeskita/snappyhexmesh_gui/issues">File bug report in github</a></p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>A vessel example is located in the add-on’s <em>example</em> folder called
+<em>vessel.blend</em>, which showcases some of the features.</p>
+<div class="figure" id="id1">
+<img alt="_images/example_geo.png" src="_images/example_geo.png" />
+<p class="caption"><span class="caption-text">Vessel geometry, wall, zone and refinement volumes in surface mesh format viewed in <a class="reference external" href="https://www.blender.org">Blender</a></span></p>
+</div>
+<div class="figure" id="id2">
+<img alt="_images/example_mesh_result.png" src="_images/example_mesh_result.png" />
+<p class="caption"><span class="caption-text">Resulting volume mesh from SnappyHexMesh viewed in <a class="reference external" href="https://www.paraview.org">Paraview</a></span></p>
+</div>
+</div>
+<div class="section" id="faq">
+<h2>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h2>
+<p>Q: Why Blender?</p>
+<p>A: Mainly because of Blender’s GUI Python API, 3D Viewport and surface
+mesh modelling tools. Blender has powerful tools for polygon surface
+modelling and modification, and is suitable also for precision
+modelling required by engineering/scientific applications, although
+the learning curve to take advantage of all features is steep.</p>
+</div>
+<div class="section" id="openfoam-trade-mark-notice">
+<h2>OpenFOAM Trade Mark Notice<a class="headerlink" href="#openfoam-trade-mark-notice" title="Permalink to this headline">¶</a></h2>
+<p>This offering is not approved or endorsed by OpenCFD Limited, producer
+and distributor of the OpenFOAM software via www.openfoam.com, and
+owner of the OPENFOAM® and OpenCFD® trade marks.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="SnappyHexMesh GUI Addon for Blender" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Tuomo Keskitalo
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
