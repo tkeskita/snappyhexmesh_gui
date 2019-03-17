@@ -173,8 +173,9 @@ bpy.types.Object.shmg_face_zone_type = bpy.props.EnumProperty(
     description="Face Zone Type For Surface (Optional)",
     items={
         ('none', 'none', 'None', 0),
-        ('baffle', 'baffle', 'Baffle (Shared Internal Faces)', 1),
-        ('boundary', 'boundary', 'Boundary (Unshared Boundary Faces)', 2)},
+        ('internal', 'internal', 'Internal (Shared Internal Faces)', 1),
+        ('baffle', 'baffle', 'Baffle (Overlapping Boundary Faces)', 2),
+        ('boundary', 'boundary', 'Boundary (Separate Boundary Faces)', 3)},
     default='none'
 )
 bpy.types.Object.shmg_cell_zone_type = bpy.props.EnumProperty(
