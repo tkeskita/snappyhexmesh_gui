@@ -88,6 +88,11 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         description="Do Layer Addition Phase",
         default=False,
     )
+    do_block_mesh: bpy.props.BoolProperty(
+        name="Generate Block Mesh",
+        description="Option to generate blockMeshDict (Cubic Cells for Whole Domain)",
+        default=True,
+    )
     cell_side_length: bpy.props.FloatProperty(
         name="Cell Side Length",
         description="Length of Base Block Mesh Cell Side",
@@ -255,8 +260,12 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.prop(gui, "export_path", text="")
 
         rowsub = col.row()
-        rowsub.label(text="Cell Length")
-        rowsub.prop(gui, "cell_side_length", text="")
+        rowsub.prop(gui, "do_block_mesh")
+
+        if gui.do_block_mesh:
+            rowsub = col.row()
+            rowsub.label(text="Cell Length")
+            rowsub.prop(gui, "cell_side_length", text="")
 
         rowsub = col.row()
         rowsub.label(text="Max Non-Ortho")
@@ -300,9 +309,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Summary(bpy.types.Panel, SnappyHexMeshGU
         rowsub.label(text=bb_max_str)
 
         # Block mesh cell count
-        bm_count = op_object.block_mesh_cell_count(bb_min, bb_max, gui)
-        rowsub = col.row(align=True)
-        rowsub.label(text="Block Mesh Count: %d" % bm_count)
+        if gui.do_block_mesh:
+            bm_count = op_object.block_mesh_cell_count(bb_min, bb_max, gui)
+            rowsub = col.row(align=True)
+            rowsub.label(text="Block Mesh Count: %d" % bm_count)
 
         # List objects included in export
         rowsub = col.row(align=True)

@@ -61,11 +61,12 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         outfile.close()
 
         # Write blockMeshDict
-        outfilename = bpy.path.abspath(export_path) \
-                      + "/system/blockMeshDict"
-        outfile = open(outfilename, 'w')
-        outfile.write(''.join(blockData))
-        outfile.close()
+        if gui.do_block_mesh:
+            outfilename = bpy.path.abspath(export_path) \
+                          + "/system/blockMeshDict"
+            outfile = open(outfilename, 'w')
+            outfile.write(''.join(blockData))
+            outfile.close()
 
         # Write result to snappyHexMeshDict
         outfilename = bpy.path.abspath(export_path) \
