@@ -31,13 +31,12 @@ add-on's *skel* directory. The add-on is developed for
 Current Status and Features
 ---------------------------
 
-The add-on is currently in beta (testing) phase, so it should work.
 Currently implemented features include:
 
 * Creation of basic OpenFOAM case structure, including export of
   dictionary files (most importantly snappyHexMeshDict) and meshes as
   STL files
-* Creation of definition file for hexahedral base volume mesh with
+* Optional creation of definition file for hexahedral base volume mesh with
   a defined cell size (blockMeshDict)
 * Calculation of cell count for block volume mesh
 * Definition of Surface Refinement Levels for surface meshes
@@ -118,6 +117,8 @@ information.
 * *Export path* defines path name where the add-on creates the OpenFOAM
   case files when the Export tool is run. The default value "//" means
   that the case folder is the same folder where Blender file is saved.
+* *Generate Block Mesh* indicates that blockMeshDict is to be generated
+  during export using *Cell Length* as a measure for cubical cell sides.
 * *Cell Length* is the target length for the block mesh cube side,
   which will be created after export by running the OpenFOAM command
   *blockMesh*.
