@@ -53,21 +53,21 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     snappy_template_path: bpy.props.StringProperty(
         name="Template Path",
         description="Path to SnappyHexMeshDict Template",
-        default=os.path.dirname(__file__) + "/skel/snappyHexMeshDictTemplate",
+        default=os.path.join(os.path.dirname(__file__), 'skel', 'snappyHexMeshDictTemplate'),
         maxlen=1024,
         subtype="FILE_PATH",
     )
     block_mesh_template_path: bpy.props.StringProperty(
         name="Block Mesh Template Path",
         description="Path to BlockMeshDict Template",
-        default=os.path.dirname(__file__) + "/skel/blockMeshDictTemplate",
+        default=os.path.join(os.path.dirname(__file__), 'skel', 'blockMeshDictTemplate'),
         maxlen=1024,
         subtype="FILE_PATH",
     )
     surface_features_template_path: bpy.props.StringProperty(
         name="Surface Features Template Path",
         description="Path to surfaceFeaturesDict Template",
-        default=os.path.dirname(__file__) + "/skel/surfaceFeaturesDictTemplate",
+        default=os.path.join(os.path.dirname(__file__), 'skel', 'surfaceFeaturesDictTemplate'),
         maxlen=1024,
         subtype="FILE_PATH",
     )

@@ -54,23 +54,23 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         n, snappyData = export_snappy_replacements(snappyData)
 
         # Write surfaceFeaturesDict
-        outfilename = bpy.path.abspath(export_path) \
-                      + "/system/surfaceFeaturesDict"
+        outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                   'system', 'surfaceFeaturesDict')
         outfile = open(outfilename, 'w')
         outfile.write(''.join(featuresData))
         outfile.close()
 
         # Write blockMeshDict
         if gui.do_block_mesh:
-            outfilename = bpy.path.abspath(export_path) \
-                          + "/system/blockMeshDict"
+            outfilename = os.path.join(bpy.path.abspath(export_path), \
+                          'system', 'blockMeshDict')
             outfile = open(outfilename, 'w')
             outfile.write(''.join(blockData))
             outfile.close()
 
         # Write result to snappyHexMeshDict
-        outfilename = bpy.path.abspath(export_path) \
-                      + "/system/snappyHexMeshDict"
+        outfilename = os.path.join(bpy.path.abspath(export_path), \
+                      'system', 'snappyHexMeshDict')
         outfile = open(outfilename, 'w')
         outfile.write(''.join(snappyData))
         outfile.close()
@@ -117,11 +117,14 @@ def export_initialize(self, surface_features_template_path, \
     if not (os.path.isdir(abspath)):
         os.mkdir(abspath)
 
-    for p in ["/constant", "/constant/triSurface", "/system"]:
-        if not (os.path.isdir(abspath + p)):
-            os.mkdir(abspath + p)
-        
-    if not (os.path.isdir(abspath + '/system')):
+    for p in ['constant', 'system']:
+        if not (os.path.isdir(os.path.join(abspath, p))):
+            os.mkdir(os.path.join(abspath, p))
+
+    if not (os.path.isdir(os.path.join(abspath, 'constant', 'triSurface'))):
+        os.mkdir(os.path.join(abspath, 'constant', 'triSurface'))
+
+    if not (os.path.isdir(os.path.join(abspath, 'system'))):
         self.report({'ERROR'}, "Couldn't create folders under %r" % abspath)
         return None, None, None
 
@@ -270,7 +273,7 @@ def export_geometries():
         # Export mesh to constant/triSurface/name.stl
         export_path = bpy.context.scene.snappyhexmeshgui.export_path
         abspath = bpy.path.abspath(export_path)
-        outpath = abspath + "/constant/triSurface/%s.stl" % i.name
+        outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.stl" % i.name)
         i.select_set(True)
         bpy.ops.export_mesh.stl(
             filepath=outpath, check_existing=False, \
@@ -413,9 +416,9 @@ def copy_skeleton_files():
     abspath = bpy.path.abspath(export_path)
 
     for i in ["controlDict", "fvSchemes", "fvSolution"]:
-        filepath = abspath + "system/" + i
+        filepath = os.path.join(abspath, 'system', i)
         if not (os.path.isfile(filepath)):
-            sourcepath = os.path.dirname(__file__) + "/skel/" + i
+            sourcepath = os.path.join(os.path.dirname(__file__), 'skel', i)
             copyfile(sourcepath, filepath)
             l.debug("Copied skeleton file from: %s" % filepath)
     return None
