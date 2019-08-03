@@ -22,10 +22,9 @@ users to use Blender as a CFD pre-processing tool. The aim is to
 
 The creation of OpenFOAM dictionary files is based on string
 replacements using template files located in the
-add-on's *skel* directory. The add-on is developed for
-`Blender 2.8 <https://www.blender.org/2-8/>`_
-(master branch) and
-`OpenFOAM Foundation <https://openfoam.org/>`_ version 6 of OpenFOAM.
+add-on's *skel* directory. The add-on is tested on
+`Blender 2.80 <https://www.blender.org/>`_ and
+`OpenFOAM Foundation <https://openfoam.org/>`_ version 7 of OpenFOAM.
 
 
 Current Status and Features
@@ -50,8 +49,8 @@ Currently implemented features include:
 Installation and Start-up
 -------------------------
 
-* You need to use Blender 2.8, which is currently in beta phase. You can
-  `download Blender 2.8 beta here <https://builder.blender.org/download/>`_.
+* You need to use Blender 2.80, 
+  `download Blender 2.80 here <https://www.blender.org/download/>`_.
 * Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui.
   To download add-on from Github, Select "Clone or download", then
   "Download ZIP".
