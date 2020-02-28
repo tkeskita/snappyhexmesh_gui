@@ -52,6 +52,10 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         featuresData = export_surface_features_replacements(featuresData)
         blockData = export_block_mesh_replacements(blockData)
         n, snappyData = export_snappy_replacements(snappyData)
+        if n==0:
+            self.report({'ERROR'}, "Can't export object %r " % snappyData \
+            + " because it is not visible")
+            return {'FINISHED'}
 
         # Write surfaceFeaturesDict
         outfilename = os.path.join(bpy.path.abspath(export_path), \
@@ -220,6 +224,9 @@ def export_snappy_replacements(data):
     data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
 
     n, geo = export_geometries()
+    if n==0:
+        return n, geo
+
     data = subst_value("GEOMETRY", geo, data)
 
     data = subst_value("FEATURES", export_surface_features(), data)
@@ -254,6 +261,9 @@ def export_geometries():
             continue
         if not i.shmg_include_in_export:
             continue
+        # Return error if object is not visible (it can't be exported)
+        if not i.visible_get():
+            return 0, i.name
 
         # Collect mesh min and max bounds and area to info string
         bb_min, bb_max = get_object_bbox_coords(i)
