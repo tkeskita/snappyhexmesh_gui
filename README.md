@@ -27,8 +27,8 @@ add-on's *skel* directory. The add-on is tested on
 ## Documentation
 
 Documentation is available in the *doc* directory in the source code,
-and for web viewing at
-http://tkeskita.kapsi.fi/blender/snappyhexmesh_gui/docs/snappy_gui.html
+and for web viewing
+[here](http://tkeskita.kapsi.fi/blender/snappyhexmesh_gui/docs/snappy_gui.html).
 
 ### OpenFOAM Trade Mark Notice
 
