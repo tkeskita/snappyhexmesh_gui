@@ -20,15 +20,16 @@ users to use Blender as a CFD pre-processing tool. The aim is to
 
 The creation of OpenFOAM dictionary files is based on string
 replacements using template files located in the
-add-on's *skel* directory. The add-on is tested on
-[Blender 2.80](https://www.blender.org) and
+add-on's *skel* directory. The add-on is tested with
+[Blender 2.82](https://www.blender.org) and
 [OpenFOAM Foundation](https://openfoam.org/) version 7 of OpenFOAM.
 
 ## Documentation
 
-Documentation is available in the *doc* directory in the source code,
-and for web viewing
-[here](http://tkeskita.kapsi.fi/blender/snappyhexmesh_gui/docs/snappy_gui.html).
+Documentation (made using [Sphinx](https://www.sphinx-doc.org/en/master/))
+is located in docs directory of the sources and is viewable online at
+https://snappyhexmesh-gui.readthedocs.io. Please view the documentation for
+installation and usage instructions.
 
 ### OpenFOAM Trade Mark Notice
 

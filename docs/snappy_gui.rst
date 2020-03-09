@@ -22,9 +22,9 @@ users to use Blender as a CFD pre-processing tool. The aim is to
 
 The creation of OpenFOAM dictionary files is based on string
 replacements using template files located in the
-add-on's *skel* directory. The add-on has been tested on
-`Blender 2.82 <https://www.blender.org/>`_ and
-`OpenFOAM Foundation <https://openfoam.org/>`_ version 7 of OpenFOAM.
+add-on's *skel* directory. The add-on is meant to work on
+latest releases of `Blender <https://www.blender.org/>`_ 2.8 series and
+`OpenFOAM Foundation <https://openfoam.org/>`_ version of OpenFOAM.
 
 
 Current Status and Features
@@ -264,6 +264,11 @@ mesh modelling tools. Blender has powerful tools for polygon surface
 modelling and modification, and is suitable also for precision
 modelling required by engineering/scientific applications, although
 the learning curve to take advantage of all features is steep.
+
+Q: How do I learn Blender?
+
+A: See links at https://openfoamwiki.net/index.php/Blender
+
 
 OpenFOAM Trade Mark Notice
 --------------------------
