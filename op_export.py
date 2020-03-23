@@ -476,7 +476,7 @@ class OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object(bpy.types.Operator)
 
     def execute(self, context):
         if not [i for i in bpy.data.objects if i.name == "Location In Mesh"]:
-            bpy.ops.object.empty_add(type='SPHERE', radius=0.2, view_align=False)
+            bpy.ops.object.empty_add(type='SPHERE', radius=0.2)
             bpy.context.active_object.name = "Location In Mesh"
             self.report({'INFO'}, "Added Location In Mesh Object")
         else:
