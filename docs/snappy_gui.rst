@@ -143,6 +143,9 @@ There are three tools provided by the addon, which are shown as buttons:
 * *Export* tool creates and saves the OpenFOAM case files under
   *Export path* using the overall settings in this panel and Object
   Settings for each mesh object included in the export.
+* If *ASCII STL* icon on right of *Export* tool is enabled, the STL
+  files are written in ASCII text format instead of binary STL format.
+
 
 Object Settings Panel
 ^^^^^^^^^^^^^^^^^^^^^

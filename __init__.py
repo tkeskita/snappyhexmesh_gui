@@ -24,7 +24,6 @@ bl_info = {
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
-    "warning": "This add-on is in beta testing phase",
     "wiki_url": "https://github.com/tkeskita/snappyhexmesh_gui",
     "tracker_url": "https://github.com/tkeskita/snappyhexmesh_gui/issues",
     "support": 'COMMUNITY',
@@ -77,6 +76,11 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default="//",
         maxlen=1024,
         subtype="DIR_PATH",
+    )
+    export_stl_ascii: bpy.props.BoolProperty(
+        name="ASCII STL",
+        description="Export STL files in ASCII instead of Binary Format",
+        default=False,
     )
     do_snapping: bpy.props.BoolProperty(
         name="Snapping Phase",
@@ -275,8 +279,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
         row = layout.row()
         row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
-        row = layout.row()
-        row.operator("object.snappyhexmeshgui_export", text="Export")
+        col = layout.column()
+        rowsub = col.row(align=True)
+        rowsub.operator("object.snappyhexmeshgui_export", text="Export")
+        rowsub.prop(gui, "export_stl_ascii", text="", icon='FILE_TEXT')
 
 
 class VIEW3D_PT_SnappyHexMeshGUI_Object_Summary(bpy.types.Panel, SnappyHexMeshGUI_ToolBar):

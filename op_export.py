@@ -246,6 +246,7 @@ def export_geometries():
     Returns number of exported meshes and the dictionary text string.
     """
 
+    gui = bpy.context.scene.snappyhexmeshgui
     from .op_object import get_object_bbox_coords, get_surface_area
 
     n = 0 # Number of exported geometries
@@ -281,7 +282,7 @@ def export_geometries():
         # but it seems that regions are not used for STLs, so left out.
 
         # Export mesh to constant/triSurface/name.stl
-        export_path = bpy.context.scene.snappyhexmeshgui.export_path
+        export_path = gui.export_path
         abspath = bpy.path.abspath(export_path)
         outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.stl" % i.name)
         i.select_set(True)
@@ -289,7 +290,7 @@ def export_geometries():
             filepath=outpath, check_existing=False, \
             axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
             use_selection=True, global_scale=1.0, use_scene_unit=True, \
-            ascii=False, use_mesh_modifiers=True)
+            ascii=gui.export_stl_ascii, use_mesh_modifiers=True)
         i.select_set(False)
         n += 1
     d += "}"
