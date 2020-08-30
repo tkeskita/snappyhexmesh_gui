@@ -41,11 +41,13 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         export_path = gui.export_path
 
         # Get snappyHexMeshTemplate file
-        featuresData, blockData, snappyData = \
+        featuresData, blockData, snappyData, decomposepardictData = \
             export_initialize(self, gui.surface_features_template_path, \
                               gui.block_mesh_template_path, \
-                              gui.snappy_template_path, export_path)
-        if featuresData is None or blockData is None or snappyData is None:
+                              gui.snappy_template_path, \
+                              gui.decomposepardict_template_path, export_path)
+        if featuresData is None or blockData is None or snappyData is None \
+           or decomposepardictData is None:
             return{'FINISHED'}
 
         # Carry out replacements to templates
@@ -56,7 +58,7 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             self.report({'ERROR'}, "Can't export object %r " % snappyData \
             + " because it is not visible")
             return {'FINISHED'}
-
+        decomposepardictData = export_decomposepardict_replacements(decomposepardictData)
         # Write surfaceFeaturesDict
         outfilename = os.path.join(bpy.path.abspath(export_path), \
                                    'system', 'surfaceFeaturesDict')
@@ -79,6 +81,13 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         outfile.write(''.join(snappyData))
         outfile.close()
 
+        # Write decomposeParDict
+        outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                   'system', 'decomposeParDict')
+        outfile = open(outfilename, 'w')
+        outfile.write(''.join(decomposepardictData))
+        outfile.close()
+
         self.report({'INFO'}, "Exported %d meshes " % n \
                     + "to: %r" % export_path)
         return {'FINISHED'}
@@ -86,36 +95,45 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
 
 def export_initialize(self, surface_features_template_path, \
                       block_mesh_template_path, \
-                      snappy_template_path, export_path):
-    """Initialization routine. Reads contents of surfaceFeaturesDictTemplate,
-    blockMeshDictTemplate, and snappyHexMeshDictTempalte files as text strings
-    and creates directory structure undex export path if needed.
+                      snappy_template_path, \
+                      decomposepardict_template_path, export_path):
+    """Initialization routine. Reads contents of
+    surfaceFeaturesDictTemplate, blockMeshDictTemplate,
+    snappyHexMeshDictTemplate and decomposeParDict files as text
+    strings and creates directory structure undex export path if
+    needed.
     """
 
     abspath = bpy.path.abspath(export_path)
     if not abspath:
         self.report({'ERROR'}, "No path set! Please save Blender file to "
                     "a case folder and try again")
-        return None, None, None
+        return None, None, None, None
     l.debug("Export path: %r" % abspath)
 
     l.debug("snappyHexMeshTemplate path: %r" % snappy_template_path)
     if not (os.path.isfile(snappy_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % snappy_template_path)
-        return None, None, None
+        return None, None, None, None
     
     l.debug("blockMeshTemplate path: %r" % block_mesh_template_path)
     if not (os.path.isfile(block_mesh_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % block_mesh_template_path)
-        return None, None, None
+        return None, None, None, None
 
     l.debug("surfaceFeaturesDictTemplate path: %r" % surface_features_template_path)
     if not (os.path.isfile(surface_features_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % surface_features_template_path)
-        return None, None, None
+        return None, None, None, None
+
+    l.debug("decomposeParDictTemplate path: %r" % decomposepardict_template_path)
+    if not (os.path.isfile(decomposepardict_template_path)):
+        self.report({'ERROR'}, "Template not found: %r" \
+                    % decomposepardict_template_path)
+        return None, None, None, None
 
     # Create folder structure if needed
     if not (os.path.isdir(abspath)):
@@ -130,7 +148,7 @@ def export_initialize(self, surface_features_template_path, \
 
     if not (os.path.isdir(os.path.join(abspath, 'system'))):
         self.report({'ERROR'}, "Couldn't create folders under %r" % abspath)
-        return None, None, None
+        return None, None, None, None
 
     # Copy skeleton files if needed
     copy_skeleton_files()
@@ -144,7 +162,10 @@ def export_initialize(self, surface_features_template_path, \
     with open(surface_features_template_path, 'r') as infile:
         featuresData = infile.readlines()
 
-    return featuresData, blockData, snappyData
+    with open(decomposepardict_template_path, 'r') as infile:
+        decomposepardictData = infile.readlines()
+
+    return featuresData, blockData, snappyData, decomposepardictData
 
     
 def subst_value(keystr, val, data):
@@ -209,6 +230,14 @@ def export_block_mesh_replacements(data):
     data = subst_value("YMAX", "%.6g" % gui.block_mesh_max[1], data)
     data = subst_value("ZMAX", "%.6g" % gui.block_mesh_max[2], data)
 
+    return data
+
+def export_decomposepardict_replacements(data):
+    """Carry out replacements for decomposeParDict."""
+
+    gui = bpy.context.scene.snappyhexmeshgui
+    data = subst_value("HEADER", get_header_text(), data)
+    data = subst_value("NCPUS", str(gui.number_of_cpus), data)
     return data
 
 def export_snappy_replacements(data):

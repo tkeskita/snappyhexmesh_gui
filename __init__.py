@@ -70,6 +70,13 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         maxlen=1024,
         subtype="FILE_PATH",
     )
+    decomposepardict_template_path: bpy.props.StringProperty(
+        name="decomposeParDict Template Path",
+        description="Path to decomposeParDict Template",
+        default=os.path.join(os.path.dirname(__file__), 'skel', 'decomposeParDictTemplate'),
+        maxlen=1024,
+        subtype="FILE_PATH",
+    )
     export_path: bpy.props.StringProperty(
         name="Export Path",
         description="Path to Export Case Files",
@@ -81,6 +88,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         name="ASCII STL",
         description="Export STL files in ASCII instead of Binary Format",
         default=False,
+    )
+    number_of_cpus: bpy.props.IntProperty(
+        name="CPUs",
+        description="Number of CPUs for decomposeParDict",
+        default=1,
+        min=1,
     )
     do_snapping: bpy.props.BoolProperty(
         name="Snapping Phase",
@@ -255,6 +268,7 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         col = layout.column()
         rowsub = col.row(align=True)
         rowsub.label(text="Options:")
+        rowsub.prop(gui, "number_of_cpus", text="CPUs:")
         rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
         rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
 

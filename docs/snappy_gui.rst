@@ -23,7 +23,7 @@ users to use Blender as a CFD pre-processing tool. The aim is to
 The creation of OpenFOAM dictionary files is based on string
 replacements using template files located in the
 add-on's *skel* directory. The add-on is meant to work on
-latest releases of `Blender <https://www.blender.org/>`_ 2.8 series and
+latest releases of `Blender`_ 2.8 series and
 `OpenFOAM Foundation <https://openfoam.org/>`_ version of OpenFOAM.
 
 
@@ -108,8 +108,10 @@ information.
 
 .. image:: images/shmg_panel_main.png
 
-* *Options* with two toggle icons:
+* *Options* with CPU count and two toggle icons:
 
+  * *CPUs* specifies the number of cores for *decomposeParDict*
+    (*scotch* decomposition method is the default for *decomposePar*)
   * Do Snapping Phase
   * Do Layer Addition Phase
 
