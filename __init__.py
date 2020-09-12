@@ -110,6 +110,13 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         description="Option to generate blockMeshDict (Cubic Cells for Whole Domain)",
         default=True,
     )
+    export_scale: bpy.props.FloatProperty(
+        name="Export Scale",
+        description="Scaling Factor for Export",
+        default=1.0,
+        precision=4,
+        min=float_info.min, max=float_info.max
+    )
     cell_side_length: bpy.props.FloatProperty(
         name="Cell Side Length",
         description="Length of Base Block Mesh Cell Side",
@@ -271,6 +278,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.prop(gui, "number_of_cpus", text="CPUs:")
         rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
         rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
+
+        rowsub = col.row()
+        rowsub.prop(gui, "export_scale")
 
         rowsub = col.row()
         rowsub.label(text="Export Path:")

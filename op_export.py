@@ -184,7 +184,7 @@ def subst_value(keystr, val, data):
 def get_header_text():
     """Returns dictionary header comment text"""
     import datetime
-    return "// Exported by SnappyHexMesh GUI add-on for Blender v0.9" \
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.0" \
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
@@ -217,6 +217,7 @@ def export_block_mesh_replacements(data):
     gui = bpy.context.scene.snappyhexmeshgui
 
     data = subst_value("HEADER", get_header_text(), data)
+    data = subst_value("EXPORT_SCALE", "%.6g" % gui.export_scale, data)
 
     data = subst_value("DX", str(gui.block_mesh_delta[0]), data)
     data = subst_value("DY", str(gui.block_mesh_delta[1]), data)
@@ -318,7 +319,7 @@ def export_geometries():
         bpy.ops.export_mesh.stl(
             filepath=outpath, check_existing=False, \
             axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
-            use_selection=True, global_scale=1.0, use_scene_unit=True, \
+            use_selection=True, global_scale=gui.export_scale, use_scene_unit=True, \
             ascii=gui.export_stl_ascii, use_mesh_modifiers=True)
         i.select_set(False)
         n += 1
