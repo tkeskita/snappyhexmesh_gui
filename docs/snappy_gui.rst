@@ -23,7 +23,7 @@ users to use Blender as a CFD pre-processing tool. The aim is to
 The creation of OpenFOAM dictionary files is based on string
 replacements using template files located in the
 add-on's *skel* directory. The add-on is meant to work on
-latest releases of `Blender`_ 2.8 series and
+latest stable and LTS releases of `Blender`_ and
 `OpenFOAM Foundation <https://openfoam.org/>`_ version of OpenFOAM.
 
 
@@ -52,7 +52,7 @@ Installation and Start-up
 * It is suggested to use newest version of Blender, 
   `download Blender here <https://www.blender.org/download/>`_.
 * Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui.
-  To download add-on from Github, Select "Clone or download", then
+  To download add-on from Github, Select "Code", then
   "Download ZIP".
 * Start Blender, go to "Edit" --> "Preferences" --> "Add-ons" --> "Install"
   --> open the add-on zip file.
@@ -114,6 +114,8 @@ information.
     (*scotch* decomposition method is the default for *decomposePar*)
   * Do Snapping Phase
   * Do Layer Addition Phase
+  * *Export Scale* is an optional scaling factor for STL geometry
+    files and convertToMeters in blockMeshDict
 
 * *Export path* defines path name where the add-on creates the OpenFOAM
   case files when the Export tool is run. The default value "//" means

@@ -20,9 +20,10 @@ users to use Blender as a CFD pre-processing tool. The aim is to
 
 The creation of OpenFOAM dictionary files is based on string
 replacements using template files located in the
-add-on's *skel* directory. The add-on is tested with
-[Blender 2.82](https://www.blender.org) and
-[OpenFOAM Foundation](https://openfoam.org/) version 7 of OpenFOAM.
+add-on's *skel* directory. The add-on is meant to work with
+latest stable (2.90 or later) and LTS (2.83) versions of
+[Blender](https://www.blender.org) and
+[OpenFOAM Foundation](https://openfoam.org/) version of OpenFOAM.
 
 ## Documentation
 
