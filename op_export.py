@@ -527,3 +527,45 @@ def get_location_in_mesh():
             return d
     return d + "(0 0 0);"
 
+class OBJECT_OT_snappyhexmeshgui_copy_settings_to_objects(bpy.types.Operator):
+    """Copy Settings to Objects (SnappyHexMeshGUI)"""
+    bl_idname = "object.snappyhexmeshgui_copy_settings_to_objects"
+    bl_description = "Copy Settings from Active Object to Selected Objects"
+    bl_label = "SnappyHexMeshGUI Copy Settings to Objects"
+
+    @classmethod
+    def poll(cls, context):
+        ob = context.active_object
+        return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
+
+    def execute(self, context):
+        n = copy_settings_to_objects()
+        self.report({'INFO'}, "Copied SnappyHexMesh Settings to %d Objects" % n)
+        return {'FINISHED'}
+
+def copy_settings_to_objects():
+    """Copy Settings from Active to Selected Objects"""
+
+    objects = [ob for ob in bpy.data.objects if ob.select_get() and ob.type=='MESH']
+    a = bpy.context.active_object
+    if not a:
+        return 0
+    n = 0
+    for ob in objects:
+        if ob == a:
+            continue
+        # Copy settings from active object
+        ob.shmg_include_in_export = a.shmg_include_in_export
+        ob.shmg_include_snapping = a.shmg_include_snapping
+        ob.shmg_include_feature_extraction = a.shmg_include_feature_extraction
+        ob.shmg_surface_min_level = a.shmg_surface_min_level
+        ob.shmg_surface_max_level = a.shmg_surface_max_level
+        ob.shmg_feature_edge_level = a.shmg_feature_edge_level
+        ob.shmg_surface_layers = a.shmg_surface_layers
+        ob.shmg_patch_info_type = a.shmg_patch_info_type
+        ob.shmg_face_zone_type = a.shmg_face_zone_type
+        ob.shmg_cell_zone_type = a.shmg_cell_zone_type
+        ob.shmg_volume_level = a.shmg_volume_level
+        ob.shmg_volume_type = a.shmg_volume_type
+        n += 1
+    return n

@@ -377,6 +377,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub = col.row(align=True)
         rowsub.label(text="Object: %r" % obj.name)
 
+        row = col.row()
+        row.operator("object.snappyhexmeshgui_copy_settings_to_objects",
+                     text="Copy Settings to Objects")
+
         # Bounding box info
         bb_min, bb_max = op_object.get_object_bbox_coords(obj)
         bb_min_str = "[%7.3f %7.3f %7.3f]" % (bb_min[0], bb_min[1], bb_min[2])
@@ -431,6 +435,7 @@ classes = (
     op_export.OBJECT_OT_snappyhexmeshgui_export,
     op_export.OBJECT_OT_snappyhexmeshgui_apply_locrotscale,
     op_export.OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object,
+    op_export.OBJECT_OT_snappyhexmeshgui_copy_settings_to_objects,
     
     SnappyHexMeshGUI_Settings,
 )
