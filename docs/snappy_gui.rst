@@ -130,21 +130,18 @@ information.
   produces mesh that is good for the numerical solution of flow
   equations, and a high value yields mesh that fits to surfaces better
   and allows better surface layer coverage (if layers are added).
-
-There are three tools provided by the addon, which are shown as buttons:
-
-* *Add Location In Mesh Object* will add an Empty object to Blender
+* **Add Location In Mesh Object** will add an Empty object to Blender
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
   zero coordinates are used for Location In Mesh.
-* *Apply LocRotScale For All* is a convenience tool for Blender
+* **Apply LocRotScale For All** is a convenience tool for Blender
   modellers, which resets the Location, Rotation and Scale properties
   of all mesh objects to zero values. It is **not necessary** to run
   this tool to get correct location, rotation and scaling of the mesh
   in export. It is safe to ignore this tool, unless you use special
   Blender modelling features whose operation depends on object
   location, rotation and scale (e.g. Modifiers).
-* *Export* tool creates and saves the OpenFOAM case files under
+* **Export** tool creates and saves the OpenFOAM case files under
   *Export path* using the overall settings in this panel and Object
   Settings for each mesh object included in the export.
 * If *ASCII STL* icon on right of *Export* tool is enabled, the STL
@@ -163,6 +160,10 @@ information are also added as comments in snappyHexMeshDict upon
 export:
 	   
 * *Object* row shows the name of the active object.
+* **Copy Settings to Objects** tool copies the SnappyHexMesh GUI
+  settings from *the active object* to all *selected mesh
+  objects*. This allows mass modification of SnappyHexMesh settings
+  when dealing with numerous objects.
 * *Object Bounds [min] [max]* shows the minimum and maximum
   coordinates of two box corners which span the volume included
   by the mesh object (bounding box).
