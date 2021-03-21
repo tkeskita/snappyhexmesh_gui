@@ -86,7 +86,7 @@ After export from Blender, you should be able to run following OpenFOAM
 commands in case folder in order:
 
 * blockMesh
-* surfaceFeatures
+* surfaceFeatures (for openfoam.org) or surfaceFeatureExtract (for openfoam.com)
 * snappyHexMesh
 * checkMesh
   
@@ -117,6 +117,10 @@ information.
   * *Export Scale* is an optional scaling factor for STL geometry
     files and convertToMeters in blockMeshDict
 
+* *Fork* defines the fork of OpenFOAM for compatibility of generated files.
+  Currently it only defines whether to produce *surfaceFeaturesDict*
+  (for openfoam.org) or *surfaceFeatureExtractDict* (for
+  openfoam.com).
 * *Export path* defines path name where the add-on creates the OpenFOAM
   case files when the Export tool is run. The default value "//" means
   that the case folder is the same folder where Blender file is saved.

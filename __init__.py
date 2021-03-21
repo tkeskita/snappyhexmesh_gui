@@ -49,6 +49,14 @@ else:
 
 # Common settings as property group
 class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
+    openfoam_framework: bpy.props.EnumProperty(
+        name="Fork",
+        description="OpenFOAM Fork Name for Compatibility of Generated Files",
+        items={
+            ('openfoam.org', 'openfoam.org', 'openfoam.org', 0),
+            ('openfoam.com', 'openfoam.com', 'openfoam.com', 1)},
+        default='openfoam.org',
+    )
     snappy_template_path: bpy.props.StringProperty(
         name="Template Path",
         description="Path to SnappyHexMeshDict Template",
@@ -65,7 +73,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     )
     surface_features_template_path: bpy.props.StringProperty(
         name="Surface Features Template Path",
-        description="Path to surfaceFeaturesDict Template",
+        description="Path to surfaceFeaturesDictTemplate Template",
         default=os.path.join(os.path.dirname(__file__), 'skel', 'surfaceFeaturesDictTemplate'),
         maxlen=1024,
         subtype="FILE_PATH",
@@ -278,6 +286,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.prop(gui, "number_of_cpus", text="CPUs:")
         rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
         rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
+
+        rowsub = col.row()
+        rowsub.prop(gui, "openfoam_framework")
 
         rowsub = col.row()
         rowsub.prop(gui, "export_scale")

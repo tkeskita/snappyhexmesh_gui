@@ -51,7 +51,8 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             return{'FINISHED'}
 
         # Carry out replacements to templates
-        featuresData = export_surface_features_replacements(featuresData)
+        framework = gui.openfoam_framework
+        featuresData = export_surface_features_replacements(featuresData, framework)
         blockData = export_block_mesh_replacements(blockData)
         n, snappyData = export_snappy_replacements(snappyData)
         if n==0:
@@ -59,9 +60,18 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             + " because it is not visible")
             return {'FINISHED'}
         decomposepardictData = export_decomposepardict_replacements(decomposepardictData)
+
         # Write surfaceFeaturesDict
-        outfilename = os.path.join(bpy.path.abspath(export_path), \
-                                   'system', 'surfaceFeaturesDict')
+        # openfoam.org uses surfaceFeaturesDict, openfoam.com surfaceFeatureExtract
+        if framework == 'openfoam.org':
+            outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                       'system', 'surfaceFeaturesDict')
+        elif framework == 'openfoam.com':
+            outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                       'system', 'surfaceFeatureExtractDict')
+        else:
+            raise Exception("unknown OpenFOAM framework" + framework)
+
         outfile = open(outfilename, 'w')
         outfile.write(''.join(featuresData))
         outfile.close()
@@ -188,7 +198,7 @@ def get_header_text():
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
-def export_surface_features_replacements(data):
+def export_surface_features_replacements(data, framework):
     """Carry out replacements for key words in surfaceFeaturesDictTemplate with
     settings from GUI.
     """
@@ -204,8 +214,10 @@ def export_surface_features_replacements(data):
             continue
         if not i.shmg_include_feature_extraction:
             continue
-        d += "   \"%s.stl\"\n" % i.name
-
+        if framework == 'openfoam.org':
+            d += "   \"%s.stl\"\n" % i.name
+        elif framework == 'openfoam.com':
+            d += "    %s.stl\n    {\n        extractionMethod extractFromSurface;\n        extractFromSurfaceCoeffs { includedAngle 180; }\n        writeObj yes;\n    }\n" % i.name
     data = subst_value("FEATURESURFACES", d, data)
     return data
 
