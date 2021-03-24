@@ -199,12 +199,11 @@ def get_header_text():
         + "\n// Export date: " + str(datetime.datetime.now())
 
 def export_surface_features_replacements(data, framework):
+	
     """Carry out replacements for key words in surfaceFeaturesDictTemplate with
     settings from GUI.
     """
-
     data = subst_value("HEADER", get_header_text(), data)
-
     # List all mesh object STL names included in export
     d=''
     for i in bpy.data.objects:
@@ -214,11 +213,17 @@ def export_surface_features_replacements(data, framework):
             continue
         if not i.shmg_include_feature_extraction:
             continue
+	
         if framework == 'openfoam.org':
-            d += "   \"%s.stl\"\n" % i.name
+            d += "    \"%s.stl\"\n" % i.name
         elif framework == 'openfoam.com':
-            d += "    %s.stl\n    {\n        extractionMethod extractFromSurface;\n        extractFromSurfaceCoeffs { includedAngle 180; }\n        writeObj yes;\n    }\n" % i.name
-    data = subst_value("FEATURESURFACES", d, data)
+            d += "%s.stl\n{\n    extractionMethod extractFromSurface;\n    extractFromSurfaceCoeffs { includedAngle 180; }\n    writeObj yes;\n}\n\n" % i.name
+    if framework == 'openfoam.org':
+        data = subst_value("FEATURESURFACES", "\nsurfaces\n(\n" + d + \
+                           ");\n\nincludedAngle   150;\n", data)
+    else:
+        data = subst_value("FEATURESURFACES", d, data)
+		
     return data
 
 def export_block_mesh_replacements(data):
