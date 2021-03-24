@@ -207,16 +207,20 @@ def export_surface_features_replacements(data, framework):
     # List all mesh object STL names included in export
     d=''
     for i in bpy.data.objects:
-        condition=[i.type != 'MESH',not i.shmg_include_in_export,not i.shmg_include_feature_extraction]
-        if any(condition):
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        if not i.shmg_include_feature_extraction:
             continue
 	
         if framework == 'openfoam.org':
-            d += " '%s.stl'\n" % i.name			
+            d += "    \"%s.stl\"\n" % i.name
         elif framework == 'openfoam.com':
-            d += "    %s.stl\n    {\n        extractionMethod extractFromSurface;\n        extractFromSurfaceCoeffs { includedAngle 180; }\n        writeObj yes;\n    }\n" % i.name
+            d += "%s.stl\n{\n    extractionMethod extractFromSurface;\n    extractFromSurfaceCoeffs { includedAngle 180; }\n    writeObj yes;\n}\n\n" % i.name
     if framework == 'openfoam.org':
-        data = subst_value("FEATURESURFACES", "\nsurfaces\n(\n"+d+"\n);\n includedAngle   150;\n", data)
+        data = subst_value("FEATURESURFACES", "\nsurfaces\n(\n" + d + \
+                           ");\n\nincludedAngle   150;\n", data)
     else:
         data = subst_value("FEATURESURFACES", d, data)
 		
