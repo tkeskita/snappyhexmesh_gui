@@ -8,7 +8,7 @@ FoamFile
 
 //_HEADER_//
 
-convertToMeters //_EXPORT_SCALE_//;
+//_EXPORT_SCALE_COMMAND_// //_EXPORT_SCALE_//;
 
 vertices
 (

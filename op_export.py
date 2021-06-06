@@ -53,7 +53,7 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         # Carry out replacements to templates
         framework = gui.openfoam_framework
         featuresData = export_surface_features_replacements(featuresData, framework)
-        blockData = export_block_mesh_replacements(blockData)
+        blockData = export_block_mesh_replacements(blockData, framework)
         n, snappyData = export_snappy_replacements(snappyData)
         if n==0:
             self.report({'ERROR'}, "Can't export object %r " % snappyData \
@@ -226,7 +226,7 @@ def export_surface_features_replacements(data, framework):
 		
     return data
 
-def export_block_mesh_replacements(data):
+def export_block_mesh_replacements(data, framework):
     """Carry out replacements for key words in blockMeshDictTemplate with
     settings from GUI.
     """
@@ -234,6 +234,12 @@ def export_block_mesh_replacements(data):
     gui = bpy.context.scene.snappyhexmeshgui
 
     data = subst_value("HEADER", get_header_text(), data)
+
+    if framework == 'openfoam.org':
+        scale_command = "convertToMeters"
+    elif framework == 'openfoam.com':
+        scale_command = "scale"
+    data = subst_value("EXPORT_SCALE_COMMAND", scale_command, data)
     data = subst_value("EXPORT_SCALE", "%.6g" % gui.export_scale, data)
 
     data = subst_value("DX", str(gui.block_mesh_delta[0]), data)
