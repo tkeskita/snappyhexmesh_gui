@@ -1,6 +1,8 @@
 SnappyHexMesh GUI Addon for Blender
 ===================================
 
+.. image:: images/shmg_example_and_panel.png
+
 Introduction
 ------------
 
@@ -20,10 +22,11 @@ users to use Blender as a CFD pre-processing tool. The aim is to
   be imported to Blender, such as STL or Wavefront OBJ. Add-on is
   operated via panels in Blender's GUI.
 
-The creation of OpenFOAM dictionary files is based on string
+The add-on generates OpenFOAM dictionary files for the surface mesh
+objects in Blender. Dictionary creation is based on string
 replacements using template files located in the
 add-on's *skel* directory. The add-on is meant to work on
-latest stable and LTS releases of `Blender`_ and
+latest LTS release of `Blender`_ and latest stable
 `OpenFOAM Foundation <https://openfoam.org/>`_ version of OpenFOAM.
 
 
@@ -51,9 +54,8 @@ Installation and Start-up
 
 * It is suggested to use newest version of Blender, 
   `download Blender here <https://www.blender.org/download/>`_.
-* Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui.
-  To download add-on from Github, Select "Code", then
-  "Download ZIP".
+* Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui
+  --> Code --> Download zip.
 * Start Blender, go to "Edit" --> "Preferences" --> "Add-ons" --> "Install"
   --> open the add-on zip file.
 * Activate the "SnappyHexMesh GUI" add-on in Preferences.
@@ -86,7 +88,7 @@ After export from Blender, you should be able to run following OpenFOAM
 commands in case folder in order:
 
 * blockMesh
-* surfaceFeatures (for openfoam.org) or surfaceFeatureExtract (for openfoam.com)
+* surfaceFeatures (for openfoam.org version of OpenFOAM) or surfaceFeatureExtract (for openfoam.com version)
 * snappyHexMesh
 * checkMesh
   
@@ -114,9 +116,9 @@ information.
     (*scotch* decomposition method is the default for *decomposePar*)
   * Do Snapping Phase
   * Do Layer Addition Phase
-  * *Export Scale* is an optional scaling factor for STL geometry
-    files and convertToMeters in blockMeshDict
 
+* *Export Scale* is an optional scaling factor for STL geometry
+  files and convertToMeters in blockMeshDict.
 * *Fork* defines the fork of OpenFOAM for compatibility of generated files.
   Currently it only defines whether to produce *surfaceFeaturesDict*
   (for openfoam.org) or *surfaceFeatureExtractDict* (for
