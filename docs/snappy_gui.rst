@@ -271,7 +271,13 @@ A vessel example is located in the add-on's *example* folder called
 FAQ
 ---
 
-Q: Why Blender?
+Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
+
+A: Your inlet/outlet/other patch does not coincide with (internal)
+faces of the cells of the base block mesh. You may also need to apply
+a sufficient level of refinement.
+
+Q: Why build a SnappyHexMesh GUI on top of Blender?
 
 A: Mainly because of Blender's GUI Python API, 3D Viewport and surface
 mesh modelling tools. Blender has powerful tools for polygon surface
