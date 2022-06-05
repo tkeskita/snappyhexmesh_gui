@@ -433,8 +433,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub = col.row()
         rowsub.alignment = 'RIGHT'
         rowsub.prop(obj, "shmg_volume_type", text="Volume Refinement")
-        rowsub = col.row()
-        rowsub.prop(obj, "shmg_volume_level", text="Volume Refinement Level")
+        if obj.shmg_volume_type != "none":
+            rowsub = col.row()
+            rowsub.prop(obj, "shmg_volume_level", text="Volume Refinement Level")
         
 # Registration
 
