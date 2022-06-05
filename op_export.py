@@ -485,6 +485,10 @@ def copy_skeleton_files():
             sourcepath = os.path.join(os.path.dirname(__file__), 'skel', i)
             copyfile(sourcepath, filepath)
             l.debug("Copied skeleton file from: %s" % filepath)
+
+    # Create empty case.foam file
+    from pathlib import Path
+    Path(os.path.join(abspath, "case.foam")).touch()
     return None
 
 class OBJECT_OT_snappyhexmeshgui_apply_locrotscale(bpy.types.Operator):
