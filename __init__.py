@@ -285,7 +285,7 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.label(text="Options:")
         rowsub.prop(gui, "number_of_cpus", text="CPUs:")
         rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
-        rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
+        rowsub.prop(gui, "do_add_layers", text="", icon='CURVES_DATA')
 
         rowsub = col.row()
         rowsub.prop(gui, "openfoam_framework")
