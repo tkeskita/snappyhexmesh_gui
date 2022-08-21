@@ -6,21 +6,21 @@ SnappyHexMesh GUI Addon for Blender
 Introduction
 ------------
 
-SnappyHexMesh is a volume mesh generation tool for OpenFOAM®, the open
-source CFD (computational fluid dynamics) toolbox. SnappyHexMesh GUI
-add-on for `Blender <https://www.blender.org>`_
-("the add-on" hereafter) is meant to aid OpenFOAM
-users to use Blender as a CFD pre-processing tool. The aim is to
+This add-on turns `Blender <https://www.blender.org>`_
+into a GUI for SnappyHexMesh, a volume mesh generation tool for
+OpenFOAM®, the open source CFD (computational fluid dynamics) toolbox.
+The add-on exports a complete OpenFOAM case folder structure, with
+geometry and dictionary files, ready to run OpenFOAM commands
+including *snappyHexMesh*. The aim of the add-on is to
 
-* Ease the workflow for updating, modifying and exporting 3D surface
-  meshes to OpenFOAM.
+* Ease the workflow for importing, updating, modifying and exporting
+  3D surface meshes to OpenFOAM.
 * Allow definition of most common SnappyHexMesh settings via Blender
-  GUI, to reduce need for manual writing of OpenFOAM dictionary
+  GUI, to reduce need for manual modification of OpenFOAM dictionary
   definitions.
 * Require minimal Blender skills. Geometry can be modelled in any 3D
   modelling / CAD program which exports a surface mesh format that can
-  be imported to Blender, such as STL or Wavefront OBJ. Add-on is
-  operated via panels in Blender's GUI.
+  be imported to Blender, such as STL or Wavefront OBJ.
 
 The add-on generates OpenFOAM dictionary files for the surface mesh
 objects in Blender. Dictionary creation is based on string
@@ -52,7 +52,7 @@ Currently implemented features include:
 Installation and Start-up
 -------------------------
 
-* It is suggested to use newest version of Blender, 
+* It is suggested to use newest LTS version of Blender,
   `download Blender here <https://www.blender.org/download/>`_.
 * Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui
   --> Code --> Download zip.
@@ -81,16 +81,26 @@ Quickstart
   or model geometry directly in Blender
 * Adjust the add-on settings per object in Blender
 * Save Blender file to an empty case folder
-* Click "Export" button in the add-on to create OpenFOAM directories
+* Click **Export** button in the add-on to create OpenFOAM directories
   and files under case folder
 
 After export from Blender, you should be able to run following OpenFOAM
 commands in case folder in order:
 
-* blockMesh
-* surfaceFeatures (for openfoam.org version of OpenFOAM) or surfaceFeatureExtract (for openfoam.com version)
-* snappyHexMesh
-* checkMesh
+* ``blockMesh``
+* ``surfaceFeatures`` (for openfoam.org version of OpenFOAM) or ``surfaceFeatureExtract`` (for openfoam.com version)
+* ``snappyHexMesh``
+* ``checkMesh``
+
+You can view the final mesh using `Paraview <https://www.paraview.org>`_.
+An example iterative workflow for working the whole mesh creation
+pipeline in a case folder is:
+
+* Clean up folder in terminal: ``rm -rf 1 2 3 constant system``
+* Make modifications in Blender, save file, and click the add-on **Export** button
+* run OpenFOAM terminal commands: ``blockMesh; surfaceFeatures; snappyHexMesh``
+* Refresh Paraview to see updated results
+
   
 Panels and Settings
 -------------------
@@ -266,7 +276,7 @@ A vessel example is located in the add-on's *example* folder called
 
 .. figure:: images/example_mesh_result.png
 
-   Resulting volume mesh from SnappyHexMesh viewed in `Paraview <https://www.paraview.org>`_
+   Resulting volume mesh from SnappyHexMesh viewed in `Paraview`_
 
 FAQ
 ---
