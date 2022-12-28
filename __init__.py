@@ -279,13 +279,26 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         layout = self.layout
         scene = context.scene
         gui = scene.snappyhexmeshgui
+        icon_names = bpy.types.UILayout.bl_rna.functions["prop"].parameters["icon"].enum_items.keys()
 
         col = layout.column()
         rowsub = col.row(align=True)
         rowsub.label(text="Options:")
         rowsub.prop(gui, "number_of_cpus", text="CPUs:")
-        rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
-        rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
+
+        if 'UV_VERTEXSEL' in icon_names:
+            rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
+        else:
+            rowsub = col.row(align=True)
+            rowsub.prop(gui, "do_snapping", text="Do Snapping")
+
+        if 'HAIR' in icon_names:
+            rowsub.prop(gui, "do_add_layers", text="", icon='HAIR')
+        elif 'STRANDS' in icon_names:
+            rowsub.prop(gui, "do_add_layers", text="", icon='STRANDS')
+        else:
+            rowsub = col.row(align=True)
+            rowsub.prop(gui, "do_add_layers", text="Add Layers")
 
         rowsub = col.row()
         rowsub.prop(gui, "openfoam_framework")
@@ -317,7 +330,12 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         col = layout.column()
         rowsub = col.row(align=True)
         rowsub.operator("object.snappyhexmeshgui_export", text="Export")
-        rowsub.prop(gui, "export_stl_ascii", text="", icon='FILE_TEXT')
+
+        if 'FILE_TEXT' in icon_names:
+            rowsub.prop(gui, "export_stl_ascii", text="", icon='FILE_TEXT')
+        else:
+            rowsub = col.row(align=True)
+            rowsub.prop(gui, "export_stl_ascii", text="ASCII STL Format")
 
 
 class VIEW3D_PT_SnappyHexMeshGUI_Object_Summary(bpy.types.Panel, SnappyHexMeshGUI_ToolBar):
