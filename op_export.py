@@ -523,7 +523,7 @@ def apply_locrotscale():
     return n
 
 class OBJECT_OT_snappyhexmeshgui_clean_case_dir(bpy.types.Operator):
-    """Clean Case Directory (Remove folders 1 2 3 constant system) (SnappyHexMeshGUI)"""
+    """Clean Case Directory (Remove folders 1 2 3 constant system processor*) (SnappyHexMeshGUI)"""
     bl_idname = "object.snappyhexmeshgui_clean_case_dir"
     bl_label = "SnappyHexMeshGUI Clean Case Directory"
 
@@ -548,6 +548,13 @@ def clean_case_dir():
     abspath = bpy.path.abspath(export_path)
     l.debug ("Absolute path is %r" % abspath)
     deleted_dirs = ''
+
+    # Add processor directories for deletion, if any
+    from os import walk
+    for dirpath, directorynames, filenames in walk(abspath):
+        for dirname in directorynames:
+            if dirname.startswith("processor"):
+                dirnames.append(dirname)
 
     for i in dirnames:
         filepath = os.path.join(abspath, i)

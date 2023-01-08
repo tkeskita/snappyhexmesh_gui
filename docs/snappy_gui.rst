@@ -103,7 +103,7 @@ creation pipeline in a case folder. Meshing and reviewing the results
 is fastest when you start with a fairly large block mesh *Cell
 Length*, and tune only a few settings in the GUI at a time.
 
-* Clean up case folder by running **Clean Case Dir**, or commands in terminal: ``rm -rf 1 2 3 constant system``
+* Clean up case folder by running **Clean Case Dir**, or commands in terminal: ``rm -rf 1 2 3 constant system processor*``
 * Make modifications in Blender, save file, and click the add-on **Export** button
 * run OpenFOAM terminal commands: ``blockMesh; surfaceFeatures; snappyHexMesh``
 * Refresh Paraview to see updated mesh
@@ -157,8 +157,8 @@ information.
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
   zero coordinates are used for Location In Mesh.
-* **Clean Case Dir** command removes directory names *1, 2, 3, constant* and
-  *system* if they exist in the *Export path*. This effectively cleans
+* **Clean Case Dir** command removes directory names *1, 2, 3, constant*,
+  *system* and *processor\** if they exist in the *Export path*. This effectively cleans
   up the case folder from any lingering OpenFOAM files, so that after
   running *Export*, the case folder should contain only fresh files,
   ready for OpenFOAM.
@@ -276,8 +276,8 @@ Feedback
 `File bug report in github
 <https://github.com/tkeskita/snappyhexmesh_gui/issues>`_
 
-Example
--------
+Example and tutorial links
+--------------------------
 
 A vessel example is located in the add-on's *example* folder called
 *vessel.blend*, which showcases some of the features.
@@ -289,6 +289,12 @@ A vessel example is located in the add-on's *example* folder called
 .. figure:: images/example_mesh_result.png
 
    Resulting volume mesh from SnappyHexMesh viewed in `Paraview`_
+
+Here's a `Youtube tutorial illustrating the use of SnappyHexMesh GUI
+<https://www.youtube.com/watch?v=9XuDQOAPSL0>`_ by
+`DaveyGravy <https://www.youtube.com/@daveygravy1207>`_.
+There are also other interesting OpenFOAM related tutorial videos!
+
 
 FAQ
 ---
