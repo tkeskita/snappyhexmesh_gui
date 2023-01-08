@@ -94,13 +94,19 @@ commands in case folder in order:
 * ``checkMesh``
 
 You can view the final mesh using `Paraview <https://www.paraview.org>`_.
-An example iterative workflow for working the whole mesh creation
-pipeline in a case folder is:
 
-* Clean up folder in terminal: ``rm -rf 1 2 3 constant system``
+Iterative Workflow
+------------------
+
+Here is an example iterative workflow for working the whole mesh
+creation pipeline in a case folder. Meshing and reviewing the results
+is fastest when you start with a fairly large block mesh *Cell
+Length*, and tune only a few settings in the GUI at a time.
+
+* Clean up case folder by running **Clean Case Dir**, or commands in terminal: ``rm -rf 1 2 3 constant system``
 * Make modifications in Blender, save file, and click the add-on **Export** button
 * run OpenFOAM terminal commands: ``blockMesh; surfaceFeatures; snappyHexMesh``
-* Refresh Paraview to see updated results
+* Refresh Paraview to see updated mesh
 
   
 Panels and Settings
@@ -151,6 +157,11 @@ information.
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
   zero coordinates are used for Location In Mesh.
+* **Clean Case Dir** command removes directory names *1, 2, 3, constant* and
+  *system* if they exist in the *Export path*. This effectively cleans
+  up the case folder from any lingering OpenFOAM files, so that after
+  running *Export*, the case folder should contain only fresh files,
+  ready for OpenFOAM.
 * **Apply LocRotScale For All** is a convenience tool for Blender
   modellers, which resets the Location, Rotation and Scale properties
   of all mesh objects to zero values. It is **not necessary** to run

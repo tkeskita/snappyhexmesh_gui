@@ -522,6 +522,44 @@ def apply_locrotscale():
         n += 1
     return n
 
+class OBJECT_OT_snappyhexmeshgui_clean_case_dir(bpy.types.Operator):
+    """Clean Case Directory (Remove folders 1 2 3 constant system) (SnappyHexMeshGUI)"""
+    bl_idname = "object.snappyhexmeshgui_clean_case_dir"
+    bl_label = "SnappyHexMeshGUI Clean Case Directory"
+
+    @classmethod
+    def poll(cls, context):
+        ob = context.active_object
+        return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
+
+    def execute(self, context):
+        dirnames = clean_case_dir()
+        self.report({'INFO'}, "Deleted directories: " + dirnames)
+        return {'FINISHED'}
+
+def clean_case_dir():
+    """Removes OpenFOAM directories (if they exist) from blend file save
+    location to clean up case folder and make it ready for new export.
+    """
+
+    from shutil import rmtree
+    dirnames = ["1", "2", "3", "system", "constant"]
+    export_path = bpy.context.scene.snappyhexmeshgui.export_path
+    abspath = bpy.path.abspath(export_path)
+    l.debug ("Absolute path is %r" % abspath)
+    deleted_dirs = ''
+
+    for i in dirnames:
+        filepath = os.path.join(abspath, i)
+        if os.path.isdir(filepath):
+            rmtree(filepath)
+            deleted_dirs += i + " "
+
+    if not deleted_dirs:
+        return "None"
+    return deleted_dirs
+
+
 class OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object(bpy.types.Operator):
     """Add Location in Mesh Object (SnappyHexMeshGUI)"""
     bl_idname = "object.snappyhexmeshgui_add_location_in_mesh_object"
