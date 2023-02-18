@@ -276,6 +276,8 @@ Feedback
 `File bug report in github
 <https://github.com/tkeskita/snappyhexmesh_gui/issues>`_
 
+If you use this add-on, please star the project in GitHub!
+
 Example and tutorial links
 --------------------------
 

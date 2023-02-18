@@ -35,6 +35,10 @@ Documentation is located in docs directory of the sources and is
 viewable online at https://snappyhexmesh-gui.readthedocs.io. Please
 view the documentation for installation and usage instructions.
 
+## Feedback
+
+If you use this add-on, please star the project in GitHub!
+
 ### OpenFOAM Trade Mark Notice
 
 This offering is not approved or endorsed by OpenCFD Limited, producer
