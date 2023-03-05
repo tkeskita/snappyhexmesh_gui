@@ -83,10 +83,10 @@ Quickstart
 * Adjust the add-on settings per object in Blender
 * Save Blender file to an empty case folder
 * Click **Export** button in the add-on to create OpenFOAM directories
-  and files under case folder
+  and files under the case folder
 
 After export from Blender, you should be able to run following OpenFOAM
-commands in case folder in order:
+commands in the case folder in order:
 
 * ``blockMesh``
 * ``surfaceFeatures`` (for openfoam.org version of OpenFOAM) or ``surfaceFeatureExtract`` (for openfoam.com version)
@@ -151,7 +151,7 @@ information.
 * *Max Non-Ortho* is the volume mesh quality measure for maximum
   non-orthogonality for SnappyHexMesh. **Note:** A small value
   produces mesh that is good for the numerical solution of flow
-  equations, and a high value yields mesh that fits to surfaces better
+  equations, and a large value yields a mesh that snaps to surfaces better
   and allows better surface layer coverage (if layers are added).
 * **Add Location In Mesh Object** will add an Empty object to Blender
   scene. The coordinates of this object is applied to specify the
@@ -189,7 +189,7 @@ export:
 	   
 * *Object* row shows the name of the active object.
 * **Copy Settings to Objects** tool copies the SnappyHexMesh GUI
-  settings from *the active object* to all *selected mesh
+  settings from *the active object* (the last selected object) to all other *selected mesh
   objects*. This allows mass modification of SnappyHexMesh settings
   when dealing with numerous objects.
 * *Object Bounds [min] [max]* shows the minimum and maximum
@@ -204,7 +204,7 @@ Rest of the panel includes object settings:
 * *Include in Export* check box is used to mark which mesh objects are
   to be included in export.
 * *Type* specifies the OpenFOAM patch type for this object.
-* *Enable snapping* check box marks inclusion/exclusion of this object
+* *Enable Snapping* check box marks inclusion/exclusion of this object
   for SnappyHexMesh snapping phase.
 * *Surface Refinement Levels*, *Min* and *Max* specify the minimum and
   maximum level of cell refinements made next to the surfaces of this
@@ -231,7 +231,7 @@ Rest of the panel includes object settings:
   * boundary: Face zone is created as boundaries (unshared boundary
     faces).
 
-  Note: Face zone name is same as object name.
+  **Note:** Face zone name is same as object name.
 
 * *Cell Zone Type* defines the type of cell zones in relation to
   surface mesh, which is assumed to define a manifold surface which
@@ -253,6 +253,10 @@ Rest of the panel includes object settings:
 
 * *Volume Refinement Level* shows the number of refinements for volume refinement.
 
+  **Note:** For refinement volume objects, the typical settings
+  are: *Type:* patch, *Enable Snapping:* disabled, *Extract Feature Edges:*
+  disabled, and *Volume Refinement*: inside.
+
 Export Summary Panel
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -273,7 +277,7 @@ This panel summarizes the overall properties of export.
 Feedback
 --------
 
-`File bug report in github
+`File bug report in GitHub
 <https://github.com/tkeskita/snappyhexmesh_gui/issues>`_
 
 If you use this add-on, please star the project in GitHub!
@@ -293,9 +297,9 @@ A vessel example is located in the add-on's *example* folder called
    Resulting volume mesh from SnappyHexMesh viewed in `Paraview`_
 
 Here's a `Youtube tutorial illustrating the use of SnappyHexMesh GUI
-<https://www.youtube.com/watch?v=9XuDQOAPSL0>`_ by
-`DaveyGravy <https://www.youtube.com/@daveygravy1207>`_.
-There are also other interesting OpenFOAM related tutorial videos!
+<https://www.youtube.com/watch?v=9XuDQOAPSL0>`_ (by
+`DaveyGravy <https://www.youtube.com/@daveygravy1207>`_,
+check also the other OpenFOAM related tutorial videos!).
 
 
 FAQ
@@ -306,6 +310,20 @@ Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
 A: Your inlet/outlet/other patch does not coincide with (internal)
 faces of the cells of the base block mesh. You may also need to apply
 a sufficient level of refinement.
+
+Q: Cell zones are missing or wrong.
+
+A: Face normals are not consistent. To fix face normals, go to Edit
+Mode, select everything, and then run Mesh -> Normals -> Recalculate
+Outside.
+
+Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?
+
+A: Having a *world* patch in the final mesh is an indication that your
+surface mesh is "leaking" (extending outside the surfaces which define
+the domain volume). Leaking may be due to missing surfaces, cracks in
+the edges between surfaces, or the *Enable Snapping* option is
+disabled for an object.
 
 Q: Why build a SnappyHexMesh GUI on top of Blender?
 
