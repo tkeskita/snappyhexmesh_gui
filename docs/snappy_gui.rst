@@ -274,14 +274,6 @@ This panel summarizes the overall properties of export.
 * *Objects included* lists all the mesh objects in Blender file, which
   will be exported when *Export* tool is run.
   
-Feedback
---------
-
-`File bug report in GitHub
-<https://github.com/tkeskita/snappyhexmesh_gui/issues>`_
-
-If you use this add-on, please star the project in GitHub!
-
 Example and tutorial links
 --------------------------
 
@@ -301,31 +293,63 @@ Here's a `Youtube tutorial illustrating the use of SnappyHexMesh GUI
 `DaveyGravy <https://www.youtube.com/@daveygravy1207>`_,
 check also the other OpenFOAM related tutorial videos!).
 
+Help and Feedback
+-----------------
+
+You are free to file bug reports, ask and give advice by using
+`GitHub issues feature
+<https://github.com/tkeskita/snappyhexmesh_gui/issues>`_.
+Before asking, please try to see and run the vessel example (see
+above) to make sure it works for you as expected. Also, please check
+the FAQ section below.
+
+Please provide a Blender file (no need to include anything else) with
+a small example to illustrate your problem and describe the
+issue. Please specify which OpenFOAM variant and version you use.
+
+If you use this add-on, please star the project in GitHub!
 
 FAQ
 ---
 
-Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
+**Q: Why is my inlet/outlet/other patch cells malformed / big / not created?**
 
 A: Your inlet/outlet/other patch does not coincide with (internal)
 faces of the cells of the base block mesh. You may also need to apply
 a sufficient level of refinement.
 
-Q: Cell zones are missing or wrong.
+**Q: Cell zones are missing or wrong.**
 
 A: Face normals are not consistent. To fix face normals, go to Edit
 Mode, select everything, and then run Mesh -> Normals -> Recalculate
 Outside.
 
-Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?
+**Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?**
 
-A: Having a *world* patch in the final mesh is an indication that your
-surface mesh is "leaking" (extending outside the surfaces which define
-the domain volume). Leaking may be due to missing surfaces, cracks in
-the edges between surfaces, or the *Enable Snapping* option is
-disabled for an object.
+A: You must always include a set of surfaces (in one or more mesh
+objects) which define the outer boundaries of your
+computational domain volume. Having a *world* patch in the final mesh
+is an indication that your outer surface mesh is "leaking" (the final
+mesh is extending outside the surfaces which should define the domain
+volume). Leaking may also occur so that mesh extends inside surfaces
+that define a volume object located inside the domain.
+Leaking may be due to:
 
-Q: Why build a SnappyHexMesh GUI on top of Blender?
+* Missing surfaces (holes in surface mesh).
+* Big enough cracks (openings) exist in the edges between surfaces.
+* *Enable Snapping* option is disabled for an object
+* You may need to *Add Location In Mesh Object* to specify a point
+  which is inside the mesh domain (otherwise it is assumed that origin
+  is inside).
+* Model is too far away from origin. Since Blender uses single
+  precision floats and OpenFOAM uses double precision, it may help to
+  move the model close to origin.
+
+To find out the locations which are leaking, you must add a temporary
+additional surface object (e.g. a cube or a plane) around model parts to
+see where leaking stops.
+
+**Q: Why build a SnappyHexMesh GUI on top of Blender?**
 
 A: Mainly because of Blender's GUI Python API, 3D Viewport and surface
 mesh modelling tools. Blender has powerful tools for polygon surface
@@ -333,10 +357,23 @@ modelling and modification, and is suitable also for precision
 modelling required by engineering/scientific applications, although
 the learning curve to take advantage of all features is steep.
 
-Q: How do I learn Blender?
+**Q: How do I learn Blender?**
 
 A: See links at https://openfoamwiki.net/index.php/Blender
 
+**Q: How do I learn SnappyHexMesh and OpenFOAM?**
+
+A: See links at https://holzmann-cfd.com/community/learn-openfoam,
+https://openfoamwiki.net and https://www.cfd-online.com/Forums/openfoam/.
+
+**Q: I'm actually looking for a GUI for OpenFOAM and not just a GUI for SnappyHexMesh..**
+
+Please check `CfdOF for FreeCAD <https://github.com/jaheyns/cfdof>`_
+and `Helyx-OS <https://engys.com/products/helyx-os>`_.
+However, please be aware that OpenFOAM is developing at a rate which
+no GUI developer can match, so the features supported by GUIs will
+always be limited or potentially broken beyond supported OpenFOAM
+versions.
 
 OpenFOAM Trade Mark Notice
 --------------------------
