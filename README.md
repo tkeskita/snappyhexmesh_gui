@@ -27,7 +27,7 @@ add-on's *skel* directory. The add-on is meant to work with
 latest LTS version of [Blender](https://www.blender.org) and
 latest stable [OpenFOAM Foundation](https://openfoam.org/)
 version of OpenFOAM.
-Tested with Blender 3.3 LTS and OpenFOAM 10.
+Tested with Blender 3.6 LTS and OpenFOAM 10.
 
 ## Documentation
 
