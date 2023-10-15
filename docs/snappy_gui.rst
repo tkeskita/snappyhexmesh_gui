@@ -108,7 +108,8 @@ Length*, and tune only a few settings in the GUI at a time.
 * run OpenFOAM terminal commands: ``blockMesh; surfaceFeatures; snappyHexMesh``
 * Refresh Paraview to see updated mesh
 
-  
+Always check that the final mesh has correct scale, rotation and location.
+
 Panels and Settings
 -------------------
 
@@ -348,6 +349,17 @@ Leaking may be due to:
 To find out the locations which are leaking, you must add a temporary
 additional surface object (e.g. a cube or a plane) around model parts to
 see where leaking stops.
+
+**Q: Why is final mesh scale/rotation/placement wrong?**
+
+A: Likely because Object Location/Rotation/Scale is wrong for some
+object. If you need to do any movement/rotation/scaling when you
+import your surface meshes into Blender to get the end result correct,
+then it is good idea to use the *Apply LocRotScale for All*
+operator/button to reset the scale before continuing. If you don't use
+correct Object scale in Blender, then the measures shown in Blender are
+incorrect. It is best to fix all location/rotation/scale issues in CAD
+prior to exporting surface meshes to avoid this pitfall.
 
 **Q: Why build a SnappyHexMesh GUI on top of Blender?**
 
