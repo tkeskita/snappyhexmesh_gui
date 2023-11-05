@@ -522,7 +522,7 @@ def apply_locrotscale():
         if i.type != 'MESH':
             continue
         i.select_set(True)
-        bpy.ops.object.transform_apply(location = True, scale = True, rotation = True)
+        bpy.ops.object.transform_apply(location=True, scale=True, rotation=True, isolate_users=True)
         i.select_set(False)
         n += 1
     return n
