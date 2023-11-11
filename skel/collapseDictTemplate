@@ -1,0 +1,50 @@
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          collapseDict;
+}
+
+//_HEADER_//
+
+controlMeshQuality on;
+
+controlMeshQualityCoeffs
+{
+    maxNonOrtho     //_MAXNONORTHO_//;
+    maxBoundarySkewness 20;
+    maxInternalSkewness 4;
+    maxConcave      80;
+    minVol          1e-15;
+    minTetQuality   1e-15;
+    minArea         -1;
+    minTwist        0.02;
+    minDeterminant  0.001;
+    minFaceWeight   0.05;
+    minVolRatio     0.01;
+    minTriangleTwist -1;
+    nSmoothScale    4;
+    errorReduction  0.75;
+
+    edgeReductionFactor 0.5;
+    faceReductionFactor 0.5;
+    maximumSmoothingIterations 2;
+    maximumIterations 10;
+    maxPointErrorCount 5;
+}
+
+collapseEdgesCoeffs
+{
+    minimumEdgeLength //_MINEDGELENGTH_//;
+    maximumMergeAngle 30;
+}
+
+collapseFacesCoeffs
+{
+    initialFaceLengthFactor 0.5;
+    maxCollapseFaceToPointSideLengthCoeff 0.3;
+    allowEarlyCollapseToPoint on;
+    allowEarlyCollapseCoeff 0.2;
+    guardFraction 0.1;
+}
