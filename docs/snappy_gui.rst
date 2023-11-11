@@ -289,10 +289,14 @@ A vessel example is located in the add-on's *example* folder called
 
    Resulting volume mesh from SnappyHexMesh viewed in `Paraview`_
 
-Here's a `Youtube tutorial illustrating the use of SnappyHexMesh GUI
-<https://www.youtube.com/watch?v=9XuDQOAPSL0>`_ (by
-`DaveyGravy <https://www.youtube.com/@daveygravy1207>`_,
-check also the other OpenFOAM related tutorial videos!).
+- I made a tutorial video series `Blender for OpenFOAM users
+  <http://tkeskita.kapsi.fi/blender/>`_ which has one tutorial for
+  using SnappyHexMesh GUI
+
+- A `Youtube tutorial illustrating the use of SnappyHexMesh GUI
+  <https://www.youtube.com/watch?v=9XuDQOAPSL0>`_ (by
+  `DaveyGravy <https://www.youtube.com/@daveygravy1207>`_,
+  check also the other OpenFOAM related tutorial videos!).
 
 Help and Feedback
 -----------------
