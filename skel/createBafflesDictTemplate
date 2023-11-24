@@ -1,0 +1,15 @@
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      createBafflesDict;
+}
+
+//_HEADER_//
+
+internalFacesOnly true;
+
+baffles
+{
+//_BAFFLE_ENTRIES_//
+}

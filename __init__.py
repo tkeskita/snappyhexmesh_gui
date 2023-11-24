@@ -21,6 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
+    "version": (1, 0),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
@@ -82,6 +83,13 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         name="decomposeParDict Template Path",
         description="Path to decomposeParDict Template",
         default=os.path.join(os.path.dirname(__file__), 'skel', 'decomposeParDictTemplate'),
+        maxlen=1024,
+        subtype="FILE_PATH",
+    )
+    createbafflesdict_template_path: bpy.props.StringProperty(
+        name="createBafflesDict Template Path",
+        description="Path to createBafflesDict Template",
+        default=os.path.join(os.path.dirname(__file__), 'skel', 'createBafflesDictTemplate'),
         maxlen=1024,
         subtype="FILE_PATH",
     )

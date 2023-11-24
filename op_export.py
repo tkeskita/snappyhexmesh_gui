@@ -41,13 +41,16 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         export_path = gui.export_path
 
         # Get snappyHexMeshTemplate file
-        featuresData, blockData, snappyData, decomposepardictData = \
+        featuresData, blockData, snappyData, \
+            decomposepardictData, createbafflesdictData = \
             export_initialize(self, gui.surface_features_template_path, \
                               gui.block_mesh_template_path, \
                               gui.snappy_template_path, \
-                              gui.decomposepardict_template_path, export_path)
+                              gui.decomposepardict_template_path, \
+                              gui.createbafflesdict_template_path, \
+                              export_path)
         if featuresData is None or blockData is None or snappyData is None \
-           or decomposepardictData is None:
+           or decomposepardictData is None or createbafflesdictData is None:
             return{'FINISHED'}
 
         # Carry out replacements to templates
@@ -60,6 +63,7 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             + " because it is not visible")
             return {'FINISHED'}
         decomposepardictData = export_decomposepardict_replacements(decomposepardictData)
+        createbafflesdictData = export_createbafflesdict_replacements(createbafflesdictData)
 
         # Write surfaceFeaturesDict
         # openfoam.org uses surfaceFeaturesDict, openfoam.com surfaceFeatureExtract
@@ -98,6 +102,13 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         outfile.write(''.join(decomposepardictData))
         outfile.close()
 
+        # Write createBafflesDict
+        outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                   'system', 'createBafflesDict')
+        outfile = open(outfilename, 'w')
+        outfile.write(''.join(createbafflesdictData))
+        outfile.close()
+
         self.report({'INFO'}, "Exported %d meshes " % n \
                     + "to: %r" % export_path)
         return {'FINISHED'}
@@ -106,7 +117,9 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
 def export_initialize(self, surface_features_template_path, \
                       block_mesh_template_path, \
                       snappy_template_path, \
-                      decomposepardict_template_path, export_path):
+                      decomposepardict_template_path, \
+                      createbafflesdict_template_path, \
+                      export_path):
     """Initialization routine. Reads contents of
     surfaceFeaturesDictTemplate, blockMeshDictTemplate,
     snappyHexMeshDictTemplate and decomposeParDict files as text
@@ -118,32 +131,38 @@ def export_initialize(self, surface_features_template_path, \
     if not abspath:
         self.report({'ERROR'}, "No path set! Please save Blender file to "
                     "a case folder and try again")
-        return None, None, None, None
+        return None, None, None, None, None
     l.debug("Export path: %r" % abspath)
 
     l.debug("snappyHexMeshTemplate path: %r" % snappy_template_path)
     if not (os.path.isfile(snappy_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % snappy_template_path)
-        return None, None, None, None
+        return None, None, None, None, None
     
     l.debug("blockMeshTemplate path: %r" % block_mesh_template_path)
     if not (os.path.isfile(block_mesh_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % block_mesh_template_path)
-        return None, None, None, None
+        return None, None, None, None, None
 
     l.debug("surfaceFeaturesDictTemplate path: %r" % surface_features_template_path)
     if not (os.path.isfile(surface_features_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % surface_features_template_path)
-        return None, None, None, None
+        return None, None, None, None, None
 
     l.debug("decomposeParDictTemplate path: %r" % decomposepardict_template_path)
     if not (os.path.isfile(decomposepardict_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % decomposepardict_template_path)
-        return None, None, None, None
+        return None, None, None, None, None
+
+    l.debug("createBafflesParDictTemplate path: %r" % createbafflesdict_template_path)
+    if not (os.path.isfile(createbafflesdict_template_path)):
+        self.report({'ERROR'}, "Template not found: %r" \
+                    % createbafflesdict_template_path)
+        return None, None, None, None, None
 
     # Create folder structure if needed
     if not (os.path.isdir(abspath)):
@@ -175,7 +194,10 @@ def export_initialize(self, surface_features_template_path, \
     with open(decomposepardict_template_path, 'r') as infile:
         decomposepardictData = infile.readlines()
 
-    return featuresData, blockData, snappyData, decomposepardictData
+    with open(createbafflesdict_template_path, 'r') as infile:
+        createbafflesdictData = infile.readlines()
+
+    return featuresData, blockData, snappyData, decomposepardictData, createbafflesdictData
 
     
 def subst_value(keystr, val, data):
@@ -262,6 +284,39 @@ def export_decomposepardict_replacements(data):
     gui = bpy.context.scene.snappyhexmeshgui
     data = subst_value("HEADER", get_header_text(), data)
     data = subst_value("NCPUS", str(gui.number_of_cpus), data)
+    return data
+
+def export_createbafflesdict_replacements(data):
+    """Carry out replacements for createBafflesDict."""
+
+    data = subst_value("HEADER", get_header_text(), data)
+    d=''
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        if i.shmg_face_zone_type != 'internal':
+            continue
+
+        # Add entries of this object to createBafflesDict
+        d += "    %s\n" % i.name \
+             + "    {\n" \
+             + "        type faceZone;\n" \
+             + "        zoneName %s;\n\n" % i.name \
+             + "        patches\n        {\n" \
+             + "            owner\n            {\n" \
+             + "                name %s;\n" % i.name \
+             + "                type patch;\n" \
+             + "            }\n\n" \
+             + "            neighbour\n            {\n" \
+             + "                name %s_2;\n" % i.name \
+             + "                type patch;\n" \
+             + "            }\n" \
+             + "        }\n" \
+             + "    }\n\n"
+
+    data = subst_value("BAFFLE_ENTRIES", d, data)
     return data
 
 def export_snappy_replacements(data):

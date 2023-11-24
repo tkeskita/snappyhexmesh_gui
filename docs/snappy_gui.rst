@@ -224,12 +224,14 @@ Rest of the panel includes object settings:
 * *Face Zone Type* decides the type of face zones that are to be
   created for surface:
 
-  * none: No face zone or cell zone are to be created.
-  * internal: Face zone is created with internal faces (each face
-    is shared by two cells)
-  * baffle: Face zone is created as baffles (overlapping unshared
+  * **none**: No face zone or cell zone are to be created.
+  * **internal**: Face zone is created with internal faces (each face
+    is shared by two cells). The face zone is additionally added to
+    *createBafflesDict*, just in case you want to run *createBaffles*
+    later on to separate internal face zone into baffles.
+  * **baffle**: Face zone is created as baffles (overlapping unshared
     boundary faces).
-  * boundary: Face zone is created as boundaries (unshared boundary
+  * **boundary**: Face zone is created as boundaries (unshared boundary
     faces).
 
   **Note:** Face zone name is same as object name.
@@ -244,8 +246,9 @@ Rest of the panel includes object settings:
 
   **Note:** Cell zone name is same as object name.
   
-  **Note 2:** Cell zones requires face zones to be created as well.
-    
+  **Note 2:** Creation of a cell zone requires that face zone is also created
+  for the same object.
+
 * *Volume Refinement* specifies that some cells are to be refined accordingly:
 
   * none: No refinement.
