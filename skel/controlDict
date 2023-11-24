@@ -9,7 +9,7 @@ FoamFile
 
 application     snappyHexMesh;
 
-startFrom       startTime;
+startFrom       latestTime; // startTime;
 
 startTime       0;
 
