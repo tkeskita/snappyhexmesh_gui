@@ -528,7 +528,7 @@ def apply_locrotscale():
     return n
 
 class OBJECT_OT_snappyhexmeshgui_clean_case_dir(bpy.types.Operator):
-    """Clean Case Directory (Remove folders 1 2 3 constant system processor*) (SnappyHexMeshGUI)"""
+    """Clean Case Directory (Remove folders 1-9 constant system processor*) (SnappyHexMeshGUI)"""
     bl_idname = "object.snappyhexmeshgui_clean_case_dir"
     bl_label = "SnappyHexMeshGUI Clean Case Directory"
 
@@ -548,7 +548,7 @@ def clean_case_dir():
     """
 
     from shutil import rmtree
-    dirnames = ["1", "2", "3", "system", "constant"]
+    dirnames = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "system", "constant"]
     export_path = bpy.context.scene.snappyhexmeshgui.export_path
     abspath = bpy.path.abspath(export_path)
     l.debug ("Absolute path is %r" % abspath)
