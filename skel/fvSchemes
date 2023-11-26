@@ -7,14 +7,35 @@ FoamFile
     object      fvSchemes;
 }
 
+// The following schemes are for OpenFOAM.com displacement motion solver
+
+ddtSchemes
+{
+    default         none;
+}
+
 gradSchemes
 {
+    default         Gauss linear;
 }
 
 divSchemes
 {
+    default         none;
 }
 
 laplacianSchemes
 {
+    default         Gauss linear limited corrected 0.33;
+    laplacian(diffusivity,cellDisplacement) Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default    linear;
+}
+
+snGradSchemes
+{
+    default         limited corrected 0.33;
 }

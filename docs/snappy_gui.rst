@@ -150,10 +150,20 @@ information.
   which will be created after export by running the OpenFOAM command
   *blockMesh*.
 * *Max Non-Ortho* is the volume mesh quality measure for maximum
-  non-orthogonality for SnappyHexMesh. **Note:** A small value
-  produces mesh that is good for the numerical solution of flow
-  equations, and a large value yields a mesh that snaps to surfaces better
-  and allows better surface layer coverage (if layers are added).
+  non-orthogonality for SnappyHexMesh.
+
+.. note::
+
+  maxNonOrtho is the most important mesh quality parameter. A small
+  value produces mesh that is good for the numerical solution of flow
+  equations. However, a small value restricts snapping and addition of
+  surface layers. Meanwhile, a large value yields a mesh that snaps to
+  surfaces better and allows better surface layer coverage, but the
+  mesh may cause numerical issues for some solvers. The current
+  default setup uses a small value (35) for the snapping phase, and a
+  relaxed value (75 specified in the snappyHexMeshDictTemplate) for
+  the layer addition phase.
+
 * **Add Location In Mesh Object** will add an Empty object to Blender
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,

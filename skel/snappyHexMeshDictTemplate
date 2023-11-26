@@ -52,22 +52,41 @@ snapControls
 
 addLayersControls
 {
+    // Layer sizing
     relativeSizes   true;
     expansionRatio  1;
     finalLayerThickness 0.3;
     minThickness    0.1;
     nGrow           0;
-    featureAngle    60;
-    slipFeatureAngle 30;
-    nRelaxIter      3;
-    nSmoothSurfaceNormals 1;
-    nSmoothNormals  3;
-    nSmoothThickness 10;
+
+    // Mesh dependencies
+    featureAngle    130;
+    // mergePatchFacesAngle 45;
+    layerTerminationAngle -180; // OpenFOAM.com option
     maxFaceThicknessRatio 0.5;
-    maxThicknessToMedialRatio 0.3;
+
+    // Patch displacement
+    nSmoothSurfaceNormals 1;
+    nSmoothThickness 10;
+
+    // Medial axis analysis
     //_ANGLE_// 90;
+    maxThicknessToMedialRatio 0.3;
+    nSmoothNormals  3;
+    slipFeatureAngle 30;
+
+    // OpenFOAM.com displacement motion solver
+    // meshShrinker displacementMotionSolver;
+    // solver displacementLaplacian;
+    // displacementLaplacianCoeffs { diffusivity quadratic inverseDistance ("wall.*"); }
+
+    // Mesh shrinking
+    nRelaxIter      3;
     nBufferCellsNoExtrude 0;
     nLayerIter      50;
+    nRelaxedIter    0;
+    nOuterIter      3; // OpenFOAM.com option
+
     layers
     {
 //_LAYERS_//
@@ -77,6 +96,7 @@ addLayersControls
 meshQualityControls
 {
     maxNonOrtho     //_MAXNONORTHO_//;
+    relaxed { maxNonOrtho 75; } // for layer addition
     maxBoundarySkewness 20;
     maxInternalSkewness 4;
     maxConcave      80;

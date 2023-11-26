@@ -6,3 +6,16 @@ FoamFile
     location    "system";
     object      fvSolution;
 }
+
+// OpenFOAM.com displacement motion solver
+
+solvers
+{
+    cellDisplacement
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-08;
+        relTol          0;
+    }
+}
