@@ -96,7 +96,7 @@ addLayersControls
 meshQualityControls
 {
     maxNonOrtho     //_MAXNONORTHO_//;
-    relaxed { maxNonOrtho 75; } // for layer addition
+    relaxed { maxNonOrtho //_RELAXEDMAXNONORTHO_//; } // for layer addition
     maxBoundarySkewness 20;
     maxInternalSkewness 4;
     maxConcave      80;

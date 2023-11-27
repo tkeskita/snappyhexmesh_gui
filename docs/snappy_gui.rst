@@ -161,9 +161,12 @@ information.
   surfaces better and allows better surface layer coverage, but the
   mesh may cause numerical issues for some solvers. The current
   default setup uses a small value (35) for the snapping phase, and a
-  relaxed value (75 specified in the snappyHexMeshDictTemplate) for
+  large value (75) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
 
+* *Relaxed Max Non-Ortho* is the maximum non-orthogonality applied only
+  for the Layer Addition phase. This option is visible only if
+  *Do Layer Addition Phase* option is enabled.
 * **Add Location In Mesh Object** will add an Empty object to Blender
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
@@ -228,7 +231,7 @@ Rest of the panel includes object settings:
 * *Feature Edge Level* defines a separate cell refinement level for
   Feature Edges.
 * *Surface Layers* specifies the number of surface layers that are to
-  be added to surfaces of this object. Addition of surface layers also
+  be added to surfaces of this object. Addition of surface layers
   requires that the *Do Layer Addition Phase* option icon at top is
   activated.
 * *Face Zone Type* decides the type of face zones that are to be

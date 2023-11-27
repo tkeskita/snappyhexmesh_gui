@@ -346,6 +346,7 @@ def export_snappy_replacements(data):
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
     data = subst_value("MAXNONORTHO", str(gui.max_non_ortho), data)
+    data = subst_value("RELAXEDMAXNONORTHO", str(gui.relaxed_max_non_ortho), data)
     if framework == 'openfoam.org':
         data = subst_value("ANGLE","minMedianAxisAngle",data)
     else:

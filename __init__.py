@@ -162,6 +162,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default=35,
         min=1, max=180,
     )
+    relaxed_max_non_ortho: bpy.props.IntProperty(
+        name="Relaxed Max Non-Ortho",
+        description="Relaxed Maximum Allowed Non-Orthogonality for Layer Addition Phase",
+        default=75,
+        min=1, max=180,
+    )
 
 # Object specific parameters
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
@@ -330,6 +336,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub = col.row()
         rowsub.label(text="Max Non-Ortho")
         rowsub.prop(gui, "max_non_ortho", text="")
+        if gui.do_add_layers:
+            rowsub = col.row()
+            rowsub.label(text="Layer Max Non-Ortho")
+            rowsub.prop(gui, "relaxed_max_non_ortho", text="")
 
         row = layout.row()
         row.operator("object.snappyhexmeshgui_clean_case_dir", text="Clean Case Dir")
@@ -450,8 +460,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub.prop(obj, "shmg_include_feature_extraction", text="Extract Feature Edges")
         rowsub = col.row()
         rowsub.prop(obj, "shmg_feature_edge_level", text="Feature Edge Level")
-        rowsub = col.row()
-        rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
+        if gui.do_add_layers:
+            rowsub = col.row()
+            rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
         rowsub = col.row()
         rowsub.alignment = 'RIGHT'
         rowsub.prop(obj, "shmg_face_zone_type", text="Face Zone Type")
