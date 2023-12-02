@@ -92,6 +92,7 @@ commands in the case folder in order:
 * ``surfaceFeatures`` (for openfoam.org version of OpenFOAM) or ``surfaceFeatureExtract`` (for openfoam.com version)
 * ``snappyHexMesh``
 * ``checkMesh``
+* Optionally run ``postProcess -time '1:'`` to generate cell center coordinate and cell volume fields
 
 You can view the final mesh using `Paraview <https://www.paraview.org>`_.
 

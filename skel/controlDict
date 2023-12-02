@@ -36,3 +36,11 @@ timeFormat      general;
 timePrecision   6;
 
 runTimeModifiable yes;
+
+functions
+{
+    // Write cell center coordinates and cell volume as fields by running
+    // postProcess -time '1:'
+    #includeFunc writeCellCentres
+    #includeFunc writeCellVolumes
+}
