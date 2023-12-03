@@ -54,9 +54,9 @@ addLayersControls
 {
     // Layer sizing
     relativeSizes   true;
-    expansionRatio  1;
-    finalLayerThickness 0.3;
-    minThickness    0.1;
+    expansionRatio  //_EXPANSION_RATIO_//;
+    finalLayerThickness //_FINAL_THICKNESS_//;
+    minThickness    //_MIN_THICKNESS_//;
     nGrow           0;
 
     // Mesh dependencies

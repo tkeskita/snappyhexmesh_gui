@@ -95,7 +95,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     )
     export_path: bpy.props.StringProperty(
         name="Export Path",
-        description="Path to Export Case Files",
+        description="Path to Export Case Files. '//' means the folder where Blender file is saved",
         default="//",
         maxlen=1024,
         subtype="DIR_PATH",
@@ -167,6 +167,24 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         description="Relaxed Maximum Allowed Non-Orthogonality for Layer Addition Phase",
         default=75,
         min=1, max=180,
+    )
+    surface_layer_expansion_ratio: bpy.props.FloatProperty(
+        name="Expansion Ratio",
+        description="Layer Thickness Expansion Ratio",
+        default=1.0,
+        min=1e-2, max=1e2
+    )
+    surface_layer_final_thickness: bpy.props.FloatProperty(
+        name="Final Thickness",
+        description="Relative Thickness for Final Layer",
+        default=0.3,
+        min=1e-2, max=1.0
+    )
+    surface_layer_minimum_thickness: bpy.props.FloatProperty(
+        name="Min Thickness",
+        description="Relative Minimum Thickness for Layer",
+        default=0.1,
+        min=1e-5, max=1.0
     )
 
 # Object specific parameters
@@ -337,9 +355,20 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.label(text="Max Non-Ortho")
         rowsub.prop(gui, "max_non_ortho", text="")
         if gui.do_add_layers:
+            rowsub = col.row(align=True)
+            rowsub.label(text="Layer Addition Options:")
             rowsub = col.row()
-            rowsub.label(text="Layer Max Non-Ortho")
+            rowsub.label(text="Relaxed Max Non-Ortho")
             rowsub.prop(gui, "relaxed_max_non_ortho", text="")
+            rowsub = col.row()
+            rowsub.label(text="Expansion Ratio")
+            rowsub.prop(gui, "surface_layer_expansion_ratio", text="")
+            rowsub = col.row()
+            rowsub.label(text="Final Thickness")
+            rowsub.prop(gui, "surface_layer_final_thickness", text="")
+            rowsub = col.row()
+            rowsub.label(text="Min Thickness")
+            rowsub.prop(gui, "surface_layer_minimum_thickness", text="")
 
         row = layout.row()
         row.operator("object.snappyhexmeshgui_clean_case_dir", text="Clean Case Dir")

@@ -347,6 +347,10 @@ def export_snappy_replacements(data):
 
     data = subst_value("MAXNONORTHO", str(gui.max_non_ortho), data)
     data = subst_value("RELAXEDMAXNONORTHO", str(gui.relaxed_max_non_ortho), data)
+    data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)
+    data = subst_value("FINAL_THICKNESS", "%g" % gui.surface_layer_final_thickness, data)
+    data = subst_value("MIN_THICKNESS", "%g" % gui.surface_layer_minimum_thickness, data)
+
     if framework == 'openfoam.org':
         data = subst_value("ANGLE","minMedianAxisAngle",data)
     else:

@@ -165,18 +165,29 @@ information.
   large value (75) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
 
+The following Layer Addition Options are visible only if
+*Do Layer Addition Phase* option is enabled:
+
 * *Relaxed Max Non-Ortho* is the maximum non-orthogonality applied only
-  for the Layer Addition phase. This option is visible only if
-  *Do Layer Addition Phase* option is enabled.
+  for the Layer Addition phase.
+* *Expansion Ratio* is ratio of layer thicknesses. Value larger than
+  one will result in increasing layer thickness (from walls inwards).
+* *Final Thickness* is the relative ratio of the final layer thickness
+  to the base cell side length.
+* *Min Thickness* is the minimum accepted relative layer thickness for
+  any layer.
+
+The panel buttons launch the following operators:
+
+* **Clean Case Dir** command removes directory names *1-9, constant*,
+  *system* and *processor\** if they exist in the *Export path*. This
+  effectively cleans up the case folder from any lingering OpenFOAM
+  files, so that after running *Export*, the case folder should
+  contain only fresh files, ready for OpenFOAM.
 * **Add Location In Mesh Object** will add an Empty object to Blender
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
   zero coordinates are used for Location In Mesh.
-* **Clean Case Dir** command removes directory names *1, 2, 3, constant*,
-  *system* and *processor\** if they exist in the *Export path*. This effectively cleans
-  up the case folder from any lingering OpenFOAM files, so that after
-  running *Export*, the case folder should contain only fresh files,
-  ready for OpenFOAM.
 * **Apply LocRotScale For All** is a convenience tool for Blender
   modellers, which resets the Location, Rotation and Scale properties
   of all mesh objects to zero values. It is **not necessary** to run
