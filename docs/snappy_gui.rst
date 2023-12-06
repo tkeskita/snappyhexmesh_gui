@@ -351,11 +351,24 @@ A: Your inlet/outlet/other patch does not coincide with (internal)
 faces of the cells of the base block mesh. You may also need to apply
 a sufficient level of refinement.
 
-**Q: Cell zones are missing or wrong.**
+**Q: Why are some cell zones missing or wrong?**
 
-A: Face normals are not consistent. To fix face normals, go to Edit
-Mode, select everything, and then run Mesh -> Normals -> Recalculate
-Outside.
+A: Face normals are not consistent, or they are flipped. To fix face
+normals, go to Edit Mode, select everything, and then run Mesh ->
+Normals -> Recalculate Outside or Recalculate Inside, depending on
+which side of the mesh surface is meant to be "inside" of the cell
+zone.
+
+You can enable Face Orientation Overlay in Blender to visualize face
+normal direction by color. Red color means that "inside direction" is
+towards you, and blue color means that the "outside direction"
+(the face normal direction) is towards you.
+
+**Q: Why does a surface include faces in two different patches or face zones?**
+
+A: Your case probably includes overlapping surfaces in two different
+mesh objects. Remove the overlapping surfaces. See OpenFOAM tutorial
+`heatTransfer/chtMultiRegionFoam/shellAndTubeHeatExchanger` for an example.
 
 **Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?**
 
