@@ -127,14 +127,12 @@ This panel contains overall settings and tool buttons.
 You can hover mouse cursor over fields to see tool tips for more
 information.
 
-.. image:: images/shmg_panel_main.png
-
 * *Options* with CPU count and two toggle icons:
 
   * *CPUs* specifies the number of cores for *decomposeParDict*
     (*scotch* decomposition method is the default for *decomposePar*)
-  * Do Snapping Phase
-  * Do Layer Addition Phase
+  * *Do Snapping Phase*
+  * *Do Layer Addition Phase*
 
 * *Export Scale* is an optional scaling factor for STL geometry
   files and convertToMeters in blockMeshDict.
@@ -206,9 +204,6 @@ Object Settings Panel
 ^^^^^^^^^^^^^^^^^^^^^
 
 This panel shows settings for the active (selected) mesh object.
-
-.. image:: images/shmg_panel_object.png
-
 The panel top part shows information about the object. These
 information are also added as comments in snappyHexMeshDict upon
 export:
@@ -309,13 +304,13 @@ Example and tutorial links
 A vessel example is located in the add-on's *example* folder called
 *vessel.blend*, which showcases some of the features.
 
-.. figure:: images/example_geo.png
+.. figure:: images/shmg_example_and_panel.png
 
    Vessel geometry, wall, zone and refinement volumes in surface mesh format viewed in `Blender`_
 
 .. figure:: images/example_mesh_result.png
 
-   Resulting volume mesh from SnappyHexMesh viewed in `Paraview`_
+   Resulting volume mesh (snapped mesh without layers) from SnappyHexMesh viewed in `Paraview`_
 
 - I made a tutorial video series `Blender for OpenFOAM users
   <http://tkeskita.kapsi.fi/blender/>`_ which has one tutorial for
