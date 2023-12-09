@@ -8,6 +8,12 @@ FoamFile
 
 //_HEADER_//
 
+// Details about SnappyHexMesh parameters can be found in annotated caseDicts:
+// - For openfoam.org (development version), see
+//   https://github.com/OpenFOAM/OpenFOAM-dev/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
+// - For openfoam.com (development version), see
+//   https://develop.openfoam.com/Development/openfoam/-/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
+
 castellatedMesh //_DO_CASTELLATION_//;
 snap            //_DO_SNAP_//;
 addLayers       //_DO_ADD_LAYERS_//;
@@ -61,7 +67,7 @@ addLayersControls
 
     // Mesh dependencies
     featureAngle    130;
-    // mergePatchFacesAngle 45;
+    mergePatchFacesAngle 45; // OpenFOAM.com option
     layerTerminationAngle -180; // OpenFOAM.com option
     maxFaceThicknessRatio 0.5;
 
