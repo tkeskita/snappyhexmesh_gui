@@ -176,7 +176,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     surface_layer_expansion_ratio: bpy.props.FloatProperty(
         name="Expansion Ratio",
         description="Layer Thickness Expansion Ratio",
-        default=1.0,
+        default=1.3,
         min=1e-2, max=1e2
     )
     surface_layer_final_thickness: bpy.props.FloatProperty(

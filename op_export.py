@@ -242,7 +242,7 @@ def export_surface_features_replacements(data, framework):
             d += "%s.stl\n{\n    extractionMethod extractFromSurface;\n    extractFromSurfaceCoeffs { includedAngle 150; }\n    writeObj yes;\n}\n\n" % i.name
     if framework == 'openfoam.org':
         data = subst_value("FEATURESURFACES", "\nsurfaces\n(\n" + d + \
-                           ");\n\nincludedAngle   150;\n", data)
+                           ");\n\nincludedAngle 150;\nwriteObj yes;\n", data)
     else:
         data = subst_value("FEATURESURFACES", d, data)
 		
