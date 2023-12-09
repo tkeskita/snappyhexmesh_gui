@@ -22,7 +22,7 @@ addLayers       //_DO_ADD_LAYERS_//;
 
 castellatedMeshControls
 {
-    maxLocalCells   10000000;
+    maxLocalCells   100000;
     maxGlobalCells  10000000;
     minRefinementCells 10;
     maxLoadUnbalance 0.1;
