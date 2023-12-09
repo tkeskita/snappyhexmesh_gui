@@ -131,6 +131,7 @@ information.
 
   * *CPUs* specifies the number of cores for *decomposeParDict*
     (*scotch* decomposition method is the default for *decomposePar*)
+  * *Do Castellation Phase*
   * *Do Snapping Phase*
   * *Do Layer Addition Phase*
 

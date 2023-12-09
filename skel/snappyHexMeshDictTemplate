@@ -8,7 +8,7 @@ FoamFile
 
 //_HEADER_//
 
-castellatedMesh true;
+castellatedMesh //_DO_CASTELLATION_//;
 snap            //_DO_SNAP_//;
 addLayers       //_DO_ADD_LAYERS_//;
 

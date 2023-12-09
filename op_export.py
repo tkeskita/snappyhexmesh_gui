@@ -329,6 +329,7 @@ def export_snappy_replacements(data):
 
     data = subst_value("HEADER", get_header_text(), data)
     
+    data = subst_value("DO_CASTELLATION", str(gui.do_castellation).lower(), data)
     data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
     data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
 

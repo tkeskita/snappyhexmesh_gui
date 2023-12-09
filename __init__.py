@@ -111,6 +111,11 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default=1,
         min=1,
     )
+    do_castellation: bpy.props.BoolProperty(
+        name="Castellation Phase",
+        description="Do Castellation Phase",
+        default=True,
+    )
     do_snapping: bpy.props.BoolProperty(
         name="Snapping Phase",
         description="Do Snapping Phase",
@@ -317,6 +322,12 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub = col.row(align=True)
         rowsub.label(text="Options:")
         rowsub.prop(gui, "number_of_cpus", text="CPUs:")
+
+        if 'MOD_MULTIRES' in icon_names:
+            rowsub.prop(gui, "do_castellation", text="", icon='MOD_MULTIRES')
+        else:
+            rowsub = col.row(align=True)
+            rowsub.prop(gui, "do_castellation", text="Do Castellation")
 
         if 'UV_VERTEXSEL' in icon_names:
             rowsub.prop(gui, "do_snapping", text="", icon='UV_VERTEXSEL')
