@@ -351,6 +351,7 @@ def export_snappy_replacements(data):
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)
     data = subst_value("FINAL_THICKNESS", "%g" % gui.surface_layer_final_thickness, data)
     data = subst_value("MIN_THICKNESS", "%g" % gui.surface_layer_minimum_thickness, data)
+    data = subst_value("SHRINKING_OUTER_ITER", str(get_shrinking_outer_iter()), data)
 
     if framework == 'openfoam.org':
         data = subst_value("ANGLE","minMedianAxisAngle",data)
@@ -358,6 +359,25 @@ def export_snappy_replacements(data):
         data = subst_value("ANGLE","minMedialAxisAngle",data)
 
     return n, data
+
+def get_shrinking_outer_iter():
+    """Calculates a value for nOuterIter for layer addition phase.
+    """
+
+    from math import ceil
+    max_value = 0;
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        if i.shmg_surface_layers > max_value:
+            max_value = i.shmg_surface_layers
+
+    # Divide max_value by two as a compromise. Using max_value as such
+    # would improve the layer coverage slightly, but then the layer
+    # addition will become very slow.
+    return ceil(max_value / 2.0)
 
 def export_geometries():
     """Creates geometry entries for snappyHexMeshDict and

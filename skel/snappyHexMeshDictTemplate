@@ -89,9 +89,9 @@ addLayersControls
     // Mesh shrinking
     nRelaxIter      3;
     nBufferCellsNoExtrude 0;
-    nLayerIter      50;
+    nLayerIter      100;
     nRelaxedIter    0;
-    nOuterIter      3; // OpenFOAM.com option
+    nOuterIter      //_SHRINKING_OUTER_ITER_//; // OpenFOAM.com option
 
     layers
     {
