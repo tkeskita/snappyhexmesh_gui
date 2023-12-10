@@ -240,8 +240,9 @@ Rest of the panel includes object settings:
   Feature Edges.
 * *Surface Layers* specifies the number of surface layers that are to
   be added to surfaces of this object. Addition of surface layers
-  requires that the *Do Layer Addition Phase* option icon at top is
-  activated.
+  requires that the *Do Layer Addition Phase* option (icon at GUI top)
+  is activated. Default value -1 means that no surface layers are
+  specified. Value zero means that no layers are allowed.
 * *Face Zone Type* decides the type of face zones that are to be
   created for surface:
 

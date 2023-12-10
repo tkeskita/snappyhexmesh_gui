@@ -225,8 +225,8 @@ bpy.types.Object.shmg_feature_edge_level = bpy.props.IntProperty(
 )
 bpy.types.Object.shmg_surface_layers = bpy.props.IntProperty(
     name="Number of Surface Layers",
-    description="Number of Surface Layers for Surface",
-    default=0, min=0, max=10,
+    description="Number of Surface Layers for Surface. Value -1 means Not Specified, 0 means No Layers Allowed",
+    default=-1, min=-1, max=100,
 )
 bpy.types.Object.shmg_patch_info_type = bpy.props.EnumProperty(
     name="Surface Type",

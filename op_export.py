@@ -530,10 +530,11 @@ def export_surface_layers():
             continue
         if not i.shmg_include_in_export:
             continue
-        d += "        " + str(i.name) + "\n" \
-             + "        {\n " \
-             + "            nSurfaceLayers %d;\n" % i.shmg_surface_layers \
-             + "        }\n"
+        if i.shmg_surface_layers > 0:
+            d += "        " + str(i.name) + "\n" \
+                 + "        {\n " \
+                 + "            nSurfaceLayers %d;\n" % i.shmg_surface_layers \
+                 + "        }\n"
     return d
 
 def copy_skeleton_files():
