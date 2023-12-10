@@ -154,7 +154,7 @@ information.
 
 .. note::
 
-  maxNonOrtho is the most important mesh quality parameter. A small
+  *Max Non-Ortho* is the most important mesh quality parameter. A small
   value produces mesh that is good for the numerical solution of flow
   equations. However, a small value restricts snapping and addition of
   surface layers. Meanwhile, a large value yields a mesh that snaps to
@@ -176,6 +176,16 @@ The following Layer Addition Options are visible only if
 * *Min Thickness* is the minimum accepted relative layer thickness for
   any layer.
 
+.. tip::
+
+  Layer addition seems to work better with openfoam.com version of
+  *snappyHexMesh* than with the openfoam.org version. For openfoam.org
+  version, you can try to add layers incrementally, only two layers at
+  a time. To do that, disable *Do Castellation Phase* and
+  *Do Snapping Phase* options, modify the *Final Thickness* and
+  *Min Thickness* parameters, *Export*, and then run *snappyHexMesh*
+  again.
+
 The panel buttons launch the following operators:
 
 * **Clean Case Dir** command removes directory names *1-9, constant*,
@@ -187,13 +197,12 @@ The panel buttons launch the following operators:
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
   zero coordinates are used for Location In Mesh.
-* **Apply LocRotScale For All** is a convenience tool for Blender
-  modellers, which resets the Location, Rotation and Scale properties
-  of all mesh objects to zero values. It is **not necessary** to run
-  this tool to get correct location, rotation and scaling of the mesh
-  in export. It is safe to ignore this tool, unless you use special
-  Blender modelling features whose operation depends on object
-  location, rotation and scale (e.g. Modifiers).
+* **Apply LocRotScale For All** resets the Object Transformation
+  Properties (Location, Rotation and Scale) of all mesh objects to
+  default values. This makes measurement values always unambiguous,
+  regardless of whether you have the Local or Global Value option
+  enabled. It is suggested to run this tool before mesh modifications
+  to avoid possibility of accidentally inputting wrong values.
 * **Export** tool creates and saves the OpenFOAM case files under
   *Export path* using the overall settings in this panel and Object
   Settings for each mesh object included in the export.
@@ -356,7 +365,11 @@ Normals -> Recalculate Outside or Recalculate Inside, depending on
 which side of the mesh surface is meant to be "inside" of the cell
 zone.
 
-You can enable Face Orientation Overlay in Blender to visualize face
+For openfoam.com version, cell zone surfaces should enclose the whole
+cell zone volume, while openfoam.org version needs only the surfaces
+separating the cell zone from outside.
+
+Tip: You can enable Face Orientation Overlay in Blender to visualize face
 normal direction by color. Red color means that "inside direction" is
 towards you, and blue color means that the "outside direction"
 (the face normal direction) is towards you.
