@@ -26,8 +26,9 @@ replacements using template files located in the
 add-on's *skel* directory. The add-on is meant to work with
 latest LTS version of [Blender](https://www.blender.org) and
 latest stable [OpenFOAM Foundation](https://openfoam.org/)
+or [OpenFOAM.com](https://www.openfoam.com/)
 version of OpenFOAM.
-Tested with Blender 3.6 LTS and OpenFOAM 10.
+Tested with Blender 3.6.
 
 ## Documentation
 
