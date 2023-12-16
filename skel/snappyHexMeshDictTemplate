@@ -13,6 +13,7 @@ FoamFile
 //   https://github.com/OpenFOAM/OpenFOAM-dev/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
 // - For openfoam.com (development version), see
 //   https://develop.openfoam.com/Development/openfoam/-/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
+// See also links in https://openfoamwiki.net/index.php/SnappyHexMesh
 
 castellatedMesh //_DO_CASTELLATION_//;
 snap            //_DO_SNAP_//;
@@ -47,7 +48,7 @@ castellatedMeshControls
 snapControls
 {
     nSmoothPatch    3;
-    tolerance       2;
+    tolerance       2.0;
     nSolveIter      300;
     nRelaxIter      10;
     nFeatureSnapIter 10;
@@ -66,30 +67,31 @@ addLayersControls
     nGrow           0;
 
     // Mesh dependencies
-    featureAngle    130;
+    featureAngle    //_LAYER_FEATURE_ANGLE_//;
     mergePatchFacesAngle 45; // OpenFOAM.com option
     layerTerminationAngle -180; // OpenFOAM.com option
     maxFaceThicknessRatio 0.5;
 
-    // Patch displacement
-    nSmoothSurfaceNormals 1;
+    // Mesh displacement iterations
+    nSmoothSurfaceNormals //_NSMOOTH_SURFACE_NORMALS_//;
     nSmoothThickness 10;
+    nSmoothNormals  0;
+    nSmoothDisplacement 100;
 
     // Medial axis analysis
     //_ANGLE_// 90;
-    maxThicknessToMedialRatio 0.3;
-    nSmoothNormals  3;
+    maxThicknessToMedialRatio 0.9;
     slipFeatureAngle 30;
+    nRelaxIter      1;
 
     // OpenFOAM.com displacement motion solver
     // meshShrinker displacementMotionSolver;
     // solver displacementLaplacian;
     // displacementLaplacianCoeffs { diffusivity quadratic inverseDistance ("wall.*"); }
 
-    // Mesh shrinking
-    nRelaxIter      3;
+    // Mesh shrinking overall settings
     nBufferCellsNoExtrude 0;
-    nLayerIter      100;
+    nLayerIter      50;
     nRelaxedIter    0;
     nOuterIter      //_SHRINKING_OUTER_ITER_//; // OpenFOAM.com option
 

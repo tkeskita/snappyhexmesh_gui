@@ -173,6 +173,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default=75,
         min=1, max=180,
     )
+    surface_layer_feature_angle: bpy.props.IntProperty(
+        name="Layer Feature Angle",
+        description="Feature Angle for Addition of Layers. Small value (e.g. 45) avoids creating layers in corners, large value covers also corners",
+        default=130,
+        min=1, max=180
+    )
     surface_layer_expansion_ratio: bpy.props.FloatProperty(
         name="Expansion Ratio",
         description="Layer Thickness Expansion Ratio",
@@ -188,7 +194,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     surface_layer_minimum_thickness: bpy.props.FloatProperty(
         name="Min Thickness",
         description="Relative Minimum Thickness for Layer",
-        default=0.1,
+        default=0.01,
         min=1e-5, max=1.0
     )
 
@@ -371,6 +377,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub = col.row()
             rowsub.label(text="Relaxed Max Non-Ortho")
             rowsub.prop(gui, "relaxed_max_non_ortho", text="")
+            rowsub = col.row()
+            rowsub.label(text="Feature Angle")
+            rowsub.prop(gui, "surface_layer_feature_angle", text="")
             rowsub = col.row()
             rowsub.label(text="Expansion Ratio")
             rowsub.prop(gui, "surface_layer_expansion_ratio", text="")

@@ -348,6 +348,8 @@ def export_snappy_replacements(data):
 
     data = subst_value("MAXNONORTHO", str(gui.max_non_ortho), data)
     data = subst_value("RELAXEDMAXNONORTHO", str(gui.relaxed_max_non_ortho), data)
+    data = subst_value("LAYER_FEATURE_ANGLE", "%g" % gui.surface_layer_feature_angle, data)
+    data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)
     data = subst_value("FINAL_THICKNESS", "%g" % gui.surface_layer_final_thickness, data)
     data = subst_value("MIN_THICKNESS", "%g" % gui.surface_layer_minimum_thickness, data)
@@ -360,11 +362,10 @@ def export_snappy_replacements(data):
 
     return n, data
 
-def get_shrinking_outer_iter():
-    """Calculates a value for nOuterIter for layer addition phase.
+def get_max_number_of_layers():
+    """Help function to calculate maximum number of layers.
     """
 
-    from math import ceil
     max_value = 0;
     for i in bpy.data.objects:
         if i.type != 'MESH':
@@ -373,6 +374,23 @@ def get_shrinking_outer_iter():
             continue
         if i.shmg_surface_layers > max_value:
             max_value = i.shmg_surface_layers
+    return max_value
+
+def get_nsmooth_surface_normals():
+    """Calculates a value for nSmoothSurfaceNormals for layer addition phase.
+    Looks like 3 times number of maximum layers works nicely.
+    """
+
+    max_value = get_max_number_of_layers()
+    return (3 * max_value)
+
+def get_shrinking_outer_iter():
+    """Calculates a value for nOuterIter for layer addition phase.
+    """
+
+    from math import ceil
+    # Maximum number of layers
+    max_value = get_max_number_of_layers()
 
     # Divide max_value by two as a compromise. Using max_value as such
     # would improve the layer coverage slightly, but then the layer

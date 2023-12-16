@@ -167,11 +167,21 @@ information.
   the layer addition phase.
 
 The following Layer Addition Options are visible only if
-*Do Layer Addition Phase* option is enabled:
+*Do Layer Addition Phase* option is enabled.
+
+.. warning::
+
+   Addition of layers may create a mesh which causes numerical issues
+   for some solvers.
 
 * *Relaxed Max Non-Ortho* is the maximum non-orthogonality applied only
   for the Layer Addition phase.
-* *Expansion Ratio* is ratio of layer thicknesses. Value larger than
+* *Feature Angle* defines the edge angle for feature detection. When
+  angle is larger than this value, layers are collapsed (removed) at
+  the edge. This affects layer building near corners. A large value
+  creates layers which fill sharp corners, while a low value removes
+  layers near corners.
+* *Expansion Ratio* is the ratio of layer target thicknesses. Value larger than
   one will result in increasing layer thickness (from walls inwards).
 * *Final Thickness* is the relative ratio of the final layer thickness
   to the base cell side length.
