@@ -166,7 +166,7 @@ information.
   large value (75) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
 
-The following Layer Addition Options are visible only if
+The following Layer Addition Global Options are visible only if
 *Do Layer Addition Phase* option is enabled.
 
 .. warning::
@@ -259,11 +259,6 @@ Rest of the panel includes object settings:
   Edge Snapping in SnappyHexMesh.
 * *Feature Edge Level* defines a separate cell refinement level for
   Feature Edges.
-* *Surface Layers* specifies the number of surface layers that are to
-  be added to surfaces of this object. Addition of surface layers
-  requires that the *Do Layer Addition Phase* option (icon at GUI top)
-  is activated. Default value -1 means that no surface layers are
-  specified. Value zero means that no layers are allowed.
 * *Face Zone Type* decides the type of face zones that are to be
   created for surface:
 
@@ -303,6 +298,30 @@ Rest of the panel includes object settings:
   **Note:** For refinement volume objects, the typical settings
   are: *Type:* patch, *Enable Snapping:* disabled, *Extract Feature Edges:*
   disabled, and *Volume Refinement*: inside.
+
+The following Layer Addition Settings are visible only if
+*Do Layer Addition Phase* option is enabled.
+
+* *Dict File Number* decides which *snappyHexMeshDict* file this
+  Object will be added for layer addition. Value 1 means that layers
+  for this Object surfaces will be specified in the default
+  *snappyHexMeshDict* file. Values larger than one will create
+  additional *snappyHexMeshX* files, where *X* is the *Dict File
+  Number*. This allows additional layers to be added with consequent
+  runs after the main **snappyHexMesh** run, by commands like
+  **snappyHexMesh -dict system/snappyHexMeshDict2**. This is useful
+  for creating intersecting layer patterns. In the cube example below,
+  all three opposite cube face pairs have been separated, and layered in
+  three separate *snappyHexMesh* runs.
+
+  .. image:: images/shmg_intersecting_layers_on_a_cube.png
+
+* *Surface Layers* specifies the number of surface layers that are to
+  be added to surfaces of this Object. Addition of surface layers
+  requires that the *Do Layer Addition Phase* option (icon at GUI top)
+  is activated. Default value -1 means that no surface layers are
+  specified. Value zero means that no layers are allowed.
+
 
 Export Summary Panel
 ^^^^^^^^^^^^^^^^^^^^

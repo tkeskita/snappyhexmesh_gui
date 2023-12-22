@@ -21,7 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
-    "version": (1, 1),
+    "version": (1, 2),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
@@ -234,6 +234,11 @@ bpy.types.Object.shmg_surface_layers = bpy.props.IntProperty(
     description="Number of Surface Layers for Surface. Value -1 means Not Specified, 0 means No Layers Allowed",
     default=-1, min=-1, max=100,
 )
+bpy.types.Object.shmg_dict_number = bpy.props.IntProperty(
+    name="Dict File Number",
+    description="Specifies Which snappyHexMeshDict File This Layer is Added To. Value 1 means the default snappyHexMeshDict, value 2 creates snappyHexMeshDict2 etc",
+    default=1, min=1, max=100,
+)
 bpy.types.Object.shmg_patch_info_type = bpy.props.EnumProperty(
     name="Surface Type",
     description="Patch Type for Surface",
@@ -373,7 +378,7 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.prop(gui, "max_non_ortho", text="")
         if gui.do_add_layers:
             rowsub = col.row(align=True)
-            rowsub.label(text="Layer Addition Options:")
+            rowsub.label(text="Layer Addition Global Options:")
             rowsub = col.row()
             rowsub.label(text="Relaxed Max Non-Ortho")
             rowsub.prop(gui, "relaxed_max_non_ortho", text="")
@@ -509,9 +514,6 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub.prop(obj, "shmg_include_feature_extraction", text="Extract Feature Edges")
         rowsub = col.row()
         rowsub.prop(obj, "shmg_feature_edge_level", text="Feature Edge Level")
-        if gui.do_add_layers:
-            rowsub = col.row()
-            rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
         rowsub = col.row()
         rowsub.alignment = 'RIGHT'
         rowsub.prop(obj, "shmg_face_zone_type", text="Face Zone Type")
@@ -524,6 +526,14 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         if obj.shmg_volume_type != "none":
             rowsub = col.row()
             rowsub.prop(obj, "shmg_volume_level", text="Volume Refinement Level")
+
+        if gui.do_add_layers:
+            rowsub = col.row()
+            rowsub.label(text="Layer Addition Settings:")
+            rowsub = col.row()
+            rowsub.prop(obj, "shmg_dict_number")
+            rowsub = col.row()
+            rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
         
 # Registration
 

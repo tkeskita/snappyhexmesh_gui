@@ -36,6 +36,7 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
 
     def execute(self, context):
+        from copy import deepcopy
         l.debug("Starting export")
         gui = bpy.context.scene.snappyhexmeshgui
         export_path = gui.export_path
@@ -53,15 +54,10 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
            or decomposepardictData is None or createbafflesdictData is None:
             return{'FINISHED'}
 
-        # Carry out replacements to templates
+        # Carry out replacements to templates other than snappyHexMeshDict
         framework = gui.openfoam_framework
         featuresData = export_surface_features_replacements(featuresData, framework)
         blockData = export_block_mesh_replacements(blockData, framework)
-        n, snappyData = export_snappy_replacements(snappyData)
-        if n==0:
-            self.report({'ERROR'}, "Can't export object %r " % snappyData \
-            + " because it is not visible")
-            return {'FINISHED'}
         decomposepardictData = export_decomposepardict_replacements(decomposepardictData)
         createbafflesdictData = export_createbafflesdict_replacements(createbafflesdictData)
 
@@ -88,12 +84,35 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             outfile.write(''.join(blockData))
             outfile.close()
 
-        # Write result to snappyHexMeshDict
-        outfilename = os.path.join(bpy.path.abspath(export_path), \
-                      'system', 'snappyHexMeshDict')
-        outfile = open(outfilename, 'w')
-        outfile.write(''.join(snappyData))
-        outfile.close()
+        # Write result to snappyHexMeshDicts
+        # First find out dictionary numbers to be generated
+        dict_numbers = []
+        for i in bpy.data.objects:
+            if i.type != 'MESH':
+                continue
+            if not i.shmg_include_in_export:
+                continue
+            if i.shmg_dict_number in dict_numbers:
+                continue
+            dict_numbers.append(i.shmg_dict_number)
+
+        # Then prepare substitutions and write the files
+        for i in dict_numbers:
+            snappyDataCopy = deepcopy(snappyData)
+            n, snappyDataCopy = export_snappy_replacements(snappyDataCopy, dict_number=i)
+            if n==0:
+                self.report({'ERROR'}, "Can't export object %r " % snappyDataCopy \
+                            + " because it is not visible")
+                return {'FINISHED'}
+
+            snappy_filename = 'snappyHexMeshDict'
+            if i > 1:
+                snappy_filename += str(i)
+            outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                       'system', snappy_filename)
+            outfile = open(outfilename, 'w')
+            outfile.write(''.join(snappyDataCopy))
+            outfile.close()
 
         # Write decomposeParDict
         outfilename = os.path.join(bpy.path.abspath(export_path), \
@@ -216,7 +235,7 @@ def subst_value(keystr, val, data):
 def get_header_text():
     """Returns dictionary header comment text"""
     import datetime
-    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.1" \
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.2" \
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
@@ -319,9 +338,10 @@ def export_createbafflesdict_replacements(data):
     data = subst_value("BAFFLE_ENTRIES", d, data)
     return data
 
-def export_snappy_replacements(data):
+def export_snappy_replacements(data, dict_number):
     """Carry out replacements for key words in snappyHexMeshTemplate with
-    settings from GUI.
+    settings from GUI. If second_add_layers is True, then this function
+    creates the contents for Additional Layers Phase only.
     """
     
     gui = bpy.context.scene.snappyhexmeshgui
@@ -329,9 +349,14 @@ def export_snappy_replacements(data):
 
     data = subst_value("HEADER", get_header_text(), data)
     
-    data = subst_value("DO_CASTELLATION", str(gui.do_castellation).lower(), data)
-    data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
-    data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
+    if dict_number == 1:
+        data = subst_value("DO_CASTELLATION", str(gui.do_castellation).lower(), data)
+        data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
+        data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
+    else:
+        data = subst_value("DO_CASTELLATION", "false", data)
+        data = subst_value("DO_SNAP", "false", data)
+        data = subst_value("DO_ADD_LAYERS", "true", data)
 
     n, geo = export_geometries()
     if n==0:
@@ -342,7 +367,7 @@ def export_snappy_replacements(data):
     data = subst_value("FEATURES", export_surface_features(), data)
     data = subst_value("REFINEMENTSURFACES", export_refinement_surfaces(), data)
     data = subst_value("REFINEMENTREGIONS", export_refinement_volumes(), data)
-    data = subst_value("LAYERS", export_surface_layers(), data)
+    data = subst_value("LAYERS", export_surface_layers(dict_number), data)
     
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
@@ -557,8 +582,8 @@ def export_surface_features():
              + "        }\n"
     return d
 
-def export_surface_layers():
-    """Creates surface layer entries for snappyHexMeshDict"""
+def export_surface_layers(dict_number):
+    """Creates surface layer entries for snappyHexMeshDict file number dict_number"""
 
     # Collect dictionary string to d
     d = ""
@@ -567,6 +592,8 @@ def export_surface_layers():
         if i.type != 'MESH':
             continue
         if not i.shmg_include_in_export:
+            continue
+        if i.shmg_dict_number != dict_number:
             continue
         if i.shmg_surface_layers > 0:
             d += "        " + str(i.name) + "\n" \
