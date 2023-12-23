@@ -85,18 +85,10 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
             outfile.close()
 
         # Write result to snappyHexMeshDicts
-        # First find out dictionary numbers to be generated
-        dict_numbers = []
-        for i in bpy.data.objects:
-            if i.type != 'MESH':
-                continue
-            if not i.shmg_include_in_export:
-                continue
-            if i.shmg_dict_number in dict_numbers:
-                continue
-            dict_numbers.append(i.shmg_dict_number)
-
-        # Then prepare substitutions and write the files
+        dict_numbers = get_dict_numbers()
+        # Always create base snappyHexMeshDict
+        if 1 not in dict_numbers:
+            dict_numbers.append(1)
         for i in dict_numbers:
             snappyDataCopy = deepcopy(snappyData)
             n, snappyDataCopy = export_snappy_replacements(snappyDataCopy, dict_number=i)
@@ -132,6 +124,19 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
                     + "to: %r" % export_path)
         return {'FINISHED'}
 
+def get_dict_numbers():
+    """Return list of dict numbers for layer addition"""
+
+    dict_numbers = []
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        if not i.shmg_include_in_export:
+            continue
+        if i.shmg_dict_number in dict_numbers:
+            continue
+        dict_numbers.append(i.shmg_dict_number)
+    return dict_numbers
 
 def export_initialize(self, surface_features_template_path, \
                       block_mesh_template_path, \
@@ -352,7 +357,10 @@ def export_snappy_replacements(data, dict_number):
     if dict_number == 1:
         data = subst_value("DO_CASTELLATION", str(gui.do_castellation).lower(), data)
         data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
-        data = subst_value("DO_ADD_LAYERS", str(gui.do_add_layers).lower(), data)
+        if 1 in get_dict_numbers():
+            data = subst_value("DO_ADD_LAYERS", "true", data)
+        else:
+            data = subst_value("DO_ADD_LAYERS", "false", data)
     else:
         data = subst_value("DO_CASTELLATION", "false", data)
         data = subst_value("DO_SNAP", "false", data)
