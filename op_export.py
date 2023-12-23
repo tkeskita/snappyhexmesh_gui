@@ -379,8 +379,10 @@ def export_snappy_replacements(data, dict_number):
     
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
-    data = subst_value("MAXNONORTHO", str(gui.max_non_ortho), data)
-    data = subst_value("RELAXEDMAXNONORTHO", str(gui.relaxed_max_non_ortho), data)
+    data = subst_value("MAX_NON_ORTHO", str(gui.max_non_ortho), data)
+    data = subst_value("RELAXED_MAX_NON_ORTHO", str(gui.relaxed_max_non_ortho), data)
+    data = subst_value("MIN_TWIST", "%g" % gui.min_twist, data)
+    data = subst_value("RELAXED_MIN_TWIST", "%g" % gui.relaxed_min_twist, data)
     data = subst_value("LAYER_FEATURE_ANGLE", "%g" % gui.surface_layer_feature_angle, data)
     data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)

@@ -103,21 +103,26 @@ addLayersControls
 
 meshQualityControls
 {
-    maxNonOrtho     //_MAXNONORTHO_//;
-    relaxed { maxNonOrtho //_RELAXEDMAXNONORTHO_//; } // for layer addition
+    maxNonOrtho     //_MAX_NON_ORTHO_//;
     maxBoundarySkewness 20;
     maxInternalSkewness 4;
     maxConcave      80;
     minVol          1e-15;
     minTetQuality   1e-15;
     minArea         -1;
-    minTwist        0.02;
+    minTwist        //_MIN_TWIST_//;
     minDeterminant  0.001;
     minFaceWeight   0.05;
     minVolRatio     0.01;
     minTriangleTwist -1;
     nSmoothScale    4;
     errorReduction  0.75;
+
+    // Relaxed quality criteria for layer addition phase
+    relaxed {
+        maxNonOrtho //_RELAXED_MAX_NON_ORTHO_//;
+        minTwist //_RELAXED_MIN_TWIST_//;
+    }
 }
 
 writeFlags      ( scalarLevels layerSets layerFields );

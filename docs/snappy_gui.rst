@@ -166,6 +166,19 @@ information.
   large value (75) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
 
+* *Min Twist* defines a minimum allowed value for twist of cell
+  faces.
+
+.. note::
+
+  *Min Twist* is another important mesh quality parameter. A value
+  close to one will produce flat faces, at the cost of bad snapping
+  and addition of surface layers. A value close to zero allows twisted
+  faces, which may cause numerical issues for solvers. The default
+  configuration for *Min Twist* uses a medium value for snapping phase
+  and a low value for layer addition phase.
+
+
 The following Layer Addition Global Options are visible only if
 *Do Layer Addition Phase* option is enabled.
 
@@ -176,6 +189,8 @@ The following Layer Addition Global Options are visible only if
 
 * *Relaxed Max Non-Ortho* is the maximum non-orthogonality applied only
   for the Layer Addition phase.
+* *Relaxed Min Twist* defines a minimum allowed value for twist of cell
+  faces for the Layer Addition phase.
 * *Feature Angle* defines the edge angle for feature detection. When
   angle is larger than this value, layers are collapsed (removed) at
   the edge. This affects layer building near corners. A large value
