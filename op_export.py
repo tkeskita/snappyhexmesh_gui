@@ -133,6 +133,8 @@ def get_dict_numbers():
             continue
         if not i.shmg_include_in_export:
             continue
+        if i.shmg_surface_layers == -1:
+            continue
         if i.shmg_dict_number in dict_numbers:
             continue
         dict_numbers.append(i.shmg_dict_number)
@@ -776,6 +778,7 @@ def copy_settings_to_objects():
         ob.shmg_surface_max_level = a.shmg_surface_max_level
         ob.shmg_feature_edge_level = a.shmg_feature_edge_level
         ob.shmg_surface_layers = a.shmg_surface_layers
+        ob.shmg_dict_number = a.shmg_dict_number
         ob.shmg_patch_info_type = a.shmg_patch_info_type
         ob.shmg_face_zone_type = a.shmg_face_zone_type
         ob.shmg_cell_zone_type = a.shmg_cell_zone_type

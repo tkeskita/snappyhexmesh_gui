@@ -462,6 +462,23 @@ correct Object scale in Blender, then the measures shown in Blender are
 incorrect. It is best to fix all location/rotation/scale issues in CAD
 prior to exporting surface meshes to avoid this pitfall.
 
+**Q: Layer addition crashes/segfaults on writeLayerSets**
+
+A: If you get Segmentation fault (core dumped) with the following kind of
+error message, it means that the layer addition failed to add any
+layer cells. The crash seems to happen when snappy tries to write
+layerSets with zero cells in the set::
+
+  Added 0 out of 1234 cells (0%).
+  Writing 0 added cells to cellSet addedCells
+  [stack trace]
+  =============
+  #1  Foam::sigSegv::sigHandler(int) in /usr/lib/openfoam/openfoam2312/platforms/linux64GccDPInt32Opt/lib/libOpenFOAM.so
+  #2  ? in /lib/x86_64-linux-gnu/libpthread.so.0
+  #3  Foam::snappyLayerDriver::writeLayerSets(Foam::fvMesh const&, Foam::List<int> const&, Foam::Field<double> const&) const in /usr/lib/openfoam/openfoam2312/platforms/linux64GccDPInt32Opt/lib/libsnappyHexMesh.so
+  #4  Foam::snappyLayerDriver::writeLayerData(Foam::fvMesh const&, Foam::List<int> const&, Foam::List<int> const&, Foam::Field<double> const&, Foam::Field<double> const&) const in /usr/lib/openfoam/openfoam2312/platforms/linux64GccDPInt32Opt/lib/libsnappyHexMesh.so
+  ...
+
 **Q: Why build a SnappyHexMesh GUI on top of Blender?**
 
 A: Mainly because of Blender's GUI Python API, 3D Viewport and surface
