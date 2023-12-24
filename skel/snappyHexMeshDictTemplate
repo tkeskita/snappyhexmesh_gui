@@ -122,6 +122,7 @@ meshQualityControls
     relaxed {
         maxNonOrtho //_RELAXED_MAX_NON_ORTHO_//;
         minTwist //_RELAXED_MIN_TWIST_//;
+        minTetQuality -1e+30;
     }
 }
 
