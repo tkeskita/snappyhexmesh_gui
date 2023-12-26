@@ -21,7 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
-    "version": (1, 2),
+    "version": (1, 3),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
@@ -56,7 +56,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         items={
             ('openfoam.org', 'openfoam.org', 'openfoam.org', 0),
             ('openfoam.com', 'openfoam.com', 'openfoam.com', 1)},
-        default='openfoam.org',
+        default='openfoam.com',
     )
     snappy_template_path: bpy.props.StringProperty(
         name="Template Path",

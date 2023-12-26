@@ -27,8 +27,8 @@ objects in Blender. Dictionary creation is based on string
 replacements using template files located in the
 add-on's *skel* directory. The add-on is meant to work on
 latest LTS release of `Blender`_ and latest stable
-`OpenFOAM Foundation <https://openfoam.org/>`_ and
-`OpenFOAM.com <https://www.openfoam.com/>`_
+`OpenFOAM.com <https://www.openfoam.com/>`_ and
+`OpenFOAM Foundation <https://openfoam.org/>`_
 version of OpenFOAM.
 Tested with Blender 3.6.
 
@@ -91,7 +91,7 @@ After export from Blender, you should be able to run following OpenFOAM
 commands in the case folder in order:
 
 * ``blockMesh``
-* ``surfaceFeatures`` (for openfoam.org version of OpenFOAM) or ``surfaceFeatureExtract`` (for openfoam.com version)
+* ``surfaceFeatureExtract`` (for openfoam.com version) or ``surfaceFeatures`` (for openfoam.org version of OpenFOAM)
 * ``snappyHexMesh``
 * ``checkMesh``
 * Optionally run ``postProcess -time '1:'`` to generate cell center coordinate and cell volume fields
@@ -108,7 +108,7 @@ Length*, and tune only a few settings in the GUI at a time.
 
 * Clean up case folder by running **Clean Case Dir**, or commands in terminal: ``rm -rf 1 2 3 constant system processor*``
 * Make modifications in Blender, save file, and click the add-on **Export** button
-* run OpenFOAM terminal commands: ``blockMesh; surfaceFeatures; snappyHexMesh``
+* run OpenFOAM terminal commands: ``blockMesh; surfaceFeatureExtract; snappyHexMesh``
 * Refresh Paraview to see updated mesh
 
 Always check that the final mesh has correct scale, rotation and location.
@@ -270,9 +270,9 @@ Rest of the panel includes object settings:
   object.
 * *Extract Feature Edges* check box marks whether Feature Edges (sharp
   edges) are to be extracted into eMesh format from this object (done
-  by running the *featureSurfaces* OpenFOAM utility). If Feature Edges
-  are extracted, then they are also assumed to be included for Feature
-  Edge Snapping in SnappyHexMesh.
+  by running the *surfaceFeatureExtract* or *surfaceFeatures* OpenFOAM
+  utility).  If Feature Edges are extracted, then they are also
+  assumed to be included for Feature Edge Snapping in SnappyHexMesh.
 * *Feature Edge Level* defines a separate cell refinement level for
   Feature Edges.
 * *Face Zone Type* decides the type of face zones that are to be
@@ -463,6 +463,12 @@ correct Object scale in Blender, then the measures shown in Blender are
 incorrect. It is best to fix all location/rotation/scale issues in CAD
 prior to exporting surface meshes to avoid this pitfall.
 
+**Q: Cannot find file when extracting surface features**
+
+If `surfaceFeatures` (for openfoam.org) or `surfaceFeatureExtract`
+(for openfoam.com) command complains about cannot find file, make sure
+that the Fork setting at GUI top is correct.
+
 **Q: Layer addition crashes/segfaults on writeLayerSets**
 
 A: If you get Segmentation fault (core dumped) with the following kind of
@@ -530,10 +536,10 @@ A: See links at https://openfoamwiki.net/index.php/Blender
 
 A: Details about SnappyHexMesh parameters can be found in annotated caseDicts:
 
-  - For openfoam.org (development version), see
-    https://github.com/OpenFOAM/OpenFOAM-dev/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
   - For openfoam.com (development version), see
     https://develop.openfoam.com/Development/openfoam/-/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
+  - For openfoam.org (development version), see
+    https://github.com/OpenFOAM/OpenFOAM-dev/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
   - See also links in https://openfoamwiki.net/index.php/SnappyHexMesh
 
 For OpenFOAM, see links at

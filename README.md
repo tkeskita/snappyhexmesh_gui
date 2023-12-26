@@ -25,8 +25,8 @@ objects in Blender. Dictionary creation is based on string
 replacements using template files located in the
 add-on's *skel* directory. The add-on is meant to work with
 latest LTS version of [Blender](https://www.blender.org) and
-latest stable [OpenFOAM Foundation](https://openfoam.org/)
-or [OpenFOAM.com](https://www.openfoam.com/)
+latest stable [OpenFOAM.com](https://www.openfoam.com/)
+or [OpenFOAM Foundation](https://openfoam.org/)
 version of OpenFOAM.
 Tested with Blender 3.6.
 
