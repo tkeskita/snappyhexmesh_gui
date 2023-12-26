@@ -194,7 +194,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     surface_layer_minimum_thickness: bpy.props.FloatProperty(
         name="Min Thickness",
         description="Relative Minimum Thickness for Layer",
-        default=0.01,
+        default=0.001,
         precision=5,
         min=1e-12, max=1.0
     )
@@ -299,6 +299,31 @@ bpy.types.Object.shmg_volume_type = bpy.props.EnumProperty(
         ('outside', 'outside', 'Refine Cells Outside of Enclosed Volume', 2)},
     default='none'
 )
+bpy.types.Object.shmg_specify_object_layer_properties = bpy.props.BoolProperty(
+    name="Object Specific Layer Settings",
+    description="Enable Object Specific Layer Settings",
+    default=False,
+)
+bpy.types.Object.shmg_obj_surface_layer_expansion_ratio = bpy.props.FloatProperty(
+    name="Expansion Ratio",
+    description="Layer Thickness Expansion Ratio",
+    default=1.3,
+    min=1e-2, max=1e2
+)
+bpy.types.Object.shmg_obj_surface_layer_final_thickness = bpy.props.FloatProperty(
+    name="Final Thickness",
+    description="Relative Thickness for Final Layer",
+    default=0.3,
+    min=1e-5, max=1.0
+)
+bpy.types.Object.shmg_obj_surface_layer_minimum_thickness = bpy.props.FloatProperty(
+    name="Min Thickness",
+    description="Relative Minimum Thickness for Layer",
+    default=0.001,
+    precision=5,
+    min=1e-12, max=1.0
+)
+
 
 class SnappyHexMeshGUI_ToolBar:
     """Base Class for Add-on Tool Bar"""
@@ -553,6 +578,16 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
             rowsub.prop(obj, "shmg_dict_number")
             rowsub = col.row()
             rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
+            rowsub = col.row()
+            rowsub.prop(obj, "shmg_specify_object_layer_properties")
+            if obj.shmg_specify_object_layer_properties:
+                rowsub = col.row()
+                rowsub.prop(obj, "shmg_obj_surface_layer_expansion_ratio")
+                rowsub = col.row()
+                rowsub.prop(obj, "shmg_obj_surface_layer_final_thickness")
+                rowsub = col.row()
+                rowsub.prop(obj, "shmg_obj_surface_layer_minimum_thickness")
+
         
 # Registration
 

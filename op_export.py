@@ -610,8 +610,12 @@ def export_surface_layers(dict_number):
         if i.shmg_surface_layers > 0:
             d += "        " + str(i.name) + "\n" \
                  + "        {\n " \
-                 + "            nSurfaceLayers %d;\n" % i.shmg_surface_layers \
-                 + "        }\n"
+                 + "           nSurfaceLayers %d;\n" % i.shmg_surface_layers
+            if i.shmg_specify_object_layer_properties:
+                d += "            expansionRatio %g;\n" % i.shmg_obj_surface_layer_expansion_ratio
+                d += "            finalLayerThickness %g;\n" % i.shmg_obj_surface_layer_final_thickness
+                d += "            minThickness %g;\n" % i.shmg_obj_surface_layer_minimum_thickness
+            d += "        }\n"
     return d
 
 def copy_skeleton_files():
@@ -784,5 +788,9 @@ def copy_settings_to_objects():
         ob.shmg_cell_zone_type = a.shmg_cell_zone_type
         ob.shmg_volume_level = a.shmg_volume_level
         ob.shmg_volume_type = a.shmg_volume_type
+        ob.shmg_specify_object_layer_properties = a.shmg_specify_object_layer_properties
+        ob.shmg_obj_surface_layer_expansion_ratio = a.shmg_obj_surface_layer_expansion_ratio
+        ob.shmg_obj_surface_layer_final_thickness = a.shmg_obj_surface_layer_final_thickness
+        ob.shmg_obj_surface_layer_minimum_thickness = a.shmg_obj_surface_layer_minimum_thickness
         n += 1
     return n

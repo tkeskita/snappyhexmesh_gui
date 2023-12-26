@@ -32,6 +32,9 @@ latest LTS release of `Blender`_ and latest stable
 version of OpenFOAM.
 Tested with Blender 3.6.
 
+To learn to use SnappyHexMesh GUI, have a look at my video tutorial series
+`Blender for OpenFOAM users <http://tkeskita.kapsi.fi/blender/>`_.
+
 
 Current Status and Features
 ---------------------------
@@ -129,7 +132,7 @@ This panel contains overall settings and tool buttons.
 You can hover mouse cursor over fields to see tool tips for more
 information.
 
-* *Options* with CPU count and two toggle icons:
+* *Options* with CPU count and toggle icons:
 
   * *CPUs* specifies the number of cores for *decomposeParDict*
     (*scotch* decomposition method is the default for *decomposePar*)
@@ -337,6 +340,11 @@ The following Layer Addition Settings are visible only if
   requires that the *Do Layer Addition Phase* option (icon at GUI top)
   is activated. Default value -1 means that no surface layers are
   specified. Value zero means that no layers are allowed.
+* *Object Specific Layer Settings* allows optional definition of
+  different layer addition settings for an object, instead of using
+  the global options. The object specific settings are the same as the
+  global settings described above: *Expansion Ratio*, *Final
+  Thickness* and *Min Thickness*.
 
 
 Export Summary Panel
@@ -492,7 +500,7 @@ snappyHexMesh!**
 A: First, make sure that your solver setup is OK. To do this, use the
 castellated mesh from snappyHexMesh case time directory 1 and try to
 run the case with it. If it's not working, the issue might be in your
-solver or it's initial setup and not the mesh.
+solver setup and not the mesh.
 
 **Q: Help, my solver is crashing or diverging when I use a mesh from
 snappyHexMesh, but it is not crashing when I use castellated mesh!**
