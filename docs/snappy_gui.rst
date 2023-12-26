@@ -56,7 +56,7 @@ Installation and Start-up
 -------------------------
 
 * It is suggested to use newest LTS version of Blender,
-  `download Blender here <https://www.blender.org/download/>`_.
+  `download Blender LTS version here <https://www.blender.org/download/LTS/>`_.
 * Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui
   --> Code --> Download zip.
 * Start Blender, go to "Edit" --> "Preferences" --> "Add-ons" --> "Install"
@@ -172,9 +172,10 @@ information.
 .. note::
 
   *Min Twist* is another important mesh quality parameter. A value
-  close to one will produce flat faces, at the cost of bad snapping
-  and addition of surface layers. A value close to zero allows twisted
-  faces, which may cause numerical issues for solvers. The default
+  close to one will produce flat faces, at the cost of worse snapping
+  and decreased coverage of surface layers. A value close to zero allows twisted
+  faces, which may cause numerical issues for solvers.
+  However, snapping and layer addition are improved. The default
   configuration for *Min Twist* uses a medium value for snapping phase
   and a low value for layer addition phase.
 
@@ -321,7 +322,7 @@ The following Layer Addition Settings are visible only if
   Object will be added for layer addition. Value 1 means that layers
   for this Object surfaces will be specified in the default
   *snappyHexMeshDict* file. Values larger than one will create
-  additional *snappyHexMeshX* files, where *X* is the *Dict File
+  additional *snappyHexMeshDictX* files, where *X* is the *Dict File
   Number*. This allows additional layers to be added with consequent
   runs after the main **snappyHexMesh** run, by commands like
   **snappyHexMesh -dict system/snappyHexMeshDict2**. This is useful
@@ -479,6 +480,40 @@ layerSets with zero cells in the set::
   #4  Foam::snappyLayerDriver::writeLayerData(Foam::fvMesh const&, Foam::List<int> const&, Foam::List<int> const&, Foam::Field<double> const&, Foam::Field<double> const&) const in /usr/lib/openfoam/openfoam2312/platforms/linux64GccDPInt32Opt/lib/libsnappyHexMesh.so
   ...
 
+**Q: Help, my solver is crashing or diverging when I use a mesh from
+snappyHexMesh!**
+
+A: First, make sure that your solver setup is OK. To do this, use the
+castellated mesh from snappyHexMesh case time directory 1 and try to
+run the case with it. If it's not working, the issue might be in your
+solver or it's initial setup and not the mesh.
+
+**Q: Help, my solver is crashing or diverging when I use a mesh from
+snappyHexMesh, but it is not crashing when I use castellated mesh!**
+
+A: Your mesh might be causing numerical issues for your solver. Since
+you have one case which is failing and one case which is working, you
+can try to change one thing at a time in your setup to home in on the
+issue. Things you can try to change include:
+
+- Disable layer addition (use the snapped-only mesh from time
+  directory 2).
+- If layers are required: Modify mesh criteria in the relaxed section
+  of snappyHexMeshDict towards values listed in the
+  meshQualityControls section. Or you can remove the relaxed section
+  altogether. Warning: you layer coverage will decrease radically, as
+  layer addition typically requires that snappyHexMesh is allowed to
+  create low quality cells.
+- Increase *Min Twist* and/or decrease *Max Non-Ortho* values to force
+  snappyHexMesh to create high quality cells (at the cost of worse
+  snapping and decreased layer coverage).
+
+**Q: Help, my solver is still crashing, and I can't find the issue!**
+
+A: You can try to post your case into a forum like
+`CFD-Online <https://www.cfd-online.com/Forums/site-help-feedback-discussions/175429-guide-how-ask-question-forums.html#post612025>`_
+but please read the instructions on the forum first!
+
 **Q: Why build a SnappyHexMesh GUI on top of Blender?**
 
 A: Mainly because of Blender's GUI Python API, 3D Viewport and surface
@@ -493,8 +528,19 @@ A: See links at https://openfoamwiki.net/index.php/Blender
 
 **Q: How do I learn SnappyHexMesh and OpenFOAM?**
 
-A: See links at https://holzmann-cfd.com/community/learn-openfoam,
-https://openfoamwiki.net and https://www.cfd-online.com/Forums/openfoam/.
+A: Details about SnappyHexMesh parameters can be found in annotated caseDicts:
+
+  - For openfoam.org (development version), see
+    https://github.com/OpenFOAM/OpenFOAM-dev/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
+  - For openfoam.com (development version), see
+    https://develop.openfoam.com/Development/openfoam/-/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
+  - See also links in https://openfoamwiki.net/index.php/SnappyHexMesh
+
+For OpenFOAM, see links at
+
+  - https://holzmann-cfd.com/community/learn-openfoam,
+  - https://openfoamwiki.net
+  - https://www.cfd-online.com/Forums/openfoam/.
 
 **Q: I'm actually looking for a GUI for OpenFOAM and not just a GUI for SnappyHexMesh..**
 

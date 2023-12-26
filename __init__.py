@@ -189,13 +189,14 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         name="Final Thickness",
         description="Relative Thickness for Final Layer",
         default=0.3,
-        min=1e-2, max=1.0
+        min=1e-5, max=1.0
     )
     surface_layer_minimum_thickness: bpy.props.FloatProperty(
         name="Min Thickness",
         description="Relative Minimum Thickness for Layer",
         default=0.01,
-        min=1e-5, max=1.0
+        precision=5,
+        min=1e-12, max=1.0
     )
     min_twist: bpy.props.FloatProperty(
         name="Min Twist",
