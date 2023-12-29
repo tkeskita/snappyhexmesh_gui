@@ -30,6 +30,10 @@ or [OpenFOAM Foundation](https://openfoam.org/)
 version of OpenFOAM.
 Tested with Blender 3.6.
 
+To learn to use SnappyHexMesh GUI, have a look at my video tutorial series
+[Blender for OpenFOAM users](http://tkeskita.kapsi.fi/blender/).
+
+
 ## Documentation
 
 Documentation is located in docs directory of the sources and is

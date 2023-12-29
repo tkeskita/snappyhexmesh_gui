@@ -42,23 +42,20 @@ Current Status and Features
 Currently implemented features include:
 
 * Creation of basic OpenFOAM case structure, including export of
-  dictionary files (most importantly snappyHexMeshDict) and meshes as
-  STL files
-* Optional creation of definition file for hexahedral base volume mesh with
-  a defined cell size (blockMeshDict)
-* Calculation of cell count for block volume mesh
-* Definition of Surface Refinement Levels for surface meshes
-* Creation of Feature Edges definition file (surfaceFeaturesDict)
-* Definition of Surface Layers per surface
-* Calculation of minimum and maximum bounds and surface area for each mesh.
-  These information are also written to snappyHexMeshDict as comments.
-* Creation of Face Zones and Cell Zones from surface meshes
-* Specification of Refinement Regions (Volumes)
+  dictionary files (most importantly *snappyHexMeshDict*) and surface
+  meshes as STL files
+* Automatic creation of *blockMeshDict* with cell size as a parameter
+* Calculation of cell count for the resulting block mesh
+* Definition of surface refinement levels for surfaces
+* Creation of feature edge definition (*surfaceFeatureExtractDict* or *surfaceFeaturesDict*)
+* Definition of surface layers for surfaces
+* Supports creation of face zones and cell zones from surfaces
+* Volume refinement
 
 Installation and Start-up
 -------------------------
 
-* It is suggested to use newest LTS version of Blender,
+* Add-on is supported for newest LTS version of Blender,
   `download Blender LTS version here <https://www.blender.org/download/LTS/>`_.
 * Add-on code is available at https://github.com/tkeskita/snappyhexmesh_gui
   --> Code --> Download zip.
@@ -66,13 +63,12 @@ Installation and Start-up
   --> open the add-on zip file.
 * Activate the "SnappyHexMesh GUI" add-on in Preferences.
   Add-on is located in Object category of Blender add-ons.
-* Click "Save Preferences" to autoload add-on every time Blender is started
 
 Add-on visibility
 -----------------
 
 Add-on is visible in Blender's 3D Viewport in Sidebar as a separate
-tab in Object Mode. To view the add-on panels, you must
+Sidebar tab in Object Mode. To view the add-on panels, you must
 
   * Select a mesh object (in 3D Viewport or in Outliner)
   * View Sidebar ("View" --> "Toggle Sidebar" or press "N" key in 3D Viewport)
@@ -94,7 +90,8 @@ After export from Blender, you should be able to run following OpenFOAM
 commands in the case folder in order:
 
 * ``blockMesh``
-* ``surfaceFeatureExtract`` (for openfoam.com version) or ``surfaceFeatures`` (for openfoam.org version of OpenFOAM)
+* ``surfaceFeatureExtract`` (for openfoam.com version of OpenFOAM) or
+  ``surfaceFeatures`` (for openfoam.org version of OpenFOAM)
 * ``snappyHexMesh``
 * ``checkMesh``
 * Optionally run ``postProcess -time '1:'`` to generate cell center coordinate and cell volume fields
@@ -154,6 +151,14 @@ information.
 * *Cell Length* is the target length for the block mesh cube side,
   which will be created after export by running the OpenFOAM command
   *blockMesh*.
+
+  Note: SnappyHexMesh works best when the surfaces of the geometry are
+  overlapping with the internal faces of the base block mesh.
+  Select *Cell Length* value accordingly and/or move the geometry
+  surfaces to achieve alignment, if possible.
+
+  .. figure:: images/block_mesh_alignment.png
+
 * *Max Non-Ortho* is the volume mesh quality measure for maximum
   non-orthogonality for SnappyHexMesh.
 
@@ -176,13 +181,13 @@ information.
 
   *Min Triangle Twist* is another important mesh quality parameter in
   practice. A value close to one will produce flat faces, at the cost
-  of worse snapping. A value not close to one allows creation of
-  twisted faces, which may cause numerical issues for solvers. The
+  of worse snapping. Values below one allow creation of
+  twisted faces, which may cause numerical issues for some solvers. The
   default value 0.6 allows for some twisting, so if the resulting mesh
   exhibits numerical issues, try to increase this value.
 
 
-The following Layer Addition Global Options are visible only if
+**Layer Addition Global Options** below are visible only if
 *Do Layer Addition Phase* option is enabled.
 
 .. warning::
@@ -197,6 +202,9 @@ The following Layer Addition Global Options are visible only if
   the edge. This affects layer building near corners. A large value
   creates layers which fill sharp corners, while a low value removes
   layers near corners.
+
+.. figure:: images/layer_feature_angle.png
+
 * *Expansion Ratio* is the ratio of layer target thicknesses. Value larger than
   one will result in increasing layer thickness (from walls inwards).
 * *Final Thickness* is the relative ratio of the final layer thickness
@@ -244,8 +252,8 @@ Object Settings Panel
 This panel shows settings for the active (selected) mesh object.
 The panel top part shows information about the object. These
 information are also added as comments in snappyHexMeshDict upon
-export:
-	   
+export.
+
 * *Object* row shows the name of the active object.
 * **Copy Settings to Objects** tool copies the SnappyHexMesh GUI
   settings from *the active object* (the last selected object) to all other *selected mesh
@@ -324,8 +332,8 @@ The following Layer Addition Settings are visible only if
   *snappyHexMeshDict* file. Values larger than one will create
   additional *snappyHexMeshDictX* files, where *X* is the *Dict File
   Number*. This allows additional layers to be added with consequent
-  runs after the main **snappyHexMesh** run, by commands like
-  **snappyHexMesh -dict system/snappyHexMeshDict2**. This is useful
+  runs after the main ``snappyHexMesh`` run, by commands like
+  ``snappyHexMesh -dict system/snappyHexMeshDict2``. This is useful
   for creating intersecting layer patterns. In the cube example below,
   all three opposite cube face pairs have been separated, and layered in
   three separate *snappyHexMesh* runs.
@@ -555,8 +563,7 @@ For OpenFOAM, see links at
 
 **Q: I'm actually looking for a GUI for OpenFOAM and not just a GUI for SnappyHexMesh..**
 
-Please check `CfdOF for FreeCAD <https://github.com/jaheyns/cfdof>`_
-and `Helyx-OS <https://engys.com/products/helyx-os>`_.
+Please check `List of GUIs in OpenFOAM wiki <https://openfoamwiki.net/index.php/GUI>`_.
 However, please be aware that OpenFOAM is developing at a rate which
 no GUI developer can match, so the features supported by GUIs will
 always be limited or potentially broken beyond supported OpenFOAM
