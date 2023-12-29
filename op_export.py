@@ -242,7 +242,7 @@ def subst_value(keystr, val, data):
 def get_header_text():
     """Returns dictionary header comment text"""
     import datetime
-    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.2" \
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.4" \
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
@@ -384,7 +384,9 @@ def export_snappy_replacements(data, dict_number):
     data = subst_value("MAX_NON_ORTHO", str(gui.max_non_ortho), data)
     data = subst_value("RELAXED_MAX_NON_ORTHO", str(gui.relaxed_max_non_ortho), data)
     data = subst_value("MIN_TWIST", "%g" % gui.min_twist, data)
-    data = subst_value("RELAXED_MIN_TWIST", "%g" % gui.relaxed_min_twist, data)
+    # Disabled relaxed min triangle twist for now. It does not seem to
+    # play much role for layer addition.
+    # data = subst_value("RELAXED_MIN_TWIST", "%g" % gui.relaxed_min_twist, data)
     data = subst_value("LAYER_FEATURE_ANGLE", "%g" % gui.surface_layer_feature_angle, data)
     data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)

@@ -117,18 +117,18 @@ meshQualityControls
     minVol          1e-15;
     minTetQuality   1e-15;
     minArea         -1;
-    minTwist        //_MIN_TWIST_//;
+    minTwist        0.05;
     minDeterminant  0.001;
     minFaceWeight   0.05;
     minVolRatio     0.01;
-    minTriangleTwist -1;
+    minTriangleTwist //_MIN_TWIST_//;
     nSmoothScale    4;
     errorReduction  0.75;
 
     // Relaxed quality criteria for layer addition phase
     relaxed {
         maxNonOrtho //_RELAXED_MAX_NON_ORTHO_//;
-        minTwist //_RELAXED_MIN_TWIST_//;
+        minTriangleTwist 0.5;
         minTetQuality -1e+30;
     }
 }

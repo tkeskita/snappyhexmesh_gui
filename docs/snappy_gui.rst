@@ -169,18 +169,17 @@ information.
   large value (75) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
 
-* *Min Twist* defines a minimum allowed value for twist of cell
+* *Min Triangle Twist* defines a minimum allowed value for twist of cell
   faces.
 
 .. note::
 
-  *Min Twist* is another important mesh quality parameter. A value
-  close to one will produce flat faces, at the cost of worse snapping
-  and decreased coverage of surface layers. A value close to zero allows twisted
-  faces, which may cause numerical issues for solvers.
-  However, snapping and layer addition are improved. The default
-  configuration for *Min Twist* uses a medium value for snapping phase
-  and a low value for layer addition phase.
+  *Min Triangle Twist* is another important mesh quality parameter in
+  practice. A value close to one will produce flat faces, at the cost
+  of worse snapping. A value not close to one allows creation of
+  twisted faces, which may cause numerical issues for solvers. The
+  default value 0.6 allows for some twisting, so if the resulting mesh
+  exhibits numerical issues, try to increase this value.
 
 
 The following Layer Addition Global Options are visible only if
@@ -193,8 +192,6 @@ The following Layer Addition Global Options are visible only if
 
 * *Relaxed Max Non-Ortho* is the maximum non-orthogonality applied only
   for the Layer Addition phase.
-* *Relaxed Min Twist* defines a minimum allowed value for twist of cell
-  faces for the Layer Addition phase.
 * *Feature Angle* defines the edge angle for feature detection. When
   angle is larger than this value, layers are collapsed (removed) at
   the edge. This affects layer building near corners. A large value
@@ -518,7 +515,7 @@ issue. Things you can try to change include:
   altogether. Warning: you layer coverage will decrease radically, as
   layer addition typically requires that snappyHexMesh is allowed to
   create low quality cells.
-- Increase *Min Twist* and/or decrease *Max Non-Ortho* values to force
+- Increase *Min Triangle Twist* and/or decrease *Max Non-Ortho* values to force
   snappyHexMesh to create high quality cells (at the cost of worse
   snapping and decreased layer coverage).
 

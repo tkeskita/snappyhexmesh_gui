@@ -21,7 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
-    "version": (1, 3),
+    "version": (1, 4),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
@@ -199,17 +199,19 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         min=1e-12, max=1.0
     )
     min_twist: bpy.props.FloatProperty(
-        name="Min Twist",
-        description="Minimum Face Twist",
-        default=0.3,
+        name="Min Triangle Twist",
+        description="Minimum Face Triangle Twist",
+        default=0.6,
         min=1e-5, max=1.0
     )
-    relaxed_min_twist: bpy.props.FloatProperty(
-        name="Relaxed Min Twist",
-        description="Relaxed Minimum Face Twist for Layer Addition Phase",
-        default=0.05,
-        min=1e-5, max=1.0
-    )
+    # Disabled relaxed min triangle twist for now. It does not seem to
+    # play much role for layer addition.
+    # relaxed_min_twist: bpy.props.FloatProperty(
+    #     name="Relaxed Min Triangle Twist",
+    #     description="Relaxed Minimum Face Triangle Twist for Layer Addition Phase",
+    #     default=0.5,
+    #     min=-1.0, max=1.0
+    # )
 
 # Object specific parameters
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
@@ -415,7 +417,7 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         rowsub.label(text="Max Non-Ortho")
         rowsub.prop(gui, "max_non_ortho", text="")
         rowsub = col.row()
-        rowsub.label(text="Min Twist")
+        rowsub.label(text="Min Triangle Twist")
         rowsub.prop(gui, "min_twist", text="")
         if gui.do_add_layers:
             rowsub = col.row(align=True)
@@ -423,9 +425,11 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub = col.row()
             rowsub.label(text="Relaxed Max Non-Ortho")
             rowsub.prop(gui, "relaxed_max_non_ortho", text="")
-            rowsub = col.row()
-            rowsub.label(text="Relaxed Min Twist")
-            rowsub.prop(gui, "relaxed_min_twist", text="")
+            # Disabled relaxed min triangle twist for now. It does not seem to
+            # play much role for layer addition.
+            # rowsub = col.row()
+            # rowsub.label(text="Relaxed Min Triangle Twist")
+            # rowsub.prop(gui, "relaxed_min_twist", text="")
             rowsub = col.row()
             rowsub.label(text="Feature Angle")
             rowsub.prop(gui, "surface_layer_feature_angle", text="")
