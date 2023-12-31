@@ -345,6 +345,9 @@ The following Layer Addition Settings are visible only if
   requires that the *Do Layer Addition Phase* option (icon at GUI top)
   is activated. Default value -1 means that no surface layers are
   specified. Value zero means that no layers are allowed.
+* *Slave Side Layers* is relevant only for Face Zones of type Baffle
+  or Boundary. It creates layer specification also for the backside of
+  the face zone.
 * *Object Specific Layer Settings* allows optional definition of
   different layer addition settings for an object, instead of using
   the global options. The object specific settings are the same as the

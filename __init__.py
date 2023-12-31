@@ -301,6 +301,11 @@ bpy.types.Object.shmg_volume_type = bpy.props.EnumProperty(
         ('outside', 'outside', 'Refine Cells Outside of Enclosed Volume', 2)},
     default='none'
 )
+bpy.types.Object.shmg_slave_side_layers = bpy.props.BoolProperty(
+    name="Slave Side Layers",
+    description="Create Layers also on the Slave Side (For Baffle or Boundary Type Face Zones)",
+    default=False,
+)
 bpy.types.Object.shmg_specify_object_layer_properties = bpy.props.BoolProperty(
     name="Object Specific Layer Settings",
     description="Enable Object Specific Layer Settings",
@@ -582,6 +587,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
             rowsub.prop(obj, "shmg_dict_number")
             rowsub = col.row()
             rowsub.prop(obj, "shmg_surface_layers", text="Surface Layers")
+            rowsub = col.row()
+            rowsub.prop(obj, "shmg_slave_side_layers")
             rowsub = col.row()
             rowsub.prop(obj, "shmg_specify_object_layer_properties")
             if obj.shmg_specify_object_layer_properties:

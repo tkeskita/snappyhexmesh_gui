@@ -359,7 +359,9 @@ def export_snappy_replacements(data, dict_number):
     if dict_number == 1:
         data = subst_value("DO_CASTELLATION", str(gui.do_castellation).lower(), data)
         data = subst_value("DO_SNAP", str(gui.do_snapping).lower(), data)
-        if 1 in get_dict_numbers():
+        if not gui.do_add_layers:
+            data = subst_value("DO_ADD_LAYERS", "false", data)
+        elif 1 in get_dict_numbers():
             data = subst_value("DO_ADD_LAYERS", "true", data)
         else:
             data = subst_value("DO_ADD_LAYERS", "false", data)
@@ -609,6 +611,7 @@ def export_surface_layers(dict_number):
             continue
         if i.shmg_dict_number != dict_number:
             continue
+
         if i.shmg_surface_layers > 0:
             d += "        " + str(i.name) + "\n" \
                  + "        {\n " \
@@ -618,6 +621,17 @@ def export_surface_layers(dict_number):
                 d += "            finalLayerThickness %g;\n" % i.shmg_obj_surface_layer_final_thickness
                 d += "            minThickness %g;\n" % i.shmg_obj_surface_layer_minimum_thickness
             d += "        }\n"
+
+        if i.shmg_slave_side_layers:
+            d += "        " + str(i.name) + "_slave\n" \
+                 + "        {\n " \
+                 + "           nSurfaceLayers %d;\n" % i.shmg_surface_layers
+            if i.shmg_specify_object_layer_properties:
+                d += "            expansionRatio %g;\n" % i.shmg_obj_surface_layer_expansion_ratio
+                d += "            finalLayerThickness %g;\n" % i.shmg_obj_surface_layer_final_thickness
+                d += "            minThickness %g;\n" % i.shmg_obj_surface_layer_minimum_thickness
+            d += "        }\n"
+
     return d
 
 def copy_skeleton_files():
