@@ -258,14 +258,16 @@ bpy.types.Object.shmg_patch_info_type = bpy.props.EnumProperty(
     name="Surface Type",
     description="Patch Type for Surface",
     items={
-        ('cyclic', 'cyclic', 'Conformal Cyclic Boundary', 0),
-        ('cyclicAMI', 'cyclicAMI', 'Non-conformal Cyclic Boundary', 1),
-        ('empty', 'empty', 'Empty (Ignored) Boundary', 2),
+        # Commented out basic types not supported by SnappyHexMesh
+        # ('cyclic', 'cyclic', 'Conformal Cyclic Boundary', 0),
+        # ('cyclicAMI', 'cyclicAMI', 'Non-conformal Cyclic Boundary', 1),
+        # ('empty', 'empty', 'Empty (Ignored) Boundary', 2),
         ('patch', 'patch', 'Patch (General) Boundary', 3),
-        ('symmetry', 'symmetry', 'Patch (Possibly Non-Planar) Boundary', 4),
-        ('symmetryPlane', 'symmetryPlane', 'Planar Patch Boundary', 5),
+        # ('symmetry', 'symmetry', 'Patch (Possibly Non-Planar) Boundary', 4),
+        # ('symmetryPlane', 'symmetryPlane', 'Planar Patch Boundary', 5),
         ('wall', 'wall', 'Wall Boundary', 6),
-        ('wedge', 'wedge', 'Wedge (2D Axisymmetric) Boundary', 7)},
+        # ('wedge', 'wedge', 'Wedge (2D Axisymmetric) Boundary', 7),
+    },
     default='patch'
 )
 bpy.types.Object.shmg_face_zone_type = bpy.props.EnumProperty(
