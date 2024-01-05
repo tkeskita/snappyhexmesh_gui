@@ -5,7 +5,9 @@
 ## Introduction
 
 This add-on turns [Blender](https://www.blender.org/)
-into a GUI for SnappyHexMesh, a volume mesh generation tool for
+into a GUI for
+[SnappyHexMesh](https://openfoamwiki.net/index.php/SnappyHexMesh),
+a volume mesh generation tool for
 OpenFOAM®, the open source CFD (computational fluid dynamics) toolbox.
 The add-on exports a complete OpenFOAM case folder structure, with
 geometry and dictionary files, ready to run OpenFOAM commands
@@ -23,11 +25,11 @@ including *snappyHexMesh*. The aim of the add-on is to
 The add-on generates OpenFOAM dictionary files for the surface mesh
 objects in Blender. Dictionary creation is based on string
 replacements using template files located in the
-add-on's *skel* directory. The add-on is meant to work with
-latest LTS version of [Blender](https://www.blender.org) and
+add-on's *skel* directory. The add-on is meant to work on
+[latest LTS version of Blender](https://www.blender.org/download/LTS/) and
 latest stable [OpenFOAM.com](https://www.openfoam.com/)
-or [OpenFOAM Foundation](https://openfoam.org/)
-version of OpenFOAM.
+and [OpenFOAM.org](https://openfoam.org/)
+versions of OpenFOAM.
 Tested with Blender 3.6.
 
 To learn to use SnappyHexMesh GUI, have a look at my video tutorial series
