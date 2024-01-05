@@ -21,7 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
-    "version": (1, 4),
+    "version": (1, 5),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
@@ -90,6 +90,13 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         name="createBafflesDict Template Path",
         description="Path to createBafflesDict Template",
         default=os.path.join(os.path.dirname(__file__), 'skel', 'createBafflesDictTemplate'),
+        maxlen=1024,
+        subtype="FILE_PATH",
+    )
+    meshqualitydict_template_path: bpy.props.StringProperty(
+        name="meshQualityDict Template Path",
+        description="Path to meshQualityDict Template",
+        default=os.path.join(os.path.dirname(__file__), 'skel', 'meshQualityDictTemplate'),
         maxlen=1024,
         subtype="FILE_PATH",
     )
@@ -212,6 +219,11 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     #     default=0.5,
     #     min=-1.0, max=1.0
     # )
+    disable_quality_criteria: bpy.props.BoolProperty(
+        name="Disable All Quality Criteria",
+        description="Use Disabled Mesh Quality Criteria to Pass All Mesh Quality Checks. Creates Maximal Snapping and Layers, But Allows Extremely Low Quality Cells. For Debugging Purposes Only",
+        default=False,
+    )
 
 # Object specific parameters
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
@@ -421,17 +433,22 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub.prop(gui, "cell_side_length", text="")
 
         rowsub = col.row()
-        rowsub.label(text="Max Non-Ortho")
-        rowsub.prop(gui, "max_non_ortho", text="")
-        rowsub = col.row()
-        rowsub.label(text="Min Triangle Twist")
-        rowsub.prop(gui, "min_twist", text="")
+        rowsub.prop(gui, "disable_quality_criteria")
+        if not gui.disable_quality_criteria:
+            rowsub = col.row()
+            rowsub.label(text="Max Non-Ortho")
+            rowsub.prop(gui, "max_non_ortho", text="")
+            rowsub = col.row()
+            rowsub.label(text="Min Triangle Twist")
+            rowsub.prop(gui, "min_twist", text="")
+
         if gui.do_add_layers:
             rowsub = col.row(align=True)
             rowsub.label(text="Layer Addition Global Options:")
             rowsub = col.row()
-            rowsub.label(text="Relaxed Max Non-Ortho")
-            rowsub.prop(gui, "relaxed_max_non_ortho", text="")
+            if not gui.disable_quality_criteria:
+                rowsub.label(text="Relaxed Max Non-Ortho")
+                rowsub.prop(gui, "relaxed_max_non_ortho", text="")
             # Disabled relaxed min triangle twist for now. It does not seem to
             # play much role for layer addition.
             # rowsub = col.row()
@@ -456,9 +473,17 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
         row = layout.row()
         row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
-        col = layout.column()
-        rowsub = col.row(align=True)
-        rowsub.operator("object.snappyhexmeshgui_export", text="Export")
+
+        if gui.disable_quality_criteria:
+            row = layout.row()
+            row.label(icon="ERROR", text="All Quality Criteria are Disabled!")
+            col = layout.column()
+            rowsub = col.row(align=True)
+            rowsub.operator("object.snappyhexmeshgui_export", text="I understand, Export!")
+        else:
+            col = layout.column()
+            rowsub = col.row(align=True)
+            rowsub.operator("object.snappyhexmeshgui_export", text="Export")
 
         if 'FILE_TEXT' in icon_names:
             rowsub.prop(gui, "export_stl_ascii", text="", icon='FILE_TEXT')

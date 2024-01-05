@@ -1,0 +1,25 @@
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          snappyHexMeshDict;
+}
+
+// These mesh quality control values are designed to pass all
+// mesh quality checks. Allows creation of extremely low quality mesh cells.
+// Useful only for testing and debugging purposes, not for production use.
+
+maxNonOrtho     180;
+maxBoundarySkewness -1;
+maxInternalSkewness -1;
+maxConcave      180;
+minVol          -1e33;
+minTetQuality   -1e30;
+minArea         -1;
+minTwist        -1e30;
+minDeterminant  -1;
+minFaceWeight   -1;
+minVolRatio     -1;
+minTriangleTwist -1;
+relaxed { }

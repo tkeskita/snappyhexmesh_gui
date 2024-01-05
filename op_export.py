@@ -43,15 +43,18 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
 
         # Get snappyHexMeshTemplate file
         featuresData, blockData, snappyData, \
-            decomposepardictData, createbafflesdictData = \
+            decomposepardictData, createbafflesdictData, \
+            meshqualitydictData = \
             export_initialize(self, gui.surface_features_template_path, \
                               gui.block_mesh_template_path, \
                               gui.snappy_template_path, \
                               gui.decomposepardict_template_path, \
                               gui.createbafflesdict_template_path, \
+                              gui.meshqualitydict_template_path, \
                               export_path)
         if featuresData is None or blockData is None or snappyData is None \
-           or decomposepardictData is None or createbafflesdictData is None:
+           or decomposepardictData is None or createbafflesdictData is None \
+           or meshqualitydictData is None:
             return{'FINISHED'}
 
         # Carry out replacements to templates other than snappyHexMeshDict
@@ -60,6 +63,7 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         blockData = export_block_mesh_replacements(blockData, framework)
         decomposepardictData = export_decomposepardict_replacements(decomposepardictData)
         createbafflesdictData = export_createbafflesdict_replacements(createbafflesdictData)
+        meshqualitydictData = export_meshqualitydict_replacements(meshqualitydictData)
 
         # Write surfaceFeaturesDict
         # openfoam.org uses surfaceFeaturesDict, openfoam.com surfaceFeatureExtract
@@ -120,6 +124,13 @@ class OBJECT_OT_snappyhexmeshgui_export(bpy.types.Operator):
         outfile.write(''.join(createbafflesdictData))
         outfile.close()
 
+        # Write meshQualityDict
+        outfilename = os.path.join(bpy.path.abspath(export_path), \
+                                   'system', 'meshQualityDict')
+        outfile = open(outfilename, 'w')
+        outfile.write(''.join(meshqualitydictData))
+        outfile.close()
+
         self.report({'INFO'}, "Exported %d meshes " % n \
                     + "to: %r" % export_path)
         return {'FINISHED'}
@@ -145,6 +156,7 @@ def export_initialize(self, surface_features_template_path, \
                       snappy_template_path, \
                       decomposepardict_template_path, \
                       createbafflesdict_template_path, \
+                      meshqualitydict_template_path, \
                       export_path):
     """Initialization routine. Reads contents of
     surfaceFeaturesDictTemplate, blockMeshDictTemplate,
@@ -157,38 +169,44 @@ def export_initialize(self, surface_features_template_path, \
     if not abspath:
         self.report({'ERROR'}, "No path set! Please save Blender file to "
                     "a case folder and try again")
-        return None, None, None, None, None
+        return None, None, None, None, None, None
     l.debug("Export path: %r" % abspath)
 
     l.debug("snappyHexMeshTemplate path: %r" % snappy_template_path)
     if not (os.path.isfile(snappy_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % snappy_template_path)
-        return None, None, None, None, None
+        return None, None, None, None, None, None
     
     l.debug("blockMeshTemplate path: %r" % block_mesh_template_path)
     if not (os.path.isfile(block_mesh_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % block_mesh_template_path)
-        return None, None, None, None, None
+        return None, None, None, None, None, None
 
     l.debug("surfaceFeaturesDictTemplate path: %r" % surface_features_template_path)
     if not (os.path.isfile(surface_features_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % surface_features_template_path)
-        return None, None, None, None, None
+        return None, None, None, None, None, None
 
     l.debug("decomposeParDictTemplate path: %r" % decomposepardict_template_path)
     if not (os.path.isfile(decomposepardict_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % decomposepardict_template_path)
-        return None, None, None, None, None
+        return None, None, None, None, None, None
 
     l.debug("createBafflesParDictTemplate path: %r" % createbafflesdict_template_path)
     if not (os.path.isfile(createbafflesdict_template_path)):
         self.report({'ERROR'}, "Template not found: %r" \
                     % createbafflesdict_template_path)
-        return None, None, None, None, None
+        return None, None, None, None, None, None
+
+    l.debug("meshQualityDictTemplate path: %r" % meshqualitydict_template_path)
+    if not (os.path.isfile(meshqualitydict_template_path)):
+        self.report({'ERROR'}, "Template not found: %r" \
+                    % meshqualitydict_template_path)
+        return None, None, None, None, None, None
 
     # Create folder structure if needed
     if not (os.path.isdir(abspath)):
@@ -203,7 +221,7 @@ def export_initialize(self, surface_features_template_path, \
 
     if not (os.path.isdir(os.path.join(abspath, 'system'))):
         self.report({'ERROR'}, "Couldn't create folders under %r" % abspath)
-        return None, None, None, None
+        return None, None, None, None, None, None
 
     # Copy skeleton files if needed
     copy_skeleton_files()
@@ -223,7 +241,19 @@ def export_initialize(self, surface_features_template_path, \
     with open(createbafflesdict_template_path, 'r') as infile:
         createbafflesdictData = infile.readlines()
 
-    return featuresData, blockData, snappyData, decomposepardictData, createbafflesdictData
+    # Use disabled mesh quality dict if quality criteria are to be
+    # disabled, and normal template otherwise
+    gui = bpy.context.scene.snappyhexmeshgui
+    if gui.disable_quality_criteria:
+        file_path=os.path.join(os.path.dirname(__file__), 'skel', 'disabledMeshQualityDict')
+        with open(file_path, 'r') as infile:
+            meshqualitydictData = infile.readlines()
+    else:
+        with open(meshqualitydict_template_path, 'r') as infile:
+            meshqualitydictData = infile.readlines()
+
+    return featuresData, blockData, snappyData, decomposepardictData, \
+        createbafflesdictData, meshqualitydictData
 
     
 def subst_value(keystr, val, data):
@@ -242,7 +272,7 @@ def subst_value(keystr, val, data):
 def get_header_text():
     """Returns dictionary header comment text"""
     import datetime
-    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.4" \
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.5" \
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
@@ -345,6 +375,21 @@ def export_createbafflesdict_replacements(data):
     data = subst_value("BAFFLE_ENTRIES", d, data)
     return data
 
+def export_meshqualitydict_replacements(data):
+    """Carry out replacements for meshQualityDict."""
+
+    gui = bpy.context.scene.snappyhexmeshgui
+    header_text = get_header_text()
+    data = subst_value("HEADER", header_text, data)
+    data = subst_value("MAX_NON_ORTHO", str(gui.max_non_ortho), data)
+    data = subst_value("RELAXED_MAX_NON_ORTHO", str(gui.relaxed_max_non_ortho), data)
+    data = subst_value("MIN_TWIST", "%g" % gui.min_twist, data)
+    # Disabled relaxed min triangle twist for now. It does not seem to
+    # play much role for layer addition.
+    # data = subst_value("RELAXED_MIN_TWIST", "%g" % gui.relaxed_min_twist, data)
+
+    return data
+
 def export_snappy_replacements(data, dict_number):
     """Carry out replacements for key words in snappyHexMeshTemplate with
     settings from GUI. If second_add_layers is True, then this function
@@ -383,12 +428,6 @@ def export_snappy_replacements(data, dict_number):
     
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
-    data = subst_value("MAX_NON_ORTHO", str(gui.max_non_ortho), data)
-    data = subst_value("RELAXED_MAX_NON_ORTHO", str(gui.relaxed_max_non_ortho), data)
-    data = subst_value("MIN_TWIST", "%g" % gui.min_twist, data)
-    # Disabled relaxed min triangle twist for now. It does not seem to
-    # play much role for layer addition.
-    # data = subst_value("RELAXED_MIN_TWIST", "%g" % gui.relaxed_min_twist, data)
     data = subst_value("LAYER_FEATURE_ANGLE", "%g" % gui.surface_layer_feature_angle, data)
     data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)

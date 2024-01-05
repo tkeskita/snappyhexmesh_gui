@@ -129,6 +129,9 @@ This panel contains overall settings and tool buttons.
 You can hover mouse cursor over fields to see tool tips for more
 information.
 
+General Settings
+................
+
 * *Options* with CPU count and toggle icons:
 
   * *CPUs* specifies the number of cores for *decomposeParDict*
@@ -159,6 +162,26 @@ information.
 
   .. figure:: images/block_mesh_alignment.png
 
+Quality Criteria
+................
+
+* *Disable All Quality Criteria* uses such values for the
+  *meshQualityDict* parameters that all quality checks made by
+  *snappyHexMesh* pass. The resulting mesh is maximally snapped and
+  layered, so this option is useful for testing that surface meshes,
+  refinements and feature edges applied in a case work well for
+  Snappy. With this option enabled, you can see what Snappy is able to
+  create when it is allowed to create maximally bad cells. However,
+  since the quality of such a mesh for numerical solution can be
+  extremely poor, the use of the mesh with a solver typically
+  fails. That is the reason to have quality parameters, and it also
+  means that practically always there is a compromise between
+  the numerical quality of the mesh and the quality of snapping/layering.
+
+  Note that mesh quality parameters below are hidden when this option
+  is enabled. A warning text above *Export* button appears when this
+  option is enabled.
+
 * *Max Non-Ortho* is the volume mesh quality measure for maximum
   non-orthogonality for SnappyHexMesh.
 
@@ -186,9 +209,11 @@ information.
   default value 0.6 allows for some twisting, so if the resulting mesh
   exhibits numerical issues, try to increase this value.
 
+Layer Addition Global Options
+.............................
 
-**Layer Addition Global Options** below are visible only if
-*Do Layer Addition Phase* option is enabled.
+These options are visible only if *Do Layer Addition Phase* option is
+enabled.
 
 .. warning::
 
@@ -221,6 +246,9 @@ information.
   *Do Snapping Phase* options, modify the *Final Thickness* and
   *Min Thickness* parameters, *Export*, and then run *snappyHexMesh*
   again.
+
+Operators
+.........
 
 The panel buttons launch the following operators:
 
@@ -265,6 +293,9 @@ export.
 * *Area* shows the summed surface area of all faces included in the
   object. **Warning:** Includes mesh errors, like overlapping faces, if
   there are any.
+
+Object Settings
+...............
 
 Rest of the panel includes object settings:
 
@@ -322,6 +353,9 @@ Rest of the panel includes object settings:
   **Note:** For refinement volume objects, the typical settings
   are: *Type:* patch, *Enable Snapping:* disabled, *Extract Feature Edges:*
   disabled, and *Volume Refinement*: inside.
+
+Object Layer Settings
+.....................
 
 The following Layer Addition Settings are visible only if
 *Do Layer Addition Phase* option is enabled.
