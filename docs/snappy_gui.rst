@@ -448,13 +448,15 @@ If you use this add-on, please star the project in GitHub!
 FAQ
 ---
 
-**Q: Why is my inlet/outlet/other patch cells malformed / big / not created?**
+Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Your inlet/outlet/other patch does not coincide with (internal)
 faces of the cells of the base block mesh. You may also need to apply
 a sufficient level of refinement.
 
-**Q: Why are some cell zones missing or wrong?**
+Q: Why are some cell zones missing or wrong?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Face normals are not consistent, or they are flipped. To fix face
 normals, go to Edit Mode, select everything, and then run Mesh ->
@@ -471,13 +473,15 @@ normal direction by color. Red color means that "inside direction" is
 towards you, and blue color means that the "outside direction"
 (the face normal direction) is towards you.
 
-**Q: Why does a surface include faces in two different patches or face zones?**
+Q: Why does a surface include faces in two different patches or face zones?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Your case probably includes overlapping surfaces in two different
 mesh objects. Remove the overlapping surfaces. See OpenFOAM tutorial
 `heatTransfer/chtMultiRegionFoam/shellAndTubeHeatExchanger` for an example.
 
-**Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?**
+Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: You must always include a set of surfaces (in one or more mesh
 objects) which define the outer boundaries of your
@@ -502,7 +506,8 @@ To find out the locations which are leaking, you must add a temporary
 additional surface object (e.g. a cube or a plane) around model parts to
 see where leaking stops.
 
-**Q: Why is final mesh scale/rotation/placement wrong?**
+Q: Why is final mesh scale/rotation/placement wrong?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Likely because Object Location/Rotation/Scale is wrong for some
 object. If you need to do any movement/rotation/scaling when you
@@ -513,13 +518,15 @@ correct Object scale in Blender, then the measures shown in Blender are
 incorrect. It is best to fix all location/rotation/scale issues in CAD
 prior to exporting surface meshes to avoid this pitfall.
 
-**Q: Cannot find file when extracting surface features**
+Q: Cannot find file when extracting surface features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If `surfaceFeatures` (for openfoam.org) or `surfaceFeatureExtract`
 (for openfoam.com) command complains about cannot find file, make sure
 that the Fork setting at GUI top is correct.
 
-**Q: Layer addition crashes/segfaults on writeLayerSets**
+Q: Layer addition crashes/segfaults on writeLayerSets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: If you get Segmentation fault (core dumped) with the following kind of
 error message, it means that the layer addition failed to add any
@@ -536,16 +543,16 @@ layerSets with zero cells in the set::
   #4  Foam::snappyLayerDriver::writeLayerData(Foam::fvMesh const&, Foam::List<int> const&, Foam::List<int> const&, Foam::Field<double> const&, Foam::Field<double> const&) const in /usr/lib/openfoam/openfoam2312/platforms/linux64GccDPInt32Opt/lib/libsnappyHexMesh.so
   ...
 
-**Q: Help, my solver is crashing or diverging when I use a mesh from
-snappyHexMesh!**
+Q: Help, my solver is crashing or diverging when I use a mesh from snappyHexMesh
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: First, make sure that your solver setup is OK. To do this, use the
 castellated mesh from snappyHexMesh case time directory 1 and try to
 run the case with it. If it's not working, the issue might be in your
 solver setup and not the mesh.
 
-**Q: Help, my solver is crashing or diverging when I use a mesh from
-snappyHexMesh, but it is not crashing when I use castellated mesh!**
+Q: Help, my solver is crashing or diverging when I use a mesh from snappyHexMesh, but it is not crashing when I use castellated mesh!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Your mesh might be causing numerical issues for your solver. Since
 you have one case which is failing and one case which is working, you
@@ -564,13 +571,15 @@ issue. Things you can try to change include:
   snappyHexMesh to create high quality cells (at the cost of worse
   snapping and decreased layer coverage).
 
-**Q: Help, my solver is still crashing, and I can't find the issue!**
+Q: Help, my solver is still crashing, and I can't find the issue!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: You can try to post your case into a forum like
 `CFD-Online <https://www.cfd-online.com/Forums/site-help-feedback-discussions/175429-guide-how-ask-question-forums.html#post612025>`_
 but please read the instructions on the forum first!
 
-**Q: Why build a SnappyHexMesh GUI on top of Blender?**
+Q: Why build a SnappyHexMesh GUI on top of Blender?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Mainly because of Blender's GUI Python API, 3D Viewport and surface
 mesh modelling tools. Blender has powerful tools for polygon surface
@@ -578,11 +587,13 @@ modelling and modification, and is suitable also for precision
 modelling required by engineering/scientific applications, although
 the learning curve to take advantage of all features is steep.
 
-**Q: How do I learn Blender?**
+Q: How do I learn Blender?
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: See links at https://openfoamwiki.net/index.php/Blender
 
-**Q: How do I learn SnappyHexMesh and OpenFOAM?**
+Q: How do I learn SnappyHexMesh and OpenFOAM?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Details about SnappyHexMesh parameters can be found in annotated caseDicts:
 
@@ -598,7 +609,8 @@ For OpenFOAM, see links at
   - https://openfoamwiki.net
   - https://www.cfd-online.com/Forums/openfoam/.
 
-**Q: I'm actually looking for a GUI for OpenFOAM and not just a GUI for SnappyHexMesh..**
+Q: I'm actually looking for a GUI for OpenFOAM and not just a GUI for SnappyHexMesh..
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Please check `List of GUIs in OpenFOAM wiki <https://openfoamwiki.net/index.php/GUI>`_.
 However, please be aware that OpenFOAM is developing at a rate which
