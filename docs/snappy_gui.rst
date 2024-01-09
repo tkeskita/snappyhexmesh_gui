@@ -458,6 +458,19 @@ A: Your inlet/outlet/other patch does not coincide with (internal)
 faces of the cells of the base block mesh. You may also need to apply
 a sufficient level of refinement.
 
+Q: I'm getting refinement in unexpected locations, or weird results
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A: Is your geometry aligned with base block mesh as much as possible?
+If yes, then your surface mesh might include errors which are so bad
+that even SnappyHexMesh is confused by them. Try to go to *Edit Mode*,
+press *A* to select everything, then press *F3* and search and run
+operator **Merge by Distance**. Then select all again and run operator
+**Recalculate Outside** or **Recalculate Inside** to get surface
+normals correct.  For more advanced CAD surface mesh clean-up and mesh
+healing, have a look at my tutorial videos
+`Blender for OpenFOAM users <http://tkeskita.kapsi.fi/blender/>`_.
+
 Q: Why are some cell zones missing or wrong?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -469,7 +482,8 @@ zone.
 
 For openfoam.com version, cell zone surfaces should enclose the whole
 cell zone volume, while openfoam.org version needs only the surfaces
-separating the cell zone from outside.
+separating the cell zone from outside. See OpenFOAM tutorial
+`heatTransfer/chtMultiRegionFoam/shellAndTubeHeatExchanger` for an example.
 
 Tip: You can enable Face Orientation Overlay in Blender to visualize face
 normal direction by color. Red color means that "inside direction" is
@@ -480,8 +494,7 @@ Q: Why does a surface include faces in two different patches or face zones?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A: Your case probably includes overlapping surfaces in two different
-mesh objects. Remove the overlapping surfaces. See OpenFOAM tutorial
-`heatTransfer/chtMultiRegionFoam/shellAndTubeHeatExchanger` for an example.
+mesh objects. Remove the overlapping surfaces.
 
 Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -516,10 +529,10 @@ A: Likely because Object Location/Rotation/Scale is wrong for some
 object. If you need to do any movement/rotation/scaling when you
 import your surface meshes into Blender to get the end result correct,
 then it is good idea to use the *Apply LocRotScale for All*
-operator/button to reset the scale before continuing. If you don't use
-correct Object scale in Blender, then the measures shown in Blender are
-incorrect. It is best to fix all location/rotation/scale issues in CAD
-prior to exporting surface meshes to avoid this pitfall.
+operator/button to reset the Object scale, rotation and location
+before continuing. If you don't do this, then the measures shown in
+Blender can be affected by the Object transformations, depending on
+whether you have Global or Local value mode on.
 
 Q: Cannot find file when extracting surface features
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
