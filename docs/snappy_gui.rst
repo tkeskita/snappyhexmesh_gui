@@ -264,6 +264,13 @@ The panel buttons launch the following operators:
   scene. The coordinates of this object is applied to specify the
   Location In Mesh for snappyHexMesh. If this object does not exist,
   zero coordinates are used for Location In Mesh.
+* **Clean Up Meshes** is a simple mesh cleaning operator, meant for
+  rudimentary CAD mesh clean up. The operator goes through every mesh
+  objects. It merges vertices which are located closer than the *Merge
+  Distance* option value given on the right side of the button. The
+  operator also recalculates outward surface normals for all
+  meshes. Number of merged vertices per object is given as return info
+  from the operator.
 * **Apply LocRotScale For All** resets the Object Transformation
   Properties (Location, Rotation and Scale) of all mesh objects to
   default values. This makes measurement values always unambiguous,
@@ -463,11 +470,9 @@ Q: I'm getting refinement in unexpected locations, or weird results
 
 A: Is your geometry aligned with base block mesh as much as possible?
 If yes, then your surface mesh might include errors which are so bad
-that even SnappyHexMesh is confused by them. Try to go to *Edit Mode*,
-press *A* to select everything, then press *F3* and search and run
-operator **Merge by Distance**. Then select all again and run operator
-**Recalculate Outside** or **Recalculate Inside** to get surface
-normals correct.  For more advanced CAD surface mesh clean-up and mesh
+that even SnappyHexMesh is confused by them. Try to run the **Clean Up
+Meshes** operator and see if it helps.
+For more advanced CAD surface mesh clean-up and mesh
 healing, have a look at my tutorial videos
 `Blender for OpenFOAM users <http://tkeskita.kapsi.fi/blender/>`_.
 

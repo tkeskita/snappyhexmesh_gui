@@ -224,6 +224,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         description="Use Disabled Mesh Quality Criteria to Pass All Mesh Quality Checks. Creates Maximal Snapping and Layers, But Allows Extremely Low Quality Cells. For Debugging Purposes Only",
         default=False,
     )
+    merge_distance: bpy.props.FloatProperty(
+        name="Merge Distance",
+        description="Maximum Distance for Merging Closeby Vertices in Clean Up Meshes",
+        default=1e-5,
+        min=0.0
+    )
 
 # Object specific parameters
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
@@ -471,6 +477,11 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         row.operator("object.snappyhexmeshgui_clean_case_dir", text="Clean Case Dir")
         row = layout.row()
         row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
+
+        row = layout.row(align=True)
+        row.operator("object.snappyhexmeshgui_cleanup_meshes", text="Clean Up Meshes")
+        row.prop(gui, "merge_distance", text="")
+
         row = layout.row()
         row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
 
@@ -637,6 +648,7 @@ classes = (
     op_export.OBJECT_OT_snappyhexmeshgui_export,
     op_export.OBJECT_OT_snappyhexmeshgui_apply_locrotscale,
     op_export.OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object,
+    op_export.OBJECT_OT_snappyhexmeshgui_cleanup_meshes,
     op_export.OBJECT_OT_snappyhexmeshgui_copy_settings_to_objects,
     op_export.OBJECT_OT_snappyhexmeshgui_clean_case_dir,
     

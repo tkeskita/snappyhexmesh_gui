@@ -21,6 +21,7 @@
 # ----------------------------------------------------------------------------
 # Export functions
 from .op_gen import *
+import bmesh
 
 # ----------------------------------------------------------------------------
 
@@ -724,6 +725,53 @@ def apply_locrotscale():
         i.select_set(False)
         n += 1
     return n
+
+class OBJECT_OT_snappyhexmeshgui_cleanup_meshes(bpy.types.Operator):
+    """Clean Up Meshes (SnappyHexMeshGUI). Merges closeby vertices and recalculates outside normals for all mesh objects"""
+    bl_idname = "object.snappyhexmeshgui_cleanup_meshes"
+    bl_label = "SnappyHexMeshGUI Clean Up Meshes"
+
+    @classmethod
+    def poll(cls, context):
+        ob = context.active_object
+        return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
+
+    def execute(self, context):
+        text = cleanup_meshes()
+        if len(text) > 0:
+            self.report({'INFO'}, "Merged vertices: " + ", ".join(text))
+        else:
+            self.report({'INFO'}, "No merged vertices")
+        return {'FINISHED'}
+
+def cleanup_meshes():
+    """Merges nearby vertices and recalculates face outside normals"""
+
+    for i in bpy.data.objects:
+        i.select_set(False)
+
+    text = []
+    for i in bpy.data.objects:
+        if i.type != 'MESH':
+            continue
+        i.select_set(True)
+        bpy.ops.object.mode_set(mode='OBJECT')
+        bpy.ops.object.mode_set(mode = 'EDIT')
+        bm = bmesh.from_edit_mesh(i.data)
+        nverts0 = len(bm.verts)
+        bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=bpy.context.scene.snappyhexmeshgui.merge_distance)
+        bm.verts.index_update()
+        nverts1 = len(bm.verts)
+        bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+        bmesh.update_edit_mesh(mesh=i.data)
+        bm.free()
+        bpy.ops.object.mode_set(mode='OBJECT')
+        i.select_set(False)
+        n_merged_vertices = nverts0 - nverts1
+        if n_merged_vertices > 0:
+            text.append(i.name + ":" + str(n_merged_vertices))
+    return text
+
 
 class OBJECT_OT_snappyhexmeshgui_clean_case_dir(bpy.types.Operator):
     """Clean Case Directory (Remove folders 1-9 constant system processor*) (SnappyHexMeshGUI)"""
