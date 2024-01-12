@@ -749,6 +749,7 @@ def cleanup_meshes():
 
     for i in bpy.data.objects:
         i.select_set(False)
+        i.hide_set(False)
 
     text = []
     for i in bpy.data.objects:
