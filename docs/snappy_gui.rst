@@ -158,10 +158,13 @@ General Settings
   which will be created after export by running the OpenFOAM command
   *blockMesh*.
 
-  Note: SnappyHexMesh works best when the surfaces of the geometry are
-  overlapping with the internal faces of the base block mesh.
-  Select *Cell Length* value accordingly and/or move the geometry
-  surfaces to achieve alignment, if possible.
+.. tip::
+
+  SnappyHexMesh works best when the **surfaces of the geometry are
+  aligned / colocated with** the internal faces of **the base block
+  mesh**.  Select *Cell Length* value accordingly and/or move the
+  geometry surfaces to achieve alignment / colocation / overlap, if
+  possible.
 
   .. figure:: images/block_mesh_alignment.png
 
@@ -178,8 +181,8 @@ Quality Criteria
   since the quality of such a mesh for numerical solution can be
   extremely poor, the use of the mesh with a solver typically
   fails. That is the reason to have quality parameters, and it also
-  means that practically always there is a compromise between
-  the numerical quality of the mesh and the quality of snapping/layering.
+  means that **practically always there is a compromise between
+  the numerical quality of the mesh and the quality of snapping/layering**.
 
   Note that mesh quality parameters below are hidden when this option
   is enabled. A warning text above *Export* button appears when this
@@ -337,7 +340,15 @@ Rest of the panel includes object settings:
   * **boundary**: Face zone is created as boundaries (unshared boundary
     faces).
 
-  **Note:** Face zone name is same as object name.
+.. tip::
+
+  For **internal thin walls** (for which you don't need to resolve the
+  actual thickness), provide the geometry for no wall thickness, and
+  use the **baffle** Face Zone Type to create those walls. This
+  improves the snapping compared to treating the thin walls as normal
+  walls.
+
+**Note:** Face zone name is same as object name.
 
 * *Cell Zone Type* defines the type of cell zones in relation to
   surface mesh, which is assumed to define a manifold surface which
@@ -360,7 +371,9 @@ Rest of the panel includes object settings:
 
 * *Volume Refinement Level* shows the number of refinements for volume refinement.
 
-  **Note:** For refinement volume objects, the typical settings
+.. tip::
+
+  For **refinement volume objects**, the typical settings
   are: *Type:* patch, *Enable Snapping:* disabled, *Extract Feature Edges:*
   disabled, and *Volume Refinement*: inside.
 
@@ -468,7 +481,7 @@ a sufficient level of refinement.
 Q: I'm getting refinement in unexpected locations, or weird results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A: Is your geometry aligned with base block mesh as much as possible?
+A: Is your geometry aligned / colocated with base block mesh as much as possible?
 If yes, then your surface mesh might include errors which are so bad
 that even SnappyHexMesh is confused by them. Try to run the **Clean Up
 Meshes** operator and see if it helps.
