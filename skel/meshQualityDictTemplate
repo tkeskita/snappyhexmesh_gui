@@ -20,8 +20,6 @@ minDeterminant  0.001;
 minFaceWeight   0.05;
 minVolRatio     0.01;
 minTriangleTwist //_MIN_TWIST_//;
-nSmoothScale    4;
-errorReduction  0.75;
 
 // Relaxed quality criteria for layer addition phase
 
