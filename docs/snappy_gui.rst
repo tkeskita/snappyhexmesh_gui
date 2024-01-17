@@ -392,8 +392,10 @@ The following Layer Addition Settings are visible only if
   runs after the main ``snappyHexMesh`` run, by commands like
   ``snappyHexMesh -dict system/snappyHexMeshDict2``. This is useful
   for creating intersecting layer patterns. In the cube example below,
-  all three opposite cube face pairs have been separated, and layered in
-  three separate *snappyHexMesh* runs.
+  all three opposite cube face pairs have been separated, and layered
+  in three separate *snappyHexMesh* runs. Please note that this
+  sequential layer addition may create very bad cells, always check
+  the result!
 
   .. image:: images/shmg_intersecting_layers_on_a_cube.png
 
