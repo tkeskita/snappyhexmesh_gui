@@ -75,12 +75,14 @@ def block_mesh_cell_count(bb_min, bb_max, gui):
 
     sl = gui.cell_side_length
 
-    for i in range(0,3):
-        bm_min = math.floor(bb_min[i] / sl)
-        bm_max = math.ceil(bb_max[i] / sl)
+    for i in range(0, 3):
+        bb_min_with_margin = bb_min[i] - sl/2.0
+        bb_max_with_margin = bb_max[i] + sl/2.0
+        bm_min = math.floor(bb_min_with_margin / sl)
+        bm_max = math.ceil(bb_max_with_margin / sl)
         gui.block_mesh_delta[i] = bm_max - bm_min
-        gui.block_mesh_min[i] = math.floor(bb_min[i] / sl) * sl
-        gui.block_mesh_max[i] = math.ceil(bb_max[i] / sl) * sl
+        gui.block_mesh_min[i] = bm_min * sl
+        gui.block_mesh_max[i] = bm_max * sl
 
     bm_count = gui.block_mesh_delta[0] * \
                gui.block_mesh_delta[1] * \

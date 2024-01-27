@@ -425,9 +425,12 @@ This panel summarizes the overall properties of export.
   coordinates of the bounding box for all mesh objects included in the
   export.
 * *Block Mesh Count* is an estimate for the number of cubic cells in
-  Block Mesh which covers the Global Bounds using cube side length
-  specified in *Cell Length* parameter. Block Mesh will be created by
-  running OpenFOAM command *blockMesh*.
+  the background block mesh which covers the Global Bounds using cube
+  side length specified in *Cell Length* parameter. The block mesh is
+  to be created by running OpenFOAM command *blockMesh*. Note that the
+  block mesh contains one extra layer of cells around Global Bounds to
+  force the *world* boundary (the block mesh outer patches) not to
+  overlap with any geometry surfaces.
 * *Objects included* lists all the mesh objects in Blender file, which
   will be exported when *Export* tool is run.
   
