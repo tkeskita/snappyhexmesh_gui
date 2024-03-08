@@ -258,28 +258,29 @@ Operators
 
 The panel buttons launch the following operators:
 
-* **Clean Case Dir** command removes directory names *1-9, constant*,
-  *system* and *processor\** if they exist in the *Export path*. This
-  effectively cleans up the case folder from any lingering OpenFOAM
-  files, so that after running *Export*, the case folder should
-  contain only fresh files, ready for OpenFOAM.
-* **Add Location In Mesh Object** will add an Empty object to Blender
-  scene. The coordinates of this object is applied to specify the
-  Location In Mesh for snappyHexMesh. If this object does not exist,
-  zero coordinates are used for Location In Mesh.
-* **Clean Up Meshes** is a simple mesh cleaning operator, meant for
-  rudimentary CAD mesh clean up. The operator goes through every mesh
-  objects. It merges vertices which are located closer than the *Merge
-  Distance* option value given on the right side of the button. The
-  operator also recalculates outward surface normals for all
-  meshes. Number of merged vertices per object is given as return info
-  from the operator.
 * **Apply LocRotScale For All** resets the Object Transformation
   Properties (Location, Rotation and Scale) of all mesh objects to
   default values. This makes measurement values always unambiguous,
   regardless of whether you have the Local or Global Value option
   enabled. It is suggested to run this tool before mesh modifications
   to avoid possibility of accidentally inputting wrong values.
+* **Clean Mesh** is a simple mesh cleaning operator, meant for
+  rudimentary CAD mesh clean up. The operator goes through every selected mesh
+  object. It merges vertices which are located closer than the *Merge
+  Distance* option value given on the right side of the button. The
+  operator also recalculates outward surface normals for all
+  meshes. Number of merged vertices per object is given as return info
+  from the operator. Note: Object scaling may affect the result.
+  It is suggested to run *Apply LocRotScale For All* before running this operation.
+* **Add Location In Mesh Object** will add an Empty object to Blender
+  scene. The coordinates of this object is applied to specify the
+  Location In Mesh for snappyHexMesh. If this object does not exist,
+  zero coordinates are used for Location In Mesh.
+* **Clean Case Dir** command removes directory names *1-9, constant*,
+  *system* and *processor\** if they exist in the *Export path*. This
+  effectively cleans up the case folder from any lingering OpenFOAM
+  files, so that after running *Export*, the case folder should
+  contain only fresh files, ready for OpenFOAM.
 * **Export** tool creates and saves the OpenFOAM case files under
   *Export path* using the overall settings in this panel and Object
   Settings for each mesh object included in the export.

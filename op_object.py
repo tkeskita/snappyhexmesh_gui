@@ -103,3 +103,17 @@ def get_surface_area(obj):
     area = sum(f.calc_area() for f in bm.faces)
     del bm
     return area
+
+
+def get_scaled_object_names():
+    """Returns string of object names which apply object scaling"""
+
+    ob_names = ""
+    for ob in bpy.data.objects:
+        if ob.type != 'MESH':
+            continue
+        if not ob.shmg_include_in_export:
+            continue
+        if ob.scale != mathutils.Vector((1.0, 1.0, 1.0)):
+            ob_names += ob.name + " "
+    return ob_names

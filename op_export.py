@@ -470,13 +470,9 @@ def get_shrinking_outer_iter():
     """
 
     from math import ceil
-    # Maximum number of layers
+    # Maximum number of layers seems to give best layer coverage
     max_value = get_max_number_of_layers()
-
-    # Divide max_value by two as a compromise. Using max_value as such
-    # would improve the layer coverage slightly, but then the layer
-    # addition will become very slow.
-    return ceil(max_value / 2.0)
+    return max_value
 
 def export_geometries():
     """Creates geometry entries for snappyHexMeshDict and
@@ -727,7 +723,7 @@ def apply_locrotscale():
     return n
 
 class OBJECT_OT_snappyhexmeshgui_cleanup_meshes(bpy.types.Operator):
-    """Clean Up Meshes (SnappyHexMeshGUI). Merges closeby vertices and recalculates outside normals for all mesh objects"""
+    """Clean Up Meshes (SnappyHexMeshGUI). Merges closeby vertices and recalculates outside normals for selected mesh objects"""
     bl_idname = "object.snappyhexmeshgui_cleanup_meshes"
     bl_label = "SnappyHexMeshGUI Clean Up Meshes"
 
@@ -739,38 +735,61 @@ class OBJECT_OT_snappyhexmeshgui_cleanup_meshes(bpy.types.Operator):
     def execute(self, context):
         text = cleanup_meshes()
         if len(text) > 0:
-            self.report({'INFO'}, "Merged vertices: " + ", ".join(text))
+            self.report({'INFO'}, " ".join(text))
         else:
-            self.report({'INFO'}, "No merged vertices")
+            self.report({'INFO'}, "No objects selected, did nothing")
         return {'FINISHED'}
 
 def cleanup_meshes():
     """Merges nearby vertices and recalculates face outside normals"""
 
-    for i in bpy.data.objects:
-        i.select_set(False)
-        i.hide_set(False)
-
-    text = []
-    for i in bpy.data.objects:
-        if i.type != 'MESH':
+    # Generate a list of objects to process
+    obs = []
+    for ob in bpy.data.objects:
+        if ob.select_get() == False:
             continue
-        i.select_set(True)
+        ob.select_set(False)
+        if ob.type != 'MESH':
+            continue
+        obs.append(ob)
+
+    if not obs:
+        return []
+    text = []
+
+    # Convert merge distance string to float
+    gui = bpy.context.scene.snappyhexmeshgui
+    try:
+        gui.merge_distance = float(gui.merge_distance_string)
+    except:
+        text.append("ERROR: Merge Distance is not a number! Aborted operation!")
+        return text
+
+    # Process each selected object
+    text.append("Merged vectices:")
+    for ob in obs:
         bpy.ops.object.mode_set(mode='OBJECT')
-        bpy.ops.object.mode_set(mode = 'EDIT')
-        bm = bmesh.from_edit_mesh(i.data)
+        original_hide_mode = ob.hide_get()
+        ob.hide_set(False)
+        ob.select_set(True)
+        bpy.ops.object.mode_set(mode='EDIT')
+        bm = bmesh.from_edit_mesh(ob.data)
         nverts0 = len(bm.verts)
         bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=bpy.context.scene.snappyhexmeshgui.merge_distance)
         bm.verts.index_update()
         nverts1 = len(bm.verts)
         bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
-        bmesh.update_edit_mesh(mesh=i.data)
+        bmesh.update_edit_mesh(mesh=ob.data)
         bm.free()
         bpy.ops.object.mode_set(mode='OBJECT')
-        i.select_set(False)
+        ob.select_set(False)
+        ob.hide_set(original_hide_mode)
         n_merged_vertices = nverts0 - nverts1
-        if n_merged_vertices > 0:
-            text.append(i.name + ":" + str(n_merged_vertices))
+        text.append(ob.name + ":" + str(n_merged_vertices))
+
+    for ob in obs:
+        ob.select_set(True)
+
     return text
 
 

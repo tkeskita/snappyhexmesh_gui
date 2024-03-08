@@ -224,9 +224,14 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         description="Use Disabled Mesh Quality Criteria to Pass All Mesh Quality Checks. Creates Maximal Snapping and Layers, But Allows Extremely Low Quality Cells. For Debugging Purposes Only",
         default=False,
     )
-    merge_distance: bpy.props.FloatProperty(
+    merge_distance_string: bpy.props.StringProperty(
         name="Merge Distance",
-        description="Maximum Distance for Merging Closeby Vertices in Clean Up Meshes",
+        description="Maximum Distance for Merging Closeby Vertices in Clean Mesh",
+        default="1e-5"
+    )
+    merge_distance: bpy.props.FloatProperty(
+        name="Merge Distance Float",
+        description="Maximum Distance (as a float) for Merging Closeby Vertices in Clean Mesh",
         default=1e-5,
         min=0.0
     )
@@ -474,16 +479,22 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub.prop(gui, "surface_layer_minimum_thickness", text="")
 
         row = layout.row()
-        row.operator("object.snappyhexmeshgui_clean_case_dir", text="Clean Case Dir")
-        row = layout.row()
-        row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
+        row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
 
         row = layout.row(align=True)
-        row.operator("object.snappyhexmeshgui_cleanup_meshes", text="Clean Up Meshes")
-        row.prop(gui, "merge_distance", text="")
+        row.operator("object.snappyhexmeshgui_cleanup_meshes", text="Clean Mesh")
+        row.prop(gui, "merge_distance_string", text="")
 
         row = layout.row()
-        row.operator("object.snappyhexmeshgui_apply_locrotscale", text="Apply LocRotScale for All")
+        row.operator("object.snappyhexmeshgui_add_location_in_mesh_object", text="Add Location In Mesh Object")
+        row = layout.row()
+        row.operator("object.snappyhexmeshgui_clean_case_dir", text="Clean Case Dir")
+
+
+        scaled_obs = op_object.get_scaled_object_names()
+        if scaled_obs:
+            row = layout.row()
+            row.label(icon="ERROR", text="Found scaled objects: " + scaled_obs)
 
         if gui.disable_quality_criteria:
             row = layout.row()
