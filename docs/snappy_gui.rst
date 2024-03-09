@@ -272,10 +272,16 @@ The panel buttons launch the following operators:
   meshes. Number of merged vertices per object is given as return info
   from the operator. Note: Object scaling may affect the result.
   It is suggested to run *Apply LocRotScale For All* before running this operation.
-* **Add Location In Mesh Object** will add an Empty object to Blender
-  scene. The coordinates of this object is applied to specify the
-  Location In Mesh for snappyHexMesh. If this object does not exist,
-  zero coordinates are used for Location In Mesh.
+* **Add Location In Mesh Object** will add an Empty object named like
+  *Location In Mesh region0* to Blender scene. The *region0* part in the
+  object name is the name of the region (the default region name when
+  the mesh contains only one mesh region is *region0*). If only one
+  *Location In Mesh* empty object exists, the coordinates of this object
+  is applied to specify the *LocationInMesh* coordinates. If no
+  *Location In Mesh* empty objects exist, zero coordinates are used for
+  *LocationInMesh*. If several such objects exist, then a list of
+  object locations and names are exported to *LocationsInMesh*
+  (OpenFOAM.com option for multi-region meshing) section of snappyHexMeshDict.
 * **Clean Case Dir** command removes directory names *1-9, constant*,
   *system* and *processor\** if they exist in the *Export path*. This
   effectively cleans up the case folder from any lingering OpenFOAM

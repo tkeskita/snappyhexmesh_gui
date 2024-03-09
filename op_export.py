@@ -850,12 +850,9 @@ class OBJECT_OT_snappyhexmeshgui_add_location_in_mesh_object(bpy.types.Operator)
         return (ob and ob.type == 'MESH' and context.mode == 'OBJECT')
 
     def execute(self, context):
-        if not [i for i in bpy.data.objects if i.name == "Location In Mesh"]:
-            bpy.ops.object.empty_add(type='SPHERE', radius=0.2)
-            bpy.context.active_object.name = "Location In Mesh"
-            self.report({'INFO'}, "Added Location In Mesh Object")
-        else:
-            self.report({'INFO'}, "Error: Location In Mesh Object already exists!")
+        bpy.ops.object.empty_add(type='SPHERE', radius=0.2)
+        bpy.context.active_object.name = "Location In Mesh region0"
+        self.report({'INFO'}, "Added %r" % bpy.context.active_object.name)
         return {'FINISHED'}
 
 def get_location_in_mesh():
@@ -863,13 +860,28 @@ def get_location_in_mesh():
     Coordinates of object "Location In Mesh" is used, or if it does not
     exist, zero coordinates.
     """
-    d = "locationInMesh "
+
+    # Find locations in mesh objects
+    locs = []
     for i in bpy.data.objects:
-        if i.name == 'Location In Mesh':
-            d += "(" + str(i.location.x) + " " + str(i.location.y) + " " + \
-                 str(i.location.z) + ");"
-            return d
-    return d + "(0 0 0);"
+        if i.type != "EMPTY":
+            continue
+        if i.name.startswith("Location In Mesh"):
+            locs.append(i)
+
+    # Export based on the number of objects
+    if len(locs) == 0:
+        return "locationInMesh (0 0 0);"
+
+    elif len(locs) == 1:
+        i = locs[0]
+        return "locationInMesh (" + str(i.location.x) + " " + str(i.location.y) + " " + str(i.location.z) + ");"
+    else:
+        d = "locationsInMesh\n    (\n"
+        for i in locs:
+            d += "        ((" + str(i.location.x) + " " + str(i.location.y) + " " + str(i.location.z) + ") " + i.name.split("Location In Mesh")[1] + ")\n"
+        d += "    );"
+        return d
 
 class OBJECT_OT_snappyhexmeshgui_copy_settings_to_objects(bpy.types.Operator):
     """Copy Settings to Objects (SnappyHexMeshGUI)"""
