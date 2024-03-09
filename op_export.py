@@ -273,7 +273,7 @@ def subst_value(keystr, val, data):
 def get_header_text():
     """Returns dictionary header comment text"""
     import datetime
-    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.5" \
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.6" \
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
@@ -430,7 +430,8 @@ def export_snappy_replacements(data, dict_number):
     data = subst_value("LOCATIONINMESH", get_location_in_mesh(), data)
 
     data = subst_value("LAYER_FEATURE_ANGLE", "%g" % gui.surface_layer_feature_angle, data)
-    data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
+    # Disabled variable nSmoothSurfaceNormals for now
+    # data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)
     data = subst_value("FINAL_THICKNESS", "%g" % gui.surface_layer_final_thickness, data)
     data = subst_value("MIN_THICKNESS", "%g" % gui.surface_layer_minimum_thickness, data)

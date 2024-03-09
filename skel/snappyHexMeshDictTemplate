@@ -19,6 +19,8 @@ castellatedMesh //_DO_CASTELLATION_//;
 snap            //_DO_SNAP_//;
 addLayers       //_DO_ADD_LAYERS_//;
 
+mergePatchFaces false;  // Avoid face merging to increase layer coverage
+
 //_GEOMETRY_//
 
 castellatedMeshControls
@@ -32,6 +34,8 @@ castellatedMeshControls
     allowFreeStandingZoneFaces true;
     resolveFeatureAngle 30;
     // useLeakClosure true; // OpenFOAM.com option
+    handleSnapProblems true;
+    useTopologicalSnapDetection true;
 
     features
     (
@@ -51,44 +55,51 @@ castellatedMeshControls
 
 snapControls
 {
-    nSmoothPatch    3;
-    nSmoothInternal 3; // OpenFOAM.com option
-    tolerance       2.0;
-    nSolveIter      30;
-    nRelaxIter      5;
-    nFeatureSnapIter 10;
+    nSmoothPatch 2;
+    nSmoothInternal 1; // OpenFOAM.com option
+    tolerance 2.0;
+    nSolveIter 4;
+    nRelaxIter 5;
+    nFeatureSnapIter 3;
     implicitFeatureSnap false;
     explicitFeatureSnap true;
     multiRegionFeatureSnap true;
-    // nFaceSplitInterval 5; // OpenFOAM.com option
+    nFaceSplitInterval -1; // OpenFOAM.com option
+    releasePoints false;  // multi-region related option
+    stringFeatures true;
+    avoidDiagonal false;
+    strictRegionSnap false;
+    concaveAngle 45;
+    minAreaRatio 0.3;
 }
 
 addLayersControls
 {
     // Layer sizing
-    relativeSizes   true;
-    expansionRatio  //_EXPANSION_RATIO_//;
+    relativeSizes true;
+    expansionRatio //_EXPANSION_RATIO_//;
     finalLayerThickness //_FINAL_THICKNESS_//;
-    minThickness    //_MIN_THICKNESS_//;
-    nGrow           0; // -1;
+    minThickness //_MIN_THICKNESS_//;
+    nGrow 0;
 
     // Mesh dependencies
-    featureAngle    //_LAYER_FEATURE_ANGLE_//;
+    featureAngle //_LAYER_FEATURE_ANGLE_//;
     mergePatchFacesAngle 45; // OpenFOAM.com option
     layerTerminationAngle -180; // OpenFOAM.com option
     maxFaceThicknessRatio 0.5;
+    disableWallEdges false;
 
     // Mesh displacement iterations
-    nSmoothSurfaceNormals //_NSMOOTH_SURFACE_NORMALS_//; // 3 * max number of layers seems good
-    nSmoothThickness 10;
-    nSmoothNormals  0;
-    nSmoothDisplacement 100;
+    nSmoothSurfaceNormals 8;
+    nSmoothThickness 2;
+    nSmoothNormals 0;
+    nSmoothDisplacement 12;
 
     // Medial axis analysis
     //_ANGLE_// 90;
-    maxThicknessToMedialRatio 0.9;
+    maxThicknessToMedialRatio 0.5;
     slipFeatureAngle 30;
-    nRelaxIter      1;
+    nRelaxIter 4;
 
     // OpenFOAM.com displacement motion solver
     // meshShrinker displacementMotionSolver;
@@ -97,9 +108,9 @@ addLayersControls
 
     // Mesh shrinking overall settings
     nBufferCellsNoExtrude 0;
-    nLayerIter      50;
-    nRelaxedIter    0;
-    nOuterIter      //_SHRINKING_OUTER_ITER_//; // OpenFOAM.com option, half of max number of layers seems good
+    nLayerIter 8;
+    nRelaxedIter 0;
+    nOuterIter //_SHRINKING_OUTER_ITER_//; // OpenFOAM.com option
     additionalReporting true;
 
     layers
