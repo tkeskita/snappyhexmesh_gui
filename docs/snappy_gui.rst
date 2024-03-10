@@ -38,6 +38,29 @@ Tested with Blender 3.6.
 To learn to use SnappyHexMesh GUI, have a look at my video tutorial series
 `Blender for OpenFOAM users <http://tkeskita.kapsi.fi/blender/>`_.
 
+Reasons to use SnappyHexMesh GUI
+--------------------------------
+
+SnappyHexMesh GUI is beneficial for both SnappyHexMesh beginners and
+experienced users:
+
+* For beginners, the GUI helps by providing only the most important
+  settings, without any need to know dictionary file details.
+* For experienced users, the GUI removes the needs to edit the various
+  dictionary files (avoid typos and logic mistakes!) and to provide
+  point coordinates manually.
+* The possibility to do visual inspection while setting up meshing
+  reduces setup mistakes.
+* Use of one point of input (the GUI) for all settings and case
+  clean-up decreases risk of setup errors, outdated intermediate files
+  and missing commands. It also allows step-wise fast iteration of the
+  mesh generation workflow, which speeds up mesh generation work, as
+  the shortcomings of the mesh are exposed early.
+* Debugging time for fixing mesh generation issues is decreased,
+  since the GUI decreases the complexity of the process.
+* The GUI provides a well-tested and consistent starting point for the
+  numerous SnappyHexMesh settings, which should work fairly well for
+  many cases out-of-box.
 
 Current Status and Features
 ---------------------------
@@ -52,8 +75,55 @@ Currently implemented features include:
 * Definition of surface refinement levels for surfaces
 * Creation of feature edge definition (*surfaceFeatureExtractDict* or *surfaceFeaturesDict*)
 * Definition of surface layers for surfaces
-* Supports creation of face zones and cell zones from surfaces
-* Volume refinement
+* Creation of face zones and cell zones from surfaces
+* Volume refinement using surface meshes enclosing a volume
+
+Limitations of SnappyHexMesh
+----------------------------
+
+To get a mesh with wanted features, the user is required to
+understand many of the features and limitations of SnappyHexMesh. Some
+of those include:
+
+* **SnappyHexMesh is a very complex automatic mesh generation tool**,
+  with more than 50 settings available for the user to modify. The
+  effect of changing a parameter value often depends on the value of
+  many other parameters, as well as the case geometry (see
+  https://github.com/tkeskita/snappyLayerTests/blob/main/test_result_analysis.md
+  for some variation test results). This means that the combination of
+  the 50+ parameter values plays a major role for the result. Not just
+  any combination taken from tutorials results in a "good" mesh (you
+  define what is good).
+* **OpenFOAM fork and version of SnappyHexMesh can play a major role** for the
+  results. The current default fork is *openfoam.com*, due to it's improved
+  snapping and layer addition features.
+* **Surface mesh quality is important**. Surface meshes exported from
+  3D CAD tools are typically "dirty" (contain quality issues or outright
+  errors). If surface mesh has issues, then the resulting mesh likely
+  has issues, e.g. snapping problems arise.
+* **Mesh quality and snapping/layer addition quality are
+  interdependent**. Too strict requirements for mesh quality (the
+  settings in *meshQualityDict*) will lead to decrease in snapping
+  quality and decrecrease in layer coverage. A "good" balance is often
+  hard to achieve, and you often need to settle with a compromise.
+* **A good coverage for layer addition has many prerequisites**
+
+  * Enough volume above boundary surfaces to displace (squash) the
+    base mesh cells and to add the layer cells. Total thickness of
+    layers needs to fit in.
+  * Enough refinement level (small enough cells) near curving surfaces.
+  * Low curvature in locations where refinement level (cell size)
+    changes.
+
+* **SnappyHexMesh works best with cubic background mesh** extending
+  over all of the geometry bounds.
+* **Provide meshes/definitions for all boundary surfaces**.
+* **Good snapping to sharp edges (feature edge snapping)** depends on
+  snapping settings and mesh quality settings. Edge meshes should be
+  provided only for those edges for which snapping is wanted, to avoid
+  misplaced snapping.
+* Always check the resulting mesh with `checkMesh` and review it
+  visually in Paraview before you apply the mesh in your application.
 
 Installation and Start-up
 -------------------------
@@ -193,7 +263,7 @@ Quality Criteria
 
 .. note::
 
-  *Max Non-Ortho* is the most important mesh quality parameter. A small
+  *Max Non-Ortho* may be the most important mesh quality parameter. A small
   value produces mesh that is good for the numerical solution of flow
   equations. However, a small value restricts snapping and addition of
   surface layers. Meanwhile, a large value yields a mesh that snaps to
@@ -281,7 +351,7 @@ The panel buttons launch the following operators:
   *Location In Mesh* empty objects exist, zero coordinates are used for
   *LocationInMesh*. If several such objects exist, then a list of
   object locations and names are exported to *LocationsInMesh*
-  (OpenFOAM.com option for multi-region meshing) section of snappyHexMeshDict.
+  (openfoam.com option for multi-region meshing) section of snappyHexMeshDict.
 * **Clean Case Dir** command removes directory names *1-9, constant*,
   *system* and *processor\** if they exist in the *Export path*. This
   effectively cleans up the case folder from any lingering OpenFOAM
@@ -400,7 +470,7 @@ The following Layer Addition Settings are visible only if
   ``snappyHexMesh -dict system/snappyHexMeshDict2``. This is useful
   for creating intersecting layer patterns. In the cube example below,
   all three opposite cube face pairs have been separated, and layered
-  in three separate *snappyHexMesh* runs. Please note that this
+  in three separate *snappyHexMesh* runs. **Warning:** This
   sequential layer addition may create very bad cells, always check
   the result!
 
