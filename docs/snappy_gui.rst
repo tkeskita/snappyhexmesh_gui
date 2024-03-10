@@ -453,7 +453,7 @@ A vessel example is located in the add-on's *example* folder called
 
 .. figure:: images/example_mesh_result.png
 
-   Resulting volume mesh (snapped mesh without layers) from SnappyHexMesh viewed in `Paraview`_
+   Resulting volume mesh with selected mesh details viewed in `Paraview`_
 
 - I made a tutorial video series `Blender for OpenFOAM users
   <http://tkeskita.kapsi.fi/blender/>`_ which has one tutorial for
@@ -495,8 +495,8 @@ Q: I'm getting refinement in unexpected locations, or weird results
 
 A: Is your geometry aligned / colocated with base block mesh as much as possible?
 If yes, then your surface mesh might include errors which are so bad
-that even SnappyHexMesh is confused by them. Try to run the **Clean Up
-Meshes** operator and see if it helps.
+that even SnappyHexMesh is confused by them. Try to run the **Clean
+Mesh** operator and see if it helps.
 For more advanced CAD surface mesh clean-up and mesh
 healing, have a look at my tutorial videos
 `Blender for OpenFOAM users <http://tkeskita.kapsi.fi/blender/>`_.
