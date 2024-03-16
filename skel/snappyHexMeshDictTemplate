@@ -94,6 +94,7 @@ addLayersControls
     nSmoothThickness 2;
     nSmoothNormals 0;
     nSmoothDisplacement 12;
+    nMedialAxisIter 1000;
 
     // Medial axis analysis
     //_ANGLE_// 90;
@@ -110,7 +111,7 @@ addLayersControls
     nBufferCellsNoExtrude 0;
     nLayerIter 8;
     nRelaxedIter 0;
-    nOuterIter //_SHRINKING_OUTER_ITER_//; // OpenFOAM.com option
+    nOuterIter 1000; // OpenFOAM.com option
     additionalReporting true;
 
     layers

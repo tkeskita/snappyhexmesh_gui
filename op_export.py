@@ -435,7 +435,8 @@ def export_snappy_replacements(data, dict_number):
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)
     data = subst_value("FINAL_THICKNESS", "%g" % gui.surface_layer_final_thickness, data)
     data = subst_value("MIN_THICKNESS", "%g" % gui.surface_layer_minimum_thickness, data)
-    data = subst_value("SHRINKING_OUTER_ITER", str(get_shrinking_outer_iter()), data)
+    # Disable variable nOuterIter for now
+    # data = subst_value("SHRINKING_OUTER_ITER", str(get_shrinking_outer_iter()), data)
 
     if framework == 'openfoam.org':
         data = subst_value("ANGLE","minMedianAxisAngle",data)
