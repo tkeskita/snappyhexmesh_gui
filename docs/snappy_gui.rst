@@ -92,8 +92,8 @@ of those include:
   https://github.com/tkeskita/snappyLayerTests/blob/main/test_result_analysis.md
   for some variation test results). This means that the combination of
   the 50+ parameter values plays a major role for the result. Not just
-  any combination taken from tutorials results in a "good" mesh (you
-  define what is good).
+  any combination taken from tutorials results in a "good" mesh (also,
+  you define what is good).
 * **OpenFOAM fork and version of SnappyHexMesh can play a major role** for the
   results. The current default fork is *openfoam.com*, due to it's improved
   snapping and layer addition features.
@@ -106,7 +106,8 @@ of those include:
   settings in *meshQualityDict*) will lead to decrease in snapping
   quality and decrecrease in layer coverage. A "good" balance is often
   hard to achieve, and you often need to settle with a compromise.
-* **A good coverage for layer addition has many prerequisites**
+* **A good coverage for layer addition with SnappyHexMesh is possible,
+  but it has several prerequisites**
 
   * Enough volume above boundary surfaces to displace (squash) the
     base mesh cells and to add the layer cells. Total thickness of
@@ -117,7 +118,8 @@ of those include:
 
 * **SnappyHexMesh works best with cubic background mesh** extending
   over all of the geometry bounds.
-* **Provide meshes/definitions for all boundary surfaces**.
+* **Provide meshes/definitions for ALL boundary surfaces** for
+  SnappyHexMesh, otherwise snapping may not work properly.
 * **Good snapping to sharp edges (feature edge snapping)** depends on
   snapping settings and mesh quality settings. Edge meshes should be
   provided only for those edges for which snapping is wanted, to avoid
