@@ -73,7 +73,8 @@ Currently implemented features include:
 * Automatic creation of *blockMeshDict* with cell size as a parameter
 * Calculation of cell count for the resulting block mesh
 * Definition of surface refinement levels for surfaces
-* Creation of feature edge definition (*surfaceFeatureExtractDict* or *surfaceFeaturesDict*)
+* Feature edge extractions (*surfaceFeatureExtractDict* or *surfaceFeaturesDict*)
+* Custom feature edge mesh objects (object names ending with "_eMesh")
 * Definition of surface layers for surfaces
 * Creation of face zones and cell zones from surfaces
 * Volume refinement using surface meshes enclosing a volume
@@ -407,6 +408,9 @@ Rest of the panel includes object settings:
   by running the *surfaceFeatureExtract* or *surfaceFeatures* OpenFOAM
   utility).  If Feature Edges are extracted, then they are also
   assumed to be included for Feature Edge Snapping in SnappyHexMesh.
+  **Note:** Feature edges are not extracted if a second mesh object
+  with same object name but ending with "_eMesh" is present. See `Custom
+  Feature Edges`_ below.
 * *Feature Edge Level* defines a separate cell refinement level for
   Feature Edges.
 * *Face Zone Type* decides the type of face zones that are to be
@@ -515,7 +519,42 @@ This panel summarizes the overall properties of export.
   overlap with any geometry surfaces.
 * *Objects included* lists all the mesh objects in Blender file, which
   will be exported when *Export* tool is run.
-  
+
+Custom Feature Edges
+--------------------
+
+In a typical setup, snapping to sharp edges (feature edges) relies on
+the automatic detection of the feature edges from surface meshes using
+*surfaceFeatureExtract* (OpenFOAM.com) or *surfaceFeatures*
+(OpenFOAM.org) command. After running that command, you can view the
+extracted feature edges by importing the OBJ file to Blender or
+Paraview, e.g. from path
+*constant/extendedFeatureEdgeMesh/objectname_edgeMesh.obj*.
+The angle used in the extraction is specified in
+*system/surfaceFeatureExtractDict* or *surfaceFeaturesDict*
+(the default value is 150).
+
+The automatic feature edge extraction works well for generally flat
+surfaces that include clearly sharp edges. However, if the surface
+mesh triangulation is coarse, or if the surface mesh is non-manifold,
+and if rounded edges or corners exist in the surface mesh, then the
+automatically extracted feature edges may include artefact
+edges. These artefacts can cause spikes and kinks to the snapped mesh.
+
+An alternative to the automatic feature edge extraction is to specify
+the feature edges with additional mesh objects containing edges, named
+same as the main mesh object, with an additional end string *_eMesh*,
+e.g. **objectname_eMesh**. If object name end part is *_eMesh*, then
+that object is exported in OBJ format to *constant/triSurface*
+folder. The OBJ file can be converted to the OpenFOAM eMesh format
+with an OpenFOAM command like ``surfaceFeatureConvert
+constant/triSurface/objectname_eMesh.obj
+constant/triSurface/objectname.eMesh``. The custom eMesh file is then
+used by snappyHexMesh for snapping to feature edges, and the primary
+object **objectname** is used for snapping. The automatically
+generated *run* script contains the commands required for conversion.
+
+
 Example and tutorial links
 --------------------------
 

@@ -26,7 +26,7 @@ author = u'Tuomo Keskitalo'
 # The short X.Y version
 version = u''
 # The full version, including alpha/beta/rc tags
-release = u'1.6'
+release = u'1.7'
 
 
 # -- General configuration ---------------------------------------------------

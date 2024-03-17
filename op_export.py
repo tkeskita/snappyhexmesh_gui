@@ -275,7 +275,7 @@ def subst_value(keystr, val, data):
 def get_header_text():
     """Returns dictionary header comment text"""
     import datetime
-    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.6" \
+    return "// Exported by SnappyHexMesh GUI add-on for Blender v1.7" \
         + "\n// Source file: " + bpy.context.blend_data.filepath \
         + "\n// Export date: " + str(datetime.datetime.now())
 
@@ -293,6 +293,10 @@ def export_surface_features_replacements(data, framework):
         if not i.shmg_include_in_export:
             continue
         if not i.shmg_include_feature_extraction:
+            continue
+        if i.name.endswith("_eMesh"):
+            continue
+        if (i.name + "_eMesh") in bpy.data.objects:
             continue
 	
         if framework == 'openfoam.org':
@@ -356,6 +360,8 @@ def export_createbafflesdict_replacements(data):
         if not i.shmg_include_in_export:
             continue
         if i.shmg_face_zone_type != 'internal':
+            continue
+        if i.name.endswith("_eMesh"):
             continue
 
         # Add entries of this object to createBafflesDict
@@ -511,24 +517,36 @@ def export_geometries():
         area_str = "        // Area = %.5e\n" % get_surface_area(i)
         info_str = bb_min_str + bb_max_str + area_str
 
-        # Add to dictionary string
-        d += "    %s\n" % i.name \
-             + "    {\n        type triSurfaceMesh;\n" \
-             + "        file \"%s.stl\";\n" % i.name \
-             + info_str + "    }\n"
+        # Add to dictionary string, except not edge mesh objects
+        if not i.name.endswith("_eMesh"):
+            d += "    %s\n" % i.name \
+                + "    {\n        type triSurfaceMesh;\n" \
+                + "        file \"%s.stl\";\n" % i.name \
+                + info_str + "    }\n"
         # Note to self: Tried to add export_geometry_regions inside d,
         # but it seems that regions are not used for STLs, so left out.
 
-        # Export mesh to constant/triSurface/name.stl
         export_path = gui.export_path
         abspath = bpy.path.abspath(export_path)
-        outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.stl" % i.name)
         i.select_set(True)
-        bpy.ops.export_mesh.stl(
-            filepath=outpath, check_existing=False, \
-            axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
-            use_selection=True, global_scale=gui.export_scale, use_scene_unit=True, \
-            ascii=gui.export_stl_ascii, use_mesh_modifiers=True)
+
+        # Export normal meshes to constant/triSurface/name.stl
+        if not i.name.endswith("_eMesh"):
+            outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.stl" % i.name)
+            bpy.ops.export_mesh.stl(
+                filepath=outpath, check_existing=False, \
+                axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
+                use_selection=True, global_scale=gui.export_scale, use_scene_unit=True, \
+                ascii=gui.export_stl_ascii, use_mesh_modifiers=True)
+        # Edge meshes are exported to constant/triSurface/name.obj
+        else:
+            outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.obj" % i.name)
+            bpy.ops.wm.obj_export(
+                filepath=outpath, check_existing=False, \
+                forward_axis='Y', up_axis='Z', global_scale=gui.export_scale, \
+                apply_modifiers=True, export_selected_objects=True, \
+                export_materials=False, export_uv=False, export_normals=False
+            )
         i.select_set(False)
         n += 1
     d += "}"
@@ -560,6 +578,8 @@ def export_refinement_surfaces():
             continue
         if not i.shmg_include_snapping:
             continue
+        if i.name.endswith("_eMesh"):
+            continue
 
         d += "        %s\n" % i.name \
              + "        {\n            level" \
@@ -583,6 +603,8 @@ def export_refinement_volumes():
         if not i.shmg_include_in_export:
             continue
         if i.shmg_volume_type == 'none':
+            continue
+        if i.name.endswith("_eMesh"):
             continue
 
         d += "        %s\n" % i.name + "        {\n" \
@@ -632,6 +654,8 @@ def export_surface_features():
             continue
         if not i.shmg_include_feature_extraction:
             continue
+        if i.name.endswith("_eMesh"):
+            continue
         d += "        {\n            file \"" \
              + str(i.name) + ".eMesh\";\n" \
              + "            level %d;\n" % i.shmg_feature_edge_level \
@@ -650,6 +674,8 @@ def export_surface_layers(dict_number):
         if not i.shmg_include_in_export:
             continue
         if i.shmg_dict_number != dict_number:
+            continue
+        if i.name.endswith("_eMesh"):
             continue
 
         if i.shmg_surface_layers > 0:
@@ -729,6 +755,16 @@ function run_and_log(){
 """
     run += "run_and_log blockMesh blockMesh\n"
     run += "run_and_log %s %s\n" % (extract_command, extract_command)
+
+    # Add surfaceFeatureConvert commands for all _eMesh objects
+    i = 0
+    for ob in bpy.data.objects:
+        if not (ob.name + "_eMesh") in bpy.data.objects:
+            continue
+        i += 1
+        run += "run_and_log surfaceFeatureConvert_" + str(i) + \
+            " surfaceFeatureConvert constant/triSurface/" + ob.name + "_eMesh.obj" + \
+            " constant/triSurface/" + ob.name + ".eMesh\n"
 
     if gui.number_of_cpus == 1:
         run += "run_and_log snappyHexMesh snappyHexMesh\n"

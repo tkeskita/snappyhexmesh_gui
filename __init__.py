@@ -21,7 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
-    "version": (1, 6),
+    "version": (1, 7),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
