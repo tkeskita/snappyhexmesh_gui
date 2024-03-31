@@ -235,6 +235,12 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default=1e-5,
         min=0.0
     )
+    feature_snap_iter: bpy.props.IntProperty(
+        name="Feature Snap Iter",
+        description="Number of Feature Edge Snapping Iterations (nFeatureSnapIter)",
+        default=3,
+        min=0, max=100,
+    )
 
 # Object specific parameters
 bpy.types.Object.shmg_include_in_export = bpy.props.BoolProperty(
@@ -452,6 +458,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub = col.row()
             rowsub.label(text="Min Triangle Twist")
             rowsub.prop(gui, "min_twist", text="")
+        rowsub = col.row()
+        rowsub.label(text="Feature Snap Iter")
+        rowsub.prop(gui, "feature_snap_iter", text="")
 
         if gui.do_add_layers:
             rowsub = col.row(align=True)
@@ -495,6 +504,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
         if scaled_obs:
             row = layout.row()
             row.label(icon="ERROR", text="Found scaled objects: " + scaled_obs)
+
+        if gui.feature_snap_iter > 0 and gui.do_add_layers:
+            row = layout.row()
+            row.label(icon="ERROR", text="Feature Snap Iters may create bad layers")
 
         if gui.disable_quality_criteria:
             row = layout.row()

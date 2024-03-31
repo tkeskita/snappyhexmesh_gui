@@ -291,6 +291,23 @@ Quality Criteria
   default value 0.6 allows for some twisting, so if the resulting mesh
   exhibits numerical issues, try to increase this value.
 
+Snapping Options
+................
+
+* *Feature Snap Iter* defines the number of iterations for snapping to
+  feature edges. With zero iterations, SnappyHexMesh does no effort to
+  move cell vertices to sharp edges. This allows good quality cells to be
+  created, but it also creates unsharp or bevelled edges in the mesh.
+
+.. note::
+
+  Layer Addition may create diverging cells if Feature Snapping is
+  applied and if cells don't snap to edges perfectly. Therefore the
+  add-on shows a warning *Feature Snap Iters may create bad layers* if
+  *Feature Snap Iter* is larger than zero and if *Do Layer Addition
+  Phase* option is enabled.
+
+
 Layer Addition Global Options
 .............................
 

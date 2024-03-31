@@ -440,6 +440,8 @@ def export_snappy_replacements(data, dict_number):
     data = subst_value("LAYER_FEATURE_ANGLE", "%g" % gui.surface_layer_feature_angle, data)
     # Disabled variable nSmoothSurfaceNormals for now
     # data = subst_value("NSMOOTH_SURFACE_NORMALS", str(get_nsmooth_surface_normals()), data)
+    data = subst_value("FEATURE_SNAP_ITER", str(gui.feature_snap_iter), data)
+
     data = subst_value("EXPANSION_RATIO", "%g" % gui.surface_layer_expansion_ratio, data)
     data = subst_value("FINAL_THICKNESS", "%g" % gui.surface_layer_final_thickness, data)
     data = subst_value("MIN_THICKNESS", "%g" % gui.surface_layer_minimum_thickness, data)

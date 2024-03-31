@@ -60,7 +60,7 @@ snapControls
     tolerance 2.0;
     nSolveIter 4;
     nRelaxIter 5;
-    nFeatureSnapIter 3;
+    nFeatureSnapIter //_FEATURE_SNAP_ITER_//;
     implicitFeatureSnap false;
     explicitFeatureSnap true;
     multiRegionFeatureSnap true;
