@@ -177,7 +177,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     relaxed_max_non_ortho: bpy.props.IntProperty(
         name="Relaxed Max Non-Ortho",
         description="Relaxed Maximum Allowed Non-Orthogonality for Layer Addition Phase",
-        default=75,
+        default=65,
         min=1, max=180,
     )
     surface_layer_feature_angle: bpy.props.IntProperty(
@@ -204,6 +204,13 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
         default=0.001,
         precision=5,
         min=1e-12, max=1.0
+    )
+    max_internal_skewness: bpy.props.FloatProperty(
+        name="Max Internal Skewness",
+        description="Maximum Skewness for Internal Faces (Decrease to Improve Solver Stability)",
+        default=4.0,
+        precision=2,
+        min=0.01, max=20.0
     )
     min_twist: bpy.props.FloatProperty(
         name="Min Triangle Twist",
@@ -455,6 +462,9 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub = col.row()
             rowsub.label(text="Max Non-Ortho")
             rowsub.prop(gui, "max_non_ortho", text="")
+            rowsub = col.row()
+            rowsub.label(text="Max Internal Skewness")
+            rowsub.prop(gui, "max_internal_skewness", text="")
             rowsub = col.row()
             rowsub.label(text="Min Triangle Twist")
             rowsub.prop(gui, "min_twist", text="")

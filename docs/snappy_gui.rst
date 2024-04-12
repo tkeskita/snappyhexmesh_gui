@@ -264,8 +264,10 @@ Quality Criteria
   is enabled. A warning text above *Export* button appears when this
   option is enabled.
 
-* *Max Non-Ortho* is the volume mesh quality measure for maximum
-  non-orthogonality for SnappyHexMesh.
+* *Max Non-Ortho* is a maximum value for the measure of how much
+  the internal face normal direction deviates from the vector
+  connecting the two cell centers ("owner" and "neighbor" cells of the
+  face).
 
 .. note::
 
@@ -276,8 +278,23 @@ Quality Criteria
   surfaces better and allows better surface layer coverage, but the
   mesh may cause numerical issues for some solvers. The current
   default setup uses a small value (35) for the snapping phase, and a
-  large value (75) for the *Relaxed Max Non-Ortho* option applied in
+  large value (65) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
+
+* *Max Internal Skewness* is the smallest distance from the center of
+  an internal face to the line connecting cell centers, normalized by
+  the line length.
+
+.. note::
+
+  *Max Internal Skewness* plays a role for solver stability,
+  especially for cases with boundary layers, as high skewness
+  typically is an issue for thin/flat cells. If skewness is too large,
+  the solution tends to diverge, e.g. cell velocity magnitude
+  increases to unrealistic proportions. If you experience stability
+  issues with the mesh, try to decrease *Max Internal Skewness* from
+  the default value 4.0 to e.g. 1.5 or even 1.0. The cost is decreased
+  layer coverage.
 
 * *Min Triangle Twist* defines a minimum allowed value for twist of cell
   faces.
@@ -289,7 +306,7 @@ Quality Criteria
   of worse snapping. Values below one allow creation of
   twisted faces, which may cause numerical issues for some solvers. The
   default value 0.6 allows for some twisting, so if the resulting mesh
-  exhibits numerical issues, try to increase this value.
+  exhibits numerical issues, try to increase this value to e.g. 0.8.
 
 Snapping Options
 ................

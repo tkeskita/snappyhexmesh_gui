@@ -391,6 +391,7 @@ def export_meshqualitydict_replacements(data):
     header_text = get_header_text()
     data = subst_value("HEADER", header_text, data)
     data = subst_value("MAX_NON_ORTHO", str(gui.max_non_ortho), data)
+    data = subst_value("MAX_INTERNAL_SKEWNESS", str(gui.max_internal_skewness), data)
     data = subst_value("RELAXED_MAX_NON_ORTHO", str(gui.relaxed_max_non_ortho), data)
     data = subst_value("MIN_TWIST", "%g" % gui.min_twist, data)
     # Disabled relaxed min triangle twist for now. It does not seem to

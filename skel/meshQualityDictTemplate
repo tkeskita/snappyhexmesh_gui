@@ -10,7 +10,7 @@ FoamFile
 
 maxNonOrtho     //_MAX_NON_ORTHO_//;
 maxBoundarySkewness 20;
-maxInternalSkewness 4;
+maxInternalSkewness //_MAX_INTERNAL_SKEWNESS_//;
 maxConcave      80;
 minVol          1e-15;
 minTetQuality   1e-15;
