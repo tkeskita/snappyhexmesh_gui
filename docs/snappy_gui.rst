@@ -754,14 +754,8 @@ can try to change one thing at a time in your setup to home in on the
 issue. Things you can try to change include:
 
 - Disable layer addition (use the snapped-only mesh from time
-  directory 2).
-- If layers are required: Modify mesh criteria in the relaxed section
-  of snappyHexMeshDict towards values listed in the
-  meshQualityControls section. Or you can remove the relaxed section
-  altogether. Warning: you layer coverage will decrease radically, as
-  layer addition typically requires that snappyHexMesh is allowed to
-  create low quality cells.
-- Increase *Min Triangle Twist* and/or decrease *Max Non-Ortho* values to force
+  directory 2). This indicates if the problem is with boundary layers or not.
+- Decrease *Max Internal Skewness* or increase *Min Triangle Twist* to force
   snappyHexMesh to create high quality cells (at the cost of worse
   snapping and decreased layer coverage).
 
