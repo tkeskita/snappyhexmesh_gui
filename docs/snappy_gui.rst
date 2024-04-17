@@ -86,6 +86,23 @@ To get a mesh with wanted features, the user is required to
 understand many of the features and limitations of SnappyHexMesh. Some
 of those include:
 
+* **SnappyHexMesh works by far best with perfect cubic background mesh**
+  (without grading). If you need flattened or elongated cells, you can
+  use `transformPoints` command after mesh generation to scale the
+  mesh. You need to scale the surface geometry accordingly prior to mesh
+  generation in that case, to get correct final geometry for the mesh.
+* **Provide surface geometry/definitions for ALL boundary surfaces**
+  for SnappyHexMesh, otherwise snapping may not work properly. If you
+  insist on using patches existing in the background mesh, then be
+  aware that the surface geometry must not overlap with the patches in
+  the background mesh (cutting in perpendicular direction is OK).
+* **Patch types for SnappyHexMesh** must be either **patch** or **wall**.
+  If you need other patch types, change the type in the `boundary`
+  file after mesh generation.
+* **Surface mesh quality is important**. Surface meshes exported from
+  3D CAD tools are typically "dirty" (contain quality issues or outright
+  errors). If surface mesh has issues, then the resulting mesh likely
+  has issues, e.g. snapping problems arise.
 * **SnappyHexMesh is a very complex automatic mesh generation tool**,
   with more than 50 settings available for the user to modify. The
   effect of changing a parameter value often depends on the value of
@@ -95,13 +112,13 @@ of those include:
   the 50+ parameter values plays a major role for the result. Not just
   any combination taken from tutorials results in a "good" mesh (also,
   you define what is good).
+* **A small change in the value of some setting can make a large and
+  apparently random difference to the results**. The level of this
+  chaotic "noise" depends on the measured quantity, and the
+  combination of all settings and geometry.
 * **OpenFOAM fork and version of SnappyHexMesh can play a major role** for the
   results. The current default fork is *openfoam.com*, due to it's improved
   snapping and layer addition features.
-* **Surface mesh quality is important**. Surface meshes exported from
-  3D CAD tools are typically "dirty" (contain quality issues or outright
-  errors). If surface mesh has issues, then the resulting mesh likely
-  has issues, e.g. snapping problems arise.
 * **Mesh quality and snapping/layer addition quality are
   interdependent**. Too strict requirements for mesh quality (the
   settings in *meshQualityDict*) will lead to decrease in snapping
@@ -110,22 +127,18 @@ of those include:
 * **A good coverage for layer addition with SnappyHexMesh is possible,
   but it has several prerequisites**
 
-  * Enough volume above boundary surfaces to displace (squash) the
-    base mesh cells and to add the layer cells. Total thickness of
-    layers needs to fit in.
+  * Enough volume between boundary surfaces to displace (shrink) the
+    base mesh cells, to make space for the layer cells. Total
+    thickness of layers needs to "fit in".
   * Enough refinement level (small enough cells) near curving surfaces.
   * Low curvature in locations where refinement level (cell size)
     changes.
 
-* **SnappyHexMesh works best with cubic background mesh** extending
-  over all of the geometry bounds.
-* **Provide meshes/definitions for ALL boundary surfaces** for
-  SnappyHexMesh, otherwise snapping may not work properly.
 * **Good snapping to sharp edges (feature edge snapping)** depends on
   snapping settings and mesh quality settings. Edge meshes should be
   provided only for those edges for which snapping is wanted, to avoid
   misplaced snapping.
-* Always check the resulting mesh with `checkMesh` and review it
+* **Always check the resulting mesh** with `checkMesh` and review it
   visually in Paraview before you apply the mesh in your application.
 
 Installation and Start-up
