@@ -21,7 +21,7 @@
 bl_info = {
     "name": "SnappyHexMesh GUI",
     "author": "Tuomo Keskitalo",
-    "version": (1, 7),
+    "version": (1, 8),
     "blender": (2, 80, 0),
     "location": "3D View > SnappyHexMesh GUI",
     "description": "GUI for OpenFOAM SnappyHexMesh volume mesh generation tool",
@@ -182,8 +182,8 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     )
     surface_layer_feature_angle: bpy.props.IntProperty(
         name="Layer Feature Angle",
-        description="Feature Angle for Addition of Layers. Small value (e.g. 45) avoids creating layers in corners, large value covers also corners",
-        default=130,
+        description="Feature Angle for Addition of Layers. Small value avoids creating layers in corners, large value covers also corners",
+        default=85,
         min=1, max=180
     )
     surface_layer_expansion_ratio: bpy.props.FloatProperty(
@@ -195,7 +195,7 @@ class SnappyHexMeshGUI_Settings(bpy.types.PropertyGroup):
     surface_layer_final_thickness: bpy.props.FloatProperty(
         name="Final Thickness",
         description="Relative Thickness for Final Layer",
-        default=0.3,
+        default=0.6,
         min=1e-5, max=1.0
     )
     surface_layer_minimum_thickness: bpy.props.FloatProperty(
@@ -358,7 +358,7 @@ bpy.types.Object.shmg_obj_surface_layer_expansion_ratio = bpy.props.FloatPropert
 bpy.types.Object.shmg_obj_surface_layer_final_thickness = bpy.props.FloatProperty(
     name="Final Thickness",
     description="Relative Thickness for Final Layer",
-    default=0.3,
+    default=0.6,
     min=1e-5, max=1.0
 )
 bpy.types.Object.shmg_obj_surface_layer_minimum_thickness = bpy.props.FloatProperty(
@@ -462,9 +462,10 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object(bpy.types.Panel, SnappyHexMeshGUI_ToolBa
             rowsub = col.row()
             rowsub.label(text="Max Non-Ortho")
             rowsub.prop(gui, "max_non_ortho", text="")
-            rowsub = col.row()
-            rowsub.label(text="Max Internal Skewness")
-            rowsub.prop(gui, "max_internal_skewness", text="")
+            # Hide maxInternalSkewness for now, looks like it can be constant
+            # rowsub = col.row()
+            # rowsub.label(text="Max Internal Skewness")
+            # rowsub.prop(gui, "max_internal_skewness", text="")
             rowsub = col.row()
             rowsub.label(text="Min Triangle Twist")
             rowsub.prop(gui, "min_twist", text="")

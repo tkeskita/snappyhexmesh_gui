@@ -86,8 +86,13 @@ To get a mesh with wanted features, the user is required to
 understand many of the features and limitations of SnappyHexMesh. Some
 of those include:
 
+* **SnappyHexMesh mesh generation procedure is stochastic**. If mesh
+  modification iterations don't result in good enough quality cells, the
+  modification is *partially* reverted. That affects also nearby
+  cells. Small changes can thereby propagate changes in the mesh,
+  sometimes causing apparent randomness in the resulting mesh.
 * **SnappyHexMesh works by far best with perfect cubic background mesh**
-  (without grading). If you need flattened or elongated cells, you can
+  (without gradings). If you need flattened or elongated cells, you can
   use `transformPoints` command after mesh generation to scale the
   mesh. You need to scale the surface geometry accordingly prior to mesh
   generation in that case, to get correct final geometry for the mesh.
@@ -133,7 +138,11 @@ of those include:
   * Enough refinement level (small enough cells) near curving surfaces.
   * Low curvature in locations where refinement level (cell size)
     changes.
-
+* **Restraining layer growth near sharp external edges** may be
+  crucial for solver stability. Layer cells near sharp boundary edges
+  can cause numerical issues for solvers. Collapsing layers away on
+  purpose on the sharp edges using `layerTerminationAngle` and/or
+  `minVolRatio` seems to be beneficial for solver stability.
 * **Good snapping to sharp edges (feature edge snapping)** depends on
   snapping settings and mesh quality settings. Edge meshes should be
   provided only for those edges for which snapping is wanted, to avoid
@@ -293,21 +302,28 @@ Quality Criteria
   default setup uses a small value (35) for the snapping phase, and a
   large value (65) for the *Relaxed Max Non-Ortho* option applied in
   the layer addition phase.
+  Note: Typical range is 35 <= *Max Non-Ortho* <= 80.
+  Values higher than 65 may require usage of special numerical schemes
+  which can handle the high non-orthogonality.
 
-* *Max Internal Skewness* is the smallest distance from the center of
-  an internal face to the line connecting cell centers, normalized by
-  the line length.
+* *Max Internal Skewness* (*maxInternalSkewness* property in
+  *meshQualityDict*) is the smallest distance from the center of an
+  internal face to the line connecting cell centers, normalized by the
+  line length.
+
+* *Max Boundary Skewness* (*maxBoundarySkewness* property in
+  *meshQualityDict*) calculates boundary face skewness using a
+  hypothetical mirror cell on the outside.
 
 .. note::
 
-  *Max Internal Skewness* plays a role for solver stability,
+  *Max Internal Skewness* and *Max Boundary Skewness* play a role for solver stability,
   especially for cases with boundary layers, as high skewness
   typically is an issue for thin/flat cells. If skewness is too large,
   the solution tends to diverge, e.g. cell velocity magnitude
   increases to unrealistic proportions. If you experience stability
-  issues with the mesh, try to decrease *Max Internal Skewness* from
-  the default value 4.0 to e.g. 1.5 or even 1.0. The cost is decreased
-  layer coverage.
+  issues with the mesh, try to decrease the skewness values.
+  The cost is decreased layer coverage.
 
 * *Min Triangle Twist* defines a minimum allowed value for twist of cell
   faces.
@@ -319,7 +335,11 @@ Quality Criteria
   of worse snapping. Values below one allow creation of
   twisted faces, which may cause numerical issues for some solvers. The
   default value 0.6 allows for some twisting, so if the resulting mesh
-  exhibits numerical issues, try to increase this value to e.g. 0.8.
+  exhibits numerical issues, try to increase this value to e.g. 0.7 or 0.8.
+
+* *Min Vol Ratio* (*minVolRatio* property in *meshQualityDict*) is
+  useful to force layers to collapse, to avoid creation of flat
+  sliver cells, which may cause solver divergence.
 
 Snapping Options
 ................
@@ -332,7 +352,7 @@ Snapping Options
 .. note::
 
   Layer Addition may create diverging cells if Feature Snapping is
-  applied and if cells don't snap to edges perfectly. Therefore the
+  applied and if cell edges don't snap to edges perfectly. Therefore the
   add-on shows a warning *Feature Snap Iters may create bad layers* if
   *Feature Snap Iter* is larger than zero and if *Do Layer Addition
   Phase* option is enabled.
@@ -365,12 +385,19 @@ enabled.
   to the base cell side length.
 * *Min Thickness* is the minimum accepted relative layer thickness for
   any layer.
+* *layerTerminationAngle* (OpenFOAM.com option in *snappyHexMeshDict*)
+  defines a maximum allowed angle for external surface curvature in
+  layer addition. If angle is larger than the value given (edge is
+  sharp enough), then layers are collapsed. Collapsing layers away
+  near sharp edges seems to be helpful for solver stability (e.g. to
+  avoid artificially high velocity in nearby cells due to numerical
+  issues).
 
 .. tip::
 
   Layer addition seems to work better with openfoam.com version of
   *snappyHexMesh* than with the openfoam.org version. For openfoam.org
-  version, you can try to add layers incrementally, only two layers at
+  version, you can try to add layers incrementally, only one or two layers at
   a time. To do that, disable *Do Castellation Phase* and
   *Do Snapping Phase* options, modify the *Final Thickness* and
   *Min Thickness* parameters, *Export*, and then run *snappyHexMesh*

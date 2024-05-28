@@ -85,7 +85,7 @@ addLayersControls
     // Mesh dependencies
     featureAngle //_LAYER_FEATURE_ANGLE_//;
     mergePatchFacesAngle 45; // OpenFOAM.com option
-    layerTerminationAngle -180; // OpenFOAM.com option
+    layerTerminationAngle 45; // OpenFOAM.com option
     maxFaceThicknessRatio 0.5;
     disableWallEdges false;
 
@@ -100,7 +100,7 @@ addLayersControls
     //_ANGLE_// 90;
     maxThicknessToMedialRatio 0.5;
     slipFeatureAngle 30;
-    nRelaxIter 4;
+    nRelaxIter 10;
 
     // OpenFOAM.com displacement motion solver
     // meshShrinker displacementMotionSolver;
@@ -111,7 +111,7 @@ addLayersControls
     nBufferCellsNoExtrude 0;
     nLayerIter 8;
     nRelaxedIter 0;
-    nOuterIter 1000; // OpenFOAM.com option
+    nOuterIter 1000; // OpenFOAM.com option, 1=single pass layer addition
     additionalReporting true;
 
     layers
