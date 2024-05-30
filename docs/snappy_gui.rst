@@ -1,4 +1,4 @@
-SnappyHexMesh GUI Addon for Blender
+SnappyHexMesh-GUI Addon for Blender
 ===================================
 
 .. image:: images/shmg_example_and_panel.png
@@ -91,6 +91,10 @@ of those include:
   modification is *partially* reverted. That affects also nearby
   cells. Small changes can thereby propagate changes in the mesh,
   sometimes causing apparent randomness in the resulting mesh.
+* **A small change in the value of a setting can make a large and
+  apparently random difference to the results**. The level of this
+  chaotic "noise" depends on the measured quantity, and the
+  combination of all settings and geometry.
 * **SnappyHexMesh works by far best with perfect cubic background mesh**
   (without gradings). If you need flattened or elongated cells, you can
   use `transformPoints` command after mesh generation to scale the
@@ -115,12 +119,8 @@ of those include:
   https://github.com/tkeskita/snappyLayerTests/blob/main/test_result_analysis.md
   for some variation test results). This means that the combination of
   the 50+ parameter values plays a major role for the result. Not just
-  any combination taken from tutorials results in a "good" mesh (also,
-  you define what is good).
-* **A small change in the value of some setting can make a large and
-  apparently random difference to the results**. The level of this
-  chaotic "noise" depends on the measured quantity, and the
-  combination of all settings and geometry.
+  any settings taken from OpenFOAM tutorials results in a mesh which
+  works for all solvers and settings.
 * **OpenFOAM fork and version of SnappyHexMesh can play a major role** for the
   results. The current default fork is *openfoam.com*, due to it's improved
   snapping and layer addition features.
@@ -143,12 +143,16 @@ of those include:
   can cause numerical issues for solvers. Collapsing layers away on
   purpose on the sharp edges using `layerTerminationAngle` and/or
   `minVolRatio` seems to be beneficial for solver stability.
+  See :ref:`Q: Help, my solver is crashing or diverging when I use a mesh from snappyHexMesh, but it is not crashing when I use castellated mesh!`
 * **Good snapping to sharp edges (feature edge snapping)** depends on
   snapping settings and mesh quality settings. Edge meshes should be
   provided only for those edges for which snapping is wanted, to avoid
   misplaced snapping.
 * **Always check the resulting mesh** with `checkMesh` and review it
   visually in Paraview before you apply the mesh in your application.
+  However, be aware that not all mesh errors are show stoppers for
+  many solvers. In lack of better knowledge, trial and error is
+  required for testing the mesh in practice.
 
 Installation and Start-up
 -------------------------
@@ -293,7 +297,7 @@ Quality Criteria
 
 .. note::
 
-  *Max Non-Ortho* may be the most important mesh quality parameter. A small
+  *Max Non-Ortho* may be the most important mesh face quality parameter. A small
   value produces mesh that is good for the numerical solution of flow
   equations. However, a small value restricts snapping and addition of
   surface layers. Meanwhile, a large value yields a mesh that snaps to
@@ -307,9 +311,9 @@ Quality Criteria
   which can handle the high non-orthogonality.
 
 * *Max Internal Skewness* (*maxInternalSkewness* property in
-  *meshQualityDict*) is the smallest distance from the center of an
-  internal face to the line connecting cell centers, normalized by the
-  line length.
+  *meshQualityDict*) is a face quality metric, calculated as the
+  smallest distance from the center of an internal face to the line
+  connecting cell centers, normalized by the line length.
 
 * *Max Boundary Skewness* (*maxBoundarySkewness* property in
   *meshQualityDict*) calculates boundary face skewness using a
@@ -337,9 +341,10 @@ Quality Criteria
   default value 0.6 allows for some twisting, so if the resulting mesh
   exhibits numerical issues, try to increase this value to e.g. 0.7 or 0.8.
 
-* *Min Vol Ratio* (*minVolRatio* property in *meshQualityDict*) is
-  useful to force layers to collapse, to avoid creation of flat
-  sliver cells, which may cause solver divergence.
+* *Min Vol Ratio* (*minVolRatio* property in *meshQualityDict*) is the
+  minimum required volume ratio of neighboring cells. This quality
+  criteria is useful to force layers to collapse, to avoid creation of
+  flat sliver cells, which may cause solver divergence.
 
 Snapping Options
 ................
@@ -764,7 +769,7 @@ Q: Layer addition crashes/segfaults on writeLayerSets
 
 A: If you get Segmentation fault (core dumped) with the following kind of
 error message, it means that the layer addition failed to add any
-layer cells. The crash seems to happen when snappy tries to write
+layer cells. The crash seems to happen when SnappyHexMesh tries to write
 layerSets with zero cells in the set::
 
   Added 0 out of 1234 cells (0%).
@@ -788,16 +793,33 @@ solver setup and not the mesh.
 Q: Help, my solver is crashing or diverging when I use a mesh from snappyHexMesh, but it is not crashing when I use castellated mesh!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A: Your mesh might be causing numerical issues for your solver. Since
-you have one case which is failing and one case which is working, you
-can try to change one thing at a time in your setup to home in on the
+A: Your mesh might be causing numerical issues for your solver.
+
+The SnappyHexMesh settings in SnappyHexMesh-GUI have been optimized so
+that the mesh should work well with `simpleFoam` solver, with `consistent
+yes`, `U` relaxation factor 0.8 and `nNonOrthogonalCorrectors 3`.
+All solver settings are available in
+https://github.com/tkeskita/snappyLayerTests/tree/main/foamCase/solverCase
+
+Unfortunately these SnappyHexMesh settings are not applicable as such
+for all solver and setting combination. However, since you have one
+case which is failing and one case which is working, you can try to
+change one thing at a time in your setup to home in on the
 issue. Things you can try to change include:
 
 - Disable layer addition (use the snapped-only mesh from time
-  directory 2). This indicates if the problem is with boundary layers or not.
-- Decrease *Max Internal Skewness* or increase *Min Triangle Twist* to force
-  snappyHexMesh to create high quality cells (at the cost of worse
-  snapping and decreased layer coverage).
+  directory 2). This test should indicate if the problem is with
+  the boundary layers or not.
+
+- Try to force SnappyHexMesh to remove problematic cells, or create
+  higher quality cells (at the cost of worse snapping and decreased
+  layer coverage). For example, change the value of following parameters
+  by 50% (or less) of their current values, one at a time:
+
+  - Decrease *layerTerminationAngle*
+  - Decrease *maxInternalSkewness* and/or *maxBoundarySkewness*
+  - Increase *minVolRatio*
+  - Increase *Min Triangle Twist*
 
 Q: Help, my solver is still crashing, and I can't find the issue!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
