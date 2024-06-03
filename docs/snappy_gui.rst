@@ -814,12 +814,13 @@ issue. Things you can try to change include:
 - Try to force SnappyHexMesh to remove problematic cells, or create
   higher quality cells (at the cost of worse snapping and decreased
   layer coverage). For example, change the value of following parameters
-  by 50% (or less) of their current values, one at a time:
+  by 30% (or even less) of their current values, one at a time:
 
+  - Decrease *Relaxed Max Non-Ortho*
+  - Increase *Min Triangle Twist*
   - Decrease *layerTerminationAngle*
   - Decrease *maxInternalSkewness* and/or *maxBoundarySkewness*
   - Increase *minVolRatio*
-  - Increase *Min Triangle Twist*
 
 Q: Help, my solver is still crashing, and I can't find the issue!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
