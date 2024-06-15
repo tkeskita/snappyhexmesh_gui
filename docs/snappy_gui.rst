@@ -796,16 +796,25 @@ Q: Help, my solver is crashing or diverging when I use a mesh from snappyHexMesh
 A: Your mesh might be causing numerical issues for your solver.
 
 The SnappyHexMesh settings in SnappyHexMesh-GUI have been optimized so
-that the mesh should work well with `simpleFoam` solver, with `consistent
-yes`, `U` relaxation factor 0.8 and `nNonOrthogonalCorrectors 3`.
-All solver settings are available in
+that the mesh should work well with `simpleFoam` solver, with
+`consistent yes`, `U` relaxation factor 0.8 and
+`nNonOrthogonalCorrectors 3`. For a refined mesh (+2 refinement levels
+on the surfaces) it was necessary to use `U` relaxation factor 0.7 and
+add `p` relaxation factor 0.3 (to `fields` section in
+`relaxationFactors`) to avoid `simpleFoam` divergence.
+The solver settings are available in
 https://github.com/tkeskita/snappyLayerTests/tree/main/foamCase/solverCase
 
-Unfortunately these SnappyHexMesh settings are not applicable as such
-for all solver and setting combination. However, since you have one
+Unfortunately these SnappyHexMesh settings may not be applicable as such
+for all solver and setting combinations. However, since you have one
 case which is failing and one case which is working, you can try to
 change one thing at a time in your setup to home in on the
 issue. Things you can try to change include:
+
+- Pinpoint visually (e.g. in Paraview) the location where divergence
+  starts (e.g. the cell for which `mag(U)` starts to increase during
+  solution). Is there a malformed low quality cell next to it? If yes,
+  then the issue might be with the mesh.
 
 - Disable layer addition (use the snapped-only mesh from time
   directory 2). This test should indicate if the problem is with
@@ -821,6 +830,12 @@ issue. Things you can try to change include:
   - Decrease *layerTerminationAngle*
   - Decrease *maxInternalSkewness* and/or *maxBoundarySkewness*
   - Increase *minVolRatio*
+
+- Modify your CFD solver settings in `fvSolution`, e.g. add or
+  decrease `relaxationFactors` values, or decrease tolerances.
+
+- Try to modify boundary conditions. Unstability issues may be related
+  to a misbehaving boundary.
 
 Q: Help, my solver is still crashing, and I can't find the issue!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
