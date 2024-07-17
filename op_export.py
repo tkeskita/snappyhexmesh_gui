@@ -536,11 +536,23 @@ def export_geometries():
         # Export normal meshes to constant/triSurface/name.stl
         if not i.name.endswith("_eMesh"):
             outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.stl" % i.name)
-            bpy.ops.export_mesh.stl(
-                filepath=outpath, check_existing=False, \
-                axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
-                use_selection=True, global_scale=gui.export_scale, use_scene_unit=True, \
-                ascii=gui.export_stl_ascii, use_mesh_modifiers=True)
+            if "export_mesh" in dir(bpy.ops):
+                # Blender 3.6 and earlier
+                bpy.ops.export_mesh.stl(
+                    filepath=outpath, check_existing=False, \
+                    axis_forward='Y', axis_up='Z', filter_glob="*.stl", \
+                    use_selection=True, global_scale=gui.export_scale, use_scene_unit=True, \
+                    ascii=gui.export_stl_ascii, use_mesh_modifiers=True)
+            elif "stl_export" in dir(bpy.ops.wm):
+                # Blender 4.2 and later
+                bpy.ops.wm.stl_export(
+                    filepath=outpath, check_existing=False, \
+                    forward_axis='Y', up_axis='Z', filter_glob="*.stl", \
+                    export_selected_objects=True, global_scale=gui.export_scale, use_scene_unit=True, \
+                    ascii_format=gui.export_stl_ascii, apply_modifiers=True)
+            else:
+                raise Exception("No known STL exporters found")
+
         # Edge meshes are exported to constant/triSurface/name.obj
         else:
             outpath = os.path.join(abspath, 'constant', 'triSurface', "%s.obj" % i.name)
