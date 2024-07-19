@@ -153,6 +153,15 @@ of those include:
   However, be aware that not all mesh errors are show stoppers for
   many solvers. In lack of better knowledge, trial and error is
   required for testing the mesh in practice.
+* SnappyHexMesh can be run in stages, as long as the input data for
+  subsequent runs is updated if necessary. Example: First run Snappy
+  with only Castellation and Snapping phases, then run
+  `splitMeshRegions -largestOnly` to remove unaccessible island
+  cells. Before the second Snappy run to add only layers, you need to
+  run `surfaceMeshExtract` command for each patch to extract the
+  updated patch geometry for the second Snappy run. This is also one
+  way to add layers to a mesh generated with another tool.
+
 
 Installation and Start-up
 -------------------------
