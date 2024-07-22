@@ -685,6 +685,22 @@ If you use this add-on, please star the project in GitHub!
 FAQ
 ---
 
+Q: I don't want to use GUI, can you please just provide case files?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sure, here you go:
+https://tkeskita.kapsi.fi/OF/cube_snappy_template.zip
+(compatible with OpenFOAM.com v2312 or later).
+
+Q: The mesh resulting from those settings isn't good!
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+That depends on your definition of good. I argue that a mesh is good
+if it 1.) works with your solver and 2.) captures *well enough* the
+relevant physics that you seek to simulate. In many cases it's not
+required to get perfect inflation layers everywhere to get *good
+enough* results. See also :ref:`Limitations of SnappyHexMesh`.
+
 Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
