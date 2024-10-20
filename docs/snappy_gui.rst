@@ -674,7 +674,7 @@ You are free to file bug reports, ask and give advice by using
 <https://github.com/tkeskita/snappyhexmesh_gui/issues>`_.
 Before asking, please try to see and run the vessel example (see
 above) to make sure it works for you as expected. Also, please check
-the FAQ section below.
+:ref:`Limitations of SnappyHexMesh` and the FAQ section below.
 
 Please provide a Blender file (no need to include anything else) with
 a small example to illustrate your problem and describe the
@@ -691,6 +691,7 @@ Q: I don't want to use GUI, can you please just provide case files?
 Sure, here you go:
 https://tkeskita.kapsi.fi/OF/cube_snappy_template.zip
 (compatible with OpenFOAM.com v2312 or later).
+See also :ref:`Limitations of SnappyHexMesh`.
 
 Q: The mesh resulting from those settings isn't good!
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -704,9 +705,10 @@ enough* results. See also :ref:`Limitations of SnappyHexMesh`.
 Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A: Your inlet/outlet/other patch does not coincide with (internal)
+A: Maybe your inlet/outlet/other patch does not coincide with (internal)
 faces of the cells of the base block mesh. You may also need to apply
 a sufficient level of refinement.
+See also :ref:`Limitations of SnappyHexMesh`.
 
 Q: I'm getting refinement in unexpected locations, or weird results
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
