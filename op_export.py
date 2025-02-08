@@ -603,6 +603,7 @@ def export_refinement_surfaces():
              + "            patchInfo { type " + i.shmg_patch_info_type + "; }\n" \
              + get_face_zone_definitions(i) \
              + get_cell_zone_definitions(i) \
+             + "            addBufferLayers " + str(i.shmg_buffer_layer).lower() +";\n" \
              + "        }\n"
     return d
 

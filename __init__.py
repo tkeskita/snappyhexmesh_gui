@@ -368,6 +368,11 @@ bpy.types.Object.shmg_obj_surface_layer_minimum_thickness = bpy.props.FloatPrope
     precision=5,
     min=1e-12, max=1.0
 )
+bpy.types.Object.shmg_buffer_layer = bpy.props.BoolProperty(
+    name="Buffer Layer",
+    description="Create a Buffer Layer for Object (OpenFOAM.com v2412 or later, enable for objects with layer addition)",
+    default=False,
+)
 
 
 class SnappyHexMeshGUI_ToolBar:
@@ -631,6 +636,8 @@ class VIEW3D_PT_SnappyHexMeshGUI_Object_Object(bpy.types.Panel, SnappyHexMeshGUI
         rowsub.prop(obj, "shmg_patch_info_type", text="Type")
         rowsub = col.row()
         rowsub.prop(obj, "shmg_include_snapping", text="Enable Snapping")
+        # rowsub = col.row()
+        # rowsub.prop(obj, "shmg_buffer_layer", text="Enable Buffer Layer")
         rowsub = col.row()
         rowsub.label(text="Surface Refinement Levels:")
         rowsub = col.row()

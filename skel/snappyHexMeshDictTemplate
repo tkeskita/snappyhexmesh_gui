@@ -15,6 +15,8 @@ FoamFile
 //   https://develop.openfoam.com/Development/openfoam/-/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
 // See also links in https://openfoamwiki.net/index.php/SnappyHexMesh
 
+// type            castellatedBufferLayer; // OpenFOAM.com v2412 option to enable buffer layer. Warning: Experimental feature!
+
 castellatedMesh //_DO_CASTELLATION_//;
 snap            //_DO_SNAP_//;
 addLayers       //_DO_ADD_LAYERS_//;
@@ -71,6 +73,15 @@ snapControls
     strictRegionSnap false;
     concaveAngle 45;
     minAreaRatio 0.3;
+
+    // OpenFOAM.com v2412 buffer layer smoothing
+    solver displacementPointSmoothing;
+    displacementPointSmoothingCoeffs
+    {
+        pointSmoother           laplacian;
+        nPointSmootherIter      10;
+    }
+
 }
 
 addLayersControls
@@ -113,6 +124,18 @@ addLayersControls
     nRelaxedIter 0;
     nOuterIter 1000; // OpenFOAM.com option, 1=single pass layer addition
     additionalReporting true;
+
+    // OpenFOAM.com v2412 boundary layer smoothing
+    solver displacementPointSmoothing;
+    displacementPointSmoothingCoeffs
+    {
+        //pointSmoother           geometricElementTransform;
+        //transformationParameter 0.667;
+        //nPointSmootherIter      10;
+
+        pointSmoother           laplacian;
+        nPointSmootherIter      100;
+    }
 
     layers
     {
