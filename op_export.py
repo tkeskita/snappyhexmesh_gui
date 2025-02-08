@@ -984,6 +984,8 @@ def get_location_in_mesh():
     exist, zero coordinates.
     """
 
+    scale = bpy.context.scene.snappyhexmeshgui.export_scale
+
     # Find locations in mesh objects
     locs = []
     for i in bpy.data.objects:
@@ -998,11 +1000,11 @@ def get_location_in_mesh():
 
     elif len(locs) == 1:
         i = locs[0]
-        return "locationInMesh (" + str(i.location.x) + " " + str(i.location.y) + " " + str(i.location.z) + ");"
+        return "locationInMesh (" + str(scale * i.location.x) + " " + str(scale * i.location.y) + " " + str(scale * i.location.z) + ");"
     else:
         d = "locationsInMesh\n    (\n"
         for i in locs:
-            d += "        ((" + str(i.location.x) + " " + str(i.location.y) + " " + str(i.location.z) + ") " + i.name.split("Location In Mesh")[1] + ")\n"
+            d += "        ((" + str(scale * i.location.x) + " " + str(scale * i.location.y) + " " + str(scale * i.location.z) + ") " + i.name.split("Location In Mesh")[1] + ")\n"
         d += "    );"
         return d
 
