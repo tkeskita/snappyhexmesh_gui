@@ -100,6 +100,13 @@ of those include:
   use `transformPoints` command after mesh generation to scale the
   mesh. You need to scale the surface geometry accordingly prior to mesh
   generation in that case, to get correct final geometry for the mesh.
+* **Good edge snapping requires alignment of background mesh with surfaces**.
+  Snapping to sharp edges can be compromised, unless the **surfaces of
+  the geometry are aligned / colocated with** the internal faces of
+  **the background/base block mesh**
+
+  .. figure:: images/block_mesh_alignment.png
+
 * **Provide surface geometry/definitions for ALL boundary surfaces**
   for SnappyHexMesh, otherwise snapping may not work properly. If you
   insist on using patches existing in the background mesh, then be
@@ -267,17 +274,13 @@ General Settings
   during export using *Cell Length* as a measure for cubical cell sides.
 * *Cell Length* is the target length for the block mesh cube side,
   which will be created after export by running the OpenFOAM command
-  *blockMesh*.
-
-.. tip::
-
+  *blockMesh*. 
   SnappyHexMesh works best when the **surfaces of the geometry are
-  aligned / colocated with** the internal faces of **the base block
-  mesh**.  Select *Cell Length* value accordingly and/or move the
+  aligned / colocated with** the internal faces of **the background/base
+  block mesh**. Select *Cell Length* value accordingly and/or move the
   geometry surfaces to achieve alignment / colocation / overlap, if
   possible.
 
-  .. figure:: images/block_mesh_alignment.png
 
 Quality Criteria
 ................
