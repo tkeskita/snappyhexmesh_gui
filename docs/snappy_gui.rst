@@ -118,7 +118,11 @@ of those include:
 * **Surface mesh quality is important**. Surface meshes exported from
   3D CAD tools are typically "dirty" (contain quality issues or outright
   errors). If surface mesh has issues, then the resulting mesh likely
-  has issues, e.g. snapping problems arise.
+  has issues, e.g. snapping problems arise. Review your surface meshes
+  in Paraview or Blender and fix the issues. Snappy can work well with
+  poor triangle quality (e.g. high aspect ratio triangle slivers), but
+  the faces must be good (preferably no holes between triangles, and
+  consistent face normal direction).
 * **SnappyHexMesh is a very complex automatic mesh generation tool**,
   with more than 50 settings available for the user to modify. The
   effect of changing a parameter value often depends on the value of
@@ -155,6 +159,9 @@ of those include:
   snapping settings and mesh quality settings. Edge meshes should be
   provided only for those edges for which snapping is wanted, to avoid
   misplaced snapping.
+* **Check the castellated mesh first** by reviewing it visually
+  in Paraview. Snapping and layer issues may be due to steps or kinks
+  in the castellated mesh.
 * **Always check the resulting mesh** with `checkMesh` and review it
   visually in Paraview before you apply the mesh in your application.
   However, be aware that not all mesh errors are show stoppers for
@@ -693,7 +700,7 @@ Q: I don't want to use GUI, can you please just provide case files?
 
 Sure, here you go:
 https://tkeskita.kapsi.fi/OF/cube_snappy_template.zip
-(compatible with OpenFOAM.com v2312 or later).
+(compatible with OpenFOAM.com v2312 and at least v2412).
 See also :ref:`Limitations of SnappyHexMesh`.
 
 Q: The mesh resulting from those settings isn't good!
@@ -703,7 +710,8 @@ That depends on your definition of good. I argue that a mesh is good
 if it 1.) works with your solver and 2.) captures *well enough* the
 relevant physics that you seek to simulate. In many cases it's not
 required to get perfect inflation layers everywhere to get *good
-enough* results. See also :ref:`Limitations of SnappyHexMesh`.
+enough* results. But there are exceptions. Sometimes Snappy just can't
+give you what you want. See also :ref:`Limitations of SnappyHexMesh`.
 
 Q: Why is my inlet/outlet/other patch cells malformed / big / not created?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -754,8 +762,9 @@ Q: Why is there a world patch in the final mesh? / Why is my mesh leaking?
 
 A: You must always include a set of surfaces (in one or more mesh
 objects) which define the outer boundaries of your
-computational domain volume. Having a *world* patch in the final mesh
-is an indication that your outer surface mesh is "leaking" (the final
+computational domain volume. Having faces which are
+visible in the final mesh *world* patch (even after refreshing Paraview!)
+indicates that your outer surface mesh is "leaking" (the final
 mesh is extending outside the surfaces which should define the domain
 volume). Leaking may also occur so that mesh extends inside surfaces
 that define a volume object located inside the domain.
@@ -888,22 +897,34 @@ Q: How do I learn Blender?
 
 A: See links at https://openfoamwiki.net/index.php/Blender
 
-Q: How do I learn SnappyHexMesh and OpenFOAM?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Q: How do I learn SnappyHexMesh?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A: Details about SnappyHexMesh parameters can be found in annotated caseDicts:
+A: See links in https://openfoamwiki.net/index.php/SnappyHexMesh,
+especially the Engys presentations at OFW7:
+https://openfoamwiki.net/images/f/f0/Final-AndrewJacksonSlidesOFW7.pdf
+and OFW11:
+https://openfoamwiki.net/images/b/b2/OFW11-Jackson-advSHM-FINAL.pdf
+
+Details about SnappyHexMesh parameters can be found in the annotated caseDicts:
 
   - For openfoam.com (development version), see
     https://develop.openfoam.com/Development/openfoam/-/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
   - For openfoam.org (development version), see
     https://github.com/OpenFOAM/OpenFOAM-dev/blob/master/etc/caseDicts/annotated/snappyHexMeshDict
-  - See also links in https://openfoamwiki.net/index.php/SnappyHexMesh
 
-For OpenFOAM, see links at
+See also my presentation `SnappyHexMesh in Practice <https://tkeskita.kapsi.fi/OF/Keskitalo_FOFUD_2025.pdf>`_ at Finnish OpenFOAM Users Day 2025
 
-  - https://holzmann-cfd.com/community/learn-openfoam,
+
+Q: How do I learn OpenFOAM?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
   - https://openfoamwiki.net
-  - https://www.cfd-online.com/Forums/openfoam/.
+  - https://wiki.openfoam.com
+  - https://openfoam.org/resources/
+  - https://holzmann-cfd.com/community/learn-openfoam
+  - https://www.cfd-online.com/Forums/openfoam/
+
 
 Q: I'm actually looking for a GUI for OpenFOAM and not just a GUI for SnappyHexMesh..
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
