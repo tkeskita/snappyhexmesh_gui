@@ -103,7 +103,11 @@ of those include:
 * **Good edge snapping requires alignment of background mesh with surfaces**.
   Snapping to sharp edges can be compromised, unless the **surfaces of
   the geometry are aligned / colocated with** the internal faces of
-  **the background/base block mesh**
+  **the background/base block mesh**. The background mesh is shown as
+  the light gray grid in the top images below. On the left case, there
+  is misalignment, which results in poor edge snapping. On right, the
+  background mesh is colocated with the surfaces, and edge snapping is
+  good.
 
   .. figure:: images/block_mesh_alignment.png
 
